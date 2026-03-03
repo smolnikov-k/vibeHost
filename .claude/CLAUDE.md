@@ -1,43 +1,33 @@
 # VibeHosting — hostingvibe.ru
 
-## Stack
-- **Backend:** Express.js + TypeScript, port 7001, PM2 `vibe-backend`
-- **Frontend:** Next.js 16 + Tailwind v4 + anime.js 4.x, port 7002, PM2 `vibe-frontend`
-- **DB:** PostgreSQL 16 + Prisma ORM
-- **Storage:** `/var/www/vibe-hosting/{sites,uploads,backups,previews}`
+Хостинг-платформа: загрузил ZIP → сайт на slug.hostingvibe.ru. Визуальный редактор, QR, пароли, кастомные домены, аналитика.
 
-## Directive
-Pure hosting first, AI features later. Users upload ZIP/HTML → instant hosting on `slug.hostingvibe.ru`.
+## Документация проекта
 
-## Structure
-```
-backend/
-  src/routes/      — auth, projects, deploy, domains, gallery, billing, slugs
-  src/services/    — deploy.service, github.service
-  src/middleware/   — auth, upload, rateLimit
-  src/utils/       — zip, slug, limits
-  prisma/schema.prisma
-frontend/
-  src/app/         — Next.js App Router pages
-  src/lib/api.ts   — API client with JWT
-  src/lib/auth.tsx  — AuthProvider + useAuth
-  src/components/   — landing components
-```
+Подробная документация в `.claude/skills/project-knowledge/references/`:
+- `project.md` — обзор, стек, env, тарифы
+- `architecture.md` — структура, БД, API endpoints, middleware
+- `patterns.md` — код-конвенции, auth, deploy pipeline, rate limits
+- `deployment.md` — серверы, деплой, Nginx, пермишены
 
-## Conventions
-- API responses: may return data directly or wrapped — use `response.project || response`
-- JWT: 30-day, Bearer token, localStorage `vibe_token`
-- Tariffs: FREE (1 site, 50MB), PRO (3 sites, 500MB, 386₽/mo)
-- Emerald accent color (green-500/600)
-- anime.js 4.x: named exports, delay param type is `unknown`
-- React 19: `useRef<T>(null)` requires initial value
+Читай только нужный файл для текущей задачи, не все сразу.
 
-## Deploy
-```bash
-cd /root/vibecode/vibe-hosting/backend && npx tsc --noEmit
-cd /root/vibecode/vibe-hosting/frontend && npm run build
-sudo PM2_HOME=/root/.pm2 pm2 restart vibe-backend vibe-frontend
-```
+## После compaction
+
+Прочитай `.claude/CURRENT_WORK.md` — там текущая задача и прогресс. Обновляй при начале/завершении крупных задач.
+
+## Шаблоны
+
+- `.claude/templates/user-spec.md` — бриф перед крупной фичей
+
+## Quick Reference
+
+- Emerald accent (green-500/600), anime.js 4.x named exports, React 19 useRef(null)
+- API fallback: `response.project || response`
+- JWT 30d, Bearer, localStorage `vibe_token`
+- Тарифы: FREE (1 site, 50MB, 30 дней) / PRO (3, 500MB, 386₽/мес)
+- Deploy: build → rsync → tsc on prod → PM2 restart → chmod static
+- PM2: `sudo PM2_HOME=/root/.pm2 pm2`
 
 ## TODO
-See `/root/vibecode/vibe-hosting/TODO.md`
+See `TODO.md`

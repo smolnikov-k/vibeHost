@@ -1,0 +1,12 @@
+{
+  "skills": {
+    "project-knowledge": {
+      "path": ".claude/skills/project-knowledge/SKILL.md",
+      "description": "Project documentation navigator — read relevant reference files for current task"
+    },
+    "review": {
+      "path": ".claude/skills/review/SKILL.md",
+      "description": "Security-focused code review for hosting platform. Use before deploy or after adding routes/services."
+    }
+  }
+}
