@@ -66,8 +66,11 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
   }, [projectId]);
 
   // Listen for bridge messages
+  const expectedOrigin = `https://${projectSlug}.hostingvibe.ru`;
   useEffect(() => {
     function handleMessage(e: MessageEvent) {
+      // Only accept messages from the preview subdomain
+      if (e.origin !== expectedOrigin) return;
       const data = e.data;
       if (!data || typeof data.type !== 'string') return;
 
@@ -105,9 +108,9 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
   // Init bridge when iframe loads
   const handleIframeLoad = useCallback(() => {
     if (iframeRef.current?.contentWindow) {
-      iframeRef.current.contentWindow.postMessage({ type: 'vibe-bridge:init' }, '*');
+      iframeRef.current.contentWindow.postMessage({ type: 'vibe-bridge:init' }, expectedOrigin);
     }
-  }, []);
+  }, [expectedOrigin]);
 
   // Send preview to iframe
   const sendPreview = useCallback((selector: string, patchType: PatchTab, content: string) => {
@@ -117,16 +120,16 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
       selector,
       patchType,
       content,
-    }, '*');
-  }, []);
+    }, expectedOrigin);
+  }, [expectedOrigin]);
 
   // Deselect element
   const deselect = useCallback(() => {
     setSelected(null);
     if (iframeRef.current?.contentWindow) {
-      iframeRef.current.contentWindow.postMessage({ type: 'vibe-bridge:deselect' }, '*');
+      iframeRef.current.contentWindow.postMessage({ type: 'vibe-bridge:deselect' }, expectedOrigin);
     }
-  }, []);
+  }, [expectedOrigin]);
 
   // Save patch
   const savePatch = useCallback(async () => {
@@ -233,7 +236,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
     }
   }, [editText, editSrc, editStyles, activeTab, selected, bridgeReady, sendPreview]);
 
-  const previewUrl = api.getEditPreviewUrl(projectId, currentPath);
+  const previewUrl = api.getEditPreviewUrl(projectId, currentPath, projectSlug);
 
   const patchTypeLabel = (type: string) => {
     switch (type) {
@@ -524,7 +527,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
                         iframeRef.current.contentWindow.postMessage({
                           type: 'vibe-bridge:highlight',
                           selector: patch.selector,
-                        }, '*');
+                        }, expectedOrigin);
                       }
                     }}
                   >

@@ -10,7 +10,9 @@ import { useAuth } from '@/lib/auth';
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get('from') || '/projects';
+  const fromParam = searchParams.get('from') || '/projects';
+  // Prevent open redirect — only allow relative paths
+  const redirectTo = fromParam.startsWith('/') && !fromParam.startsWith('//') ? fromParam : '/projects';
   const { login, user } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

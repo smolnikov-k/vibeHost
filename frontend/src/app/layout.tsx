@@ -24,11 +24,13 @@ export const metadata: Metadata = {
     siteName: 'VibeHosting',
     locale: 'ru_RU',
     type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'VibeHosting — простейший хостинг для сайтов' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'VibeHosting — Сайт в интернете за 5 минут',
     description: 'Перетащи файлы — получи ссылку. Бесплатно. Без программиста.',
+    images: ['/og-image.png'],
   },
   robots: {
     index: true,

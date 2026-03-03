@@ -115,7 +115,7 @@ export default function ProjectsPage() {
                     </div>
                     <p className="text-sm text-gray-400 flex items-center gap-1">
                       <Globe className="w-3.5 h-3.5" />
-                      {project.slug}.hostingvibe.ru
+                      {project.customDomain || `${project.slug}.hostingvibe.ru`}
                     </p>
                   </div>
 
@@ -123,7 +123,7 @@ export default function ProjectsPage() {
                     <span
                       onClick={(e) => {
                         e.preventDefault();
-                        window.open(`https://${project.slug}.hostingvibe.ru`, '_blank');
+                        window.open(`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`, '_blank');
                       }}
                       className="flex items-center gap-1 text-xs text-emerald-500 hover:text-emerald-600 ml-4"
                     >

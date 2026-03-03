@@ -16,48 +16,134 @@ const sslBadge: Record<string, { color: string; label: string }> = {
   EXPIRED: { color: 'bg-orange-100 text-orange-700', label: 'SSL истёк' },
 };
 
-const SERVER_IP = '213.139.229.139';
+const SERVER_IP = '213.159.209.228';
 
-const registrarGuides = [
-  {
-    name: 'REG.RU',
-    steps: [
-      'Войдите в личный кабинет reg.ru',
-      'Перейдите в раздел «Мои домены» → выберите домен',
-      'Нажмите «DNS-серверы и управление зоной»',
-      'Если DNS-серверы не ns1.reg.ru / ns2.reg.ru — переключите на «Бесплатные DNS REG.RU»',
-      'Нажмите «Управление зоной» → «Добавить запись»',
-      'Добавьте записи из таблицы ниже',
-    ],
-  },
-  {
-    name: 'Timeweb',
-    steps: [
-      'Войдите в панель управления timeweb.cloud',
-      'Перейдите в раздел «Домены» → выберите домен',
-      'Откройте вкладку «DNS-записи»',
-      'Удалите старые A-записи (если есть)',
-      'Нажмите «Добавить запись» и добавьте записи из таблицы ниже',
-    ],
-  },
-  {
-    name: 'Beget',
-    steps: [
-      'Войдите в панель beget.com → «Домены»',
-      'Нажмите на шестерёнку рядом с доменом',
-      'Выберите «DNS» → «Управление DNS-записями»',
-      'Добавьте записи из таблицы ниже',
-    ],
-  },
-  {
-    name: 'Другой',
-    steps: [
-      'Войдите в панель управления регистратора',
-      'Найдите раздел «DNS», «DNS-записи» или «Управление зоной»',
-      'Добавьте записи из таблицы ниже',
-    ],
-  },
-];
+interface RegistrarGuide {
+  name: string;
+  url: string;
+  steps: { action: string; detail?: string }[];
+  warning?: string;
+}
+
+function getRegistrarGuides(hostname: string, ip: string, verifyToken?: string): RegistrarGuide[] {
+  return [
+    {
+      name: 'REG.RU',
+      url: 'https://www.reg.ru/user/account/#/domains/',
+      steps: [
+        { action: 'Войдите в личный кабинет на reg.ru' },
+        { action: 'Перейдите в «Мои домены»', detail: 'Левое меню → «Мои домены». Нажмите на ваш домен.' },
+        { action: 'Откройте «DNS-серверы и управление зоной»', detail: 'Это кнопка в карточке домена, обычно в самом низу страницы.' },
+        { action: 'Проверьте DNS-серверы', detail: 'Должны быть ns1.reg.ru и ns2.reg.ru. Если другие — нажмите «Изменить» и выберите «Бесплатные DNS-серверы REG.RU». После смены подождите 15 минут.' },
+        { action: 'Нажмите «Управление зоной» → «Добавить запись»' },
+        {
+          action: 'Создайте A-запись',
+          detail: `Тип записи: A. В поле «Subdomain» введите @ (или оставьте пустым). В поле «IP Address» вставьте ${ip}. TTL оставьте по умолчанию.`,
+        },
+        {
+          action: 'Создайте CNAME-запись для www',
+          detail: `Тип записи: CNAME. В поле «Subdomain» введите www. В поле «Canonical name» вставьте ${hostname}. (с точкой в конце!). TTL оставьте по умолчанию.`,
+        },
+        ...(verifyToken ? [{
+          action: 'Создайте TXT-запись для подтверждения',
+          detail: `Тип записи: TXT. В поле «Subdomain» введите _vibe-verify. В поле «Text» вставьте ${verifyToken}. TTL оставьте по умолчанию.`,
+        }] : []),
+        { action: 'Нажмите «Сохранить» после каждой записи', detail: 'Убедитесь, что все 3 записи появились в списке. Если была старая A-запись на @ — удалите её (нажмите корзину).' },
+      ],
+      warning: 'Если DNS-серверы не REG.RU (например, Cloudflare или хостинг) — записи нужно добавлять там, а не в REG.RU.',
+    },
+    {
+      name: 'Timeweb',
+      url: 'https://timeweb.cloud/my/domains',
+      steps: [
+        { action: 'Войдите в панель timeweb.cloud' },
+        { action: 'Перейдите в «Домены»', detail: 'Левое меню → «Домены». Нажмите на ваш домен в списке.' },
+        { action: 'Откройте вкладку «DNS-записи»', detail: 'Вверху карточки домена есть вкладки: Обзор, DNS-записи, и т.д. Нажмите «DNS-записи».' },
+        { action: 'Удалите старые A-записи', detail: 'Если в списке есть A-запись для @ с другим IP — нажмите на неё, потом нажмите «Удалить». Иначе будет конфликт.' },
+        {
+          action: 'Нажмите «Добавить запись» → тип A',
+          detail: `Хост: оставьте пустым (это значит корневой домен). Значение: ${ip}. TTL: 3600.`,
+        },
+        {
+          action: 'Ещё раз «Добавить запись» → тип CNAME',
+          detail: `Хост: www. Значение: ${hostname}. TTL: 3600.`,
+        },
+        ...(verifyToken ? [{
+          action: 'Ещё раз «Добавить запись» → тип TXT',
+          detail: `Хост: _vibe-verify. Значение: ${verifyToken}. TTL: 3600.`,
+        }] : []),
+      ],
+    },
+    {
+      name: 'Beget',
+      url: 'https://cp.beget.com/domains',
+      steps: [
+        { action: 'Войдите в панель управления beget.com' },
+        { action: 'Перейдите в раздел «Домены»', detail: 'Левое меню → «Домены». Найдите ваш домен в списке.' },
+        { action: 'Нажмите на шестерёнку справа от домена', detail: 'Откроется выпадающее меню. Выберите «DNS».' },
+        { action: 'Выберите «Свой DNS» если ещё не выбрано', detail: 'По умолчанию у Beget может стоять «DNS Beget» — это ок, записи можно добавлять.' },
+        { action: 'Нажмите «Управление DNS-записями»' },
+        {
+          action: 'Добавьте A-запись',
+          detail: `Нажмите «Добавить». Тип: A. Имя: @ (или оставьте пустым). Адрес: ${ip}.`,
+        },
+        {
+          action: 'Добавьте CNAME-запись',
+          detail: `Нажмите «Добавить». Тип: CNAME. Имя: www. Домен: ${hostname}.`,
+        },
+        ...(verifyToken ? [{
+          action: 'Добавьте TXT-запись',
+          detail: `Нажмите «Добавить». Тип: TXT. Имя: _vibe-verify. Значение: ${verifyToken}.`,
+        }] : []),
+        { action: 'Проверьте и сохраните', detail: 'Убедитесь, что старых A-записей на @ не осталось. Если есть — удалите их.' },
+      ],
+    },
+    {
+      name: 'Cloudflare',
+      url: 'https://dash.cloudflare.com',
+      steps: [
+        { action: 'Войдите в dash.cloudflare.com' },
+        { action: 'Выберите ваш домен', detail: 'На главной странице нажмите на домен в списке сайтов.' },
+        { action: 'Перейдите в раздел «DNS»', detail: 'Левое меню → «DNS» → «Records».' },
+        {
+          action: 'Нажмите «Add record» → тип A',
+          detail: `Name: @. IPv4 address: ${ip}. Proxy status: ОБЯЗАТЕЛЬНО переключите на «DNS only» (серое облако). Если оставить оранжевое — SSL не выпустится!`,
+        },
+        {
+          action: 'Ещё раз «Add record» → тип CNAME',
+          detail: `Name: www. Target: ${hostname}. Proxy status: тоже «DNS only» (серое облако).`,
+        },
+        ...(verifyToken ? [{
+          action: 'Ещё раз «Add record» → тип TXT',
+          detail: `Name: _vibe-verify. Content: ${verifyToken}.`,
+        }] : []),
+      ],
+      warning: 'Proxy (оранжевое облако) НУЖНО отключить! Нажмите на облако — оно станет серым. Иначе certbot не сможет выпустить SSL-сертификат.',
+    },
+    {
+      name: 'Другой',
+      url: '',
+      steps: [
+        { action: 'Войдите в панель управления вашего регистратора', detail: 'Это сайт, где вы покупали домен (например, nic.ru, r01.ru, 2domains.ru и т.д.).' },
+        { action: 'Найдите настройки DNS', detail: 'Обычно раздел называется «DNS», «DNS-записи», «Управление зоной» или «Resource records». Может быть внутри настроек домена.' },
+        { action: 'Удалите старые A-записи для @ (если есть)', detail: 'Если есть A-запись с чужим IP — удалите. Две A-записи вызовут проблемы.' },
+        {
+          action: 'Добавьте A-запись',
+          detail: `Тип: A. Имя/Host: @ (или пустое поле). Значение/Value/IP: ${ip}. TTL: 3600 (или «по умолчанию»).`,
+        },
+        {
+          action: 'Добавьте CNAME-запись',
+          detail: `Тип: CNAME. Имя/Host: www. Значение/Value: ${hostname}. (некоторые регистраторы требуют точку в конце). TTL: 3600.`,
+        },
+        ...(verifyToken ? [{
+          action: 'Добавьте TXT-запись',
+          detail: `Тип: TXT. Имя/Host: _vibe-verify. Значение/Value: ${verifyToken}. TTL: 3600.`,
+        }] : []),
+        { action: 'Сохраните изменения' },
+      ],
+    },
+  ];
+}
 
 function DnsGuide({ domain, copied, copyToClipboard }: {
   domain: Domain;
@@ -70,7 +156,8 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
     <div className="mt-4 ml-6 space-y-4">
       <div className="p-5 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-200">
         <p className="text-sm font-bold text-gray-900 mb-1">Подключение домена {domain.hostname}</p>
-        <p className="text-xs text-gray-500 mb-4">Нужно добавить 2 записи в настройках DNS вашего домена. Это займёт 5 минут.</p>
+        <p className="text-xs text-gray-500 mb-1">Нужно указать вашему домену, что сайт теперь живёт на нашем сервере. Для этого добавьте 2 DNS-записи.</p>
+        <p className="text-xs text-gray-400 mb-4">DNS — это «телефонная книга» интернета. Вы меняете запись «куда ведёт домен» у регистратора, где покупали домен.</p>
 
         {/* Step 1: Where to go */}
         <div className="space-y-4">
@@ -83,46 +170,81 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
               </p>
 
               {/* Registrar tabs */}
-              <div className="flex flex-wrap gap-1.5 mb-2">
-                {registrarGuides.map((r) => (
-                  <button
-                    key={r.name}
-                    onClick={() => setOpenRegistrar(openRegistrar === r.name ? null : r.name)}
-                    className={`px-2.5 py-1 text-[11px] rounded-md border transition-colors ${
-                      openRegistrar === r.name
-                        ? 'bg-emerald-50 border-emerald-300 text-emerald-700 font-medium'
-                        : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-200 hover:text-emerald-600'
-                    }`}
-                  >
-                    {r.name}
-                    <ChevronDown className={`w-3 h-3 inline ml-0.5 transition-transform ${openRegistrar === r.name ? 'rotate-180' : ''}`} />
-                  </button>
-                ))}
-              </div>
+              {(() => {
+                const guides = getRegistrarGuides(domain.hostname, SERVER_IP, domain.verifyToken ?? undefined);
+                const activeGuide = guides.find(r => r.name === openRegistrar);
+                return (
+                  <>
+                    <div className="flex flex-wrap gap-1.5 mb-2">
+                      {guides.map((r) => (
+                        <button
+                          key={r.name}
+                          onClick={() => setOpenRegistrar(openRegistrar === r.name ? null : r.name)}
+                          className={`px-2.5 py-1 text-[11px] rounded-md border transition-colors ${
+                            openRegistrar === r.name
+                              ? 'bg-emerald-50 border-emerald-300 text-emerald-700 font-medium'
+                              : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-200 hover:text-emerald-600'
+                          }`}
+                        >
+                          {r.name}
+                          <ChevronDown className={`w-3 h-3 inline ml-0.5 transition-transform ${openRegistrar === r.name ? 'rotate-180' : ''}`} />
+                        </button>
+                      ))}
+                    </div>
 
-              {/* Registrar-specific steps */}
-              {openRegistrar && (
-                <div className="bg-white rounded-lg border border-gray-100 p-3 mb-1">
-                  <p className="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider mb-2">{openRegistrar}</p>
-                  <ol className="space-y-1.5">
-                    {registrarGuides.find(r => r.name === openRegistrar)?.steps.map((step, i) => (
-                      <li key={i} className="flex gap-2 text-xs text-gray-600">
-                        <span className="text-gray-400 font-mono shrink-0">{i + 1}.</span>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
+                    {/* Registrar-specific steps */}
+                    {activeGuide && (
+                      <div className="bg-white rounded-lg border border-gray-100 p-3 mb-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <p className="text-[10px] text-emerald-600 font-semibold uppercase tracking-wider">{activeGuide.name}</p>
+                          {activeGuide.url && (
+                            <a href={activeGuide.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-emerald-500 hover:text-emerald-700 underline">
+                              Открыть панель →
+                            </a>
+                          )}
+                        </div>
+                        {activeGuide.warning && (
+                          <div className="bg-yellow-50 border border-yellow-200 rounded-md p-2 mb-2">
+                            <p className="text-[11px] text-yellow-700">
+                              <AlertTriangle className="w-3 h-3 inline mr-1 -mt-0.5" />
+                              {activeGuide.warning}
+                            </p>
+                          </div>
+                        )}
+                        <ol className="space-y-2">
+                          {activeGuide.steps.map((step, i) => (
+                            <li key={i} className="flex gap-2 text-xs">
+                              <span className="text-gray-400 font-mono shrink-0 mt-0.5">{i + 1}.</span>
+                              <div>
+                                <span className="text-gray-700 font-medium">{step.action}</span>
+                                {step.detail && (
+                                  <p className="text-gray-500 mt-0.5">{step.detail}</p>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
 
-          {/* Step 2: A record */}
+          {/* Step 2: DNS records */}
           <div className="flex gap-3">
             <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">2</div>
             <div className="flex-1">
-              <p className="text-sm text-gray-800 font-medium">Добавьте A-запись</p>
-              <p className="text-xs text-gray-500 mt-1 mb-2">Она направит ваш домен на наш сервер.</p>
+              <p className="text-sm text-gray-800 font-medium">Добавьте DNS-записи</p>
+              <p className="text-xs text-gray-500 mt-1 mb-2">A-запись направляет ваш домен на наш сервер. CNAME — чтобы сайт открывался и по www.</p>
+
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-2.5 mb-2">
+                <p className="text-[11px] text-yellow-700">
+                  <AlertTriangle className="w-3 h-3 inline mr-1 -mt-0.5" />
+                  <span className="font-medium">Важно:</span> если у вас уже есть A-запись для <span className="font-mono">@</span> (от старого хостинга или регистратора) — сначала удалите её, потом добавляйте новую. Две A-записи одновременно вызовут проблемы.
+                </p>
+              </div>
 
               <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                 <table className="w-full text-xs">
@@ -131,17 +253,19 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                       <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Тип</th>
                       <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Имя (Host)</th>
                       <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Значение (Value)</th>
+                      <th className="text-left px-3 py-1.5 text-gray-400 font-medium">TTL</th>
                       <th className="w-8"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr className="border-b border-gray-50">
                       <td className="px-3 py-2 font-mono font-semibold text-gray-800">A</td>
                       <td className="px-3 py-2">
                         <span className="font-mono text-gray-700">@</span>
-                        <span className="text-gray-400 ml-1">(или пусто)</span>
+                        <span className="text-[10px] text-gray-400 block mt-0.5">Где-то нужно оставить пустым, где-то ввести @</span>
                       </td>
                       <td className="px-3 py-2 font-mono text-emerald-600 font-semibold">{SERVER_IP}</td>
+                      <td className="px-3 py-2 text-gray-500">3600</td>
                       <td className="px-1 py-2">
                         <button
                           onClick={() => copyToClipboard(SERVER_IP, `a-${domain.id}`)}
@@ -152,11 +276,29 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                         </button>
                       </td>
                     </tr>
+                    <tr>
+                      <td className="px-3 py-2 font-mono font-semibold text-gray-800">CNAME</td>
+                      <td className="px-3 py-2 font-mono text-gray-700">www</td>
+                      <td className="px-3 py-2 font-mono text-emerald-600 font-semibold">{domain.hostname}</td>
+                      <td className="px-3 py-2 text-gray-500">3600</td>
+                      <td className="px-1 py-2">
+                        <button
+                          onClick={() => copyToClipboard(domain.hostname, `cname-${domain.id}`)}
+                          className="text-gray-400 hover:text-gray-600 p-1"
+                          title="Скопировать домен"
+                        >
+                          {copied === `cname-${domain.id}` ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
+                        </button>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
-              <p className="text-[10px] text-gray-400 mt-1">
-                <span className="font-medium">@</span> означает корневой домен ({domain.hostname}). В некоторых панелях нужно оставить поле «Имя» пустым.
+              <p className="text-[10px] text-gray-400 mt-1.5 space-y-0.5">
+                <span className="block"><span className="font-medium">@</span> — это ваш основной домен ({domain.hostname}), без www.</span>
+                <span className="block"><span className="font-medium">www</span> — чтобы сайт работал и по www.{domain.hostname}.</span>
+                <span className="block"><span className="font-medium">TTL</span> — время обновления (3600 = 1 час). Если нет такого поля — пропустите, регистратор поставит сам.</span>
+                <span className="block">Если регистратор просит точку в конце значения CNAME — добавьте: <span className="font-mono">{domain.hostname}.</span></span>
               </p>
             </div>
           </div>
@@ -167,7 +309,7 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
               <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500 text-white text-xs font-bold shrink-0">3</div>
               <div className="flex-1">
                 <p className="text-sm text-gray-800 font-medium">Добавьте TXT-запись для проверки</p>
-                <p className="text-xs text-gray-500 mt-1 mb-2">Она подтвердит, что домен принадлежит вам.</p>
+                <p className="text-xs text-gray-500 mt-1 mb-2">Эта запись подтверждает, что домен принадлежит вам. В поле «Имя» введите <span className="font-mono font-medium">_vibe-verify</span>, в поле «Значение» — код ниже.</p>
 
                 <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
                   <table className="w-full text-xs">
@@ -207,9 +349,14 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
             <div>
               <p className="text-sm text-gray-800 font-medium">Подождите и нажмите «Проверить»</p>
               <p className="text-xs text-gray-500 mt-1">
-                После сохранения записей подождите <span className="font-medium text-gray-700">5–30 минут</span> (иногда до 48 часов) и нажмите кнопку
+                После сохранения записей подождите <span className="font-medium text-gray-700">5–30 минут</span> (обычно хватает 10). Можете проверить готовность на{' '}
+                <a href="https://dnschecker.org" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">dnschecker.org</a>.
+                Когда DNS обновится — нажмите кнопку
                 {' '}<span className="inline-flex items-center gap-0.5 font-medium text-emerald-600"><CheckCircle className="w-3 h-3" /> Проверить</span> выше.
-                Мы автоматически выпустим SSL-сертификат после подтверждения.
+                Мы автоматически выпустим бесплатный SSL-сертификат.
+              </p>
+              <p className="text-[10px] text-gray-400 mt-1">
+                Если регистратор показывает «Изменения применены» — можно проверять сразу. У некоторых провайдеров обновление DNS занимает до 48 часов, но это редкость.
               </p>
             </div>
           </div>
@@ -218,11 +365,13 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
         {/* FAQ */}
         <div className="mt-4 pt-3 border-t border-gray-100">
           <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-2">Частые вопросы</p>
-          <div className="space-y-1.5 text-[11px] text-gray-500">
-            <p><span className="font-medium text-gray-600">Что если уже есть A-запись?</span> Удалите старую и добавьте новую с нашим IP.</p>
-            <p><span className="font-medium text-gray-600">Можно ли использовать CNAME?</span> Да, для поддоменов (www.site.com). Для корневого домена (site.com) используйте A-запись.</p>
-            <p><span className="font-medium text-gray-600">Нужен ли мне CDN или Cloudflare?</span> Нет, просто укажите A-запись на наш IP. SSL мы выпускаем автоматически.</p>
-            <p><span className="font-medium text-gray-600">Не работает через час?</span> Проверьте, что записи сохранились в панели регистратора, и попробуйте снова.</p>
+          <div className="space-y-2 text-[11px] text-gray-500">
+            <p><span className="font-medium text-gray-600">Что если уже есть A-запись?</span> Удалите старую и добавьте новую с нашим IP. Две A-записи на @ одновременно вызовут проблемы — сайт будет открываться через раз.</p>
+            <p><span className="font-medium text-gray-600">Обязательно ли добавлять CNAME для www?</span> Рекомендуем — иначе www.{domain.hostname} покажет ошибку. Если вам точно не нужен www, можно пропустить.</p>
+            <p><span className="font-medium text-gray-600">Я использую Cloudflare. Что делать?</span> Добавьте записи как обычно, но обязательно отключите Proxy (оранжевое облако → переключите на серое «DNS only»). С включённым прокси SSL-сертификат не выпустится.</p>
+            <p><span className="font-medium text-gray-600">Как проверить, что DNS обновился?</span> Откройте <a href="https://dnschecker.org" target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">dnschecker.org</a>, введите ваш домен и проверьте A-запись. Если везде показывает {SERVER_IP} — DNS обновился, можно нажимать «Проверить».</p>
+            <p><span className="font-medium text-gray-600">Прошло больше часа, но не работает.</span> Убедитесь: 1) записи сохранились в панели регистратора, 2) нет старых A-записей, 3) если Cloudflare — отключён Proxy. Попробуйте нажать «Проверить» ещё раз.</p>
+            <p><span className="font-medium text-gray-600">Мне нужно платить за SSL?</span> Нет. Мы автоматически выпускаем бесплатный SSL-сертификат Let&apos;s Encrypt после подтверждения домена.</p>
           </div>
         </div>
       </div>
@@ -243,6 +392,7 @@ export default function DomainsPage() {
   const [verifying, setVerifying] = useState<string | null>(null);
   const [verifyMsg, setVerifyMsg] = useState<{ id: string; ok: boolean; text: string } | null>(null);
   const [copied, setCopied] = useState('');
+  const [retrying, setRetrying] = useState<string | null>(null);
 
   const loadData = useCallback(async () => {
     try {
@@ -291,6 +441,20 @@ export default function DomainsPage() {
       setVerifyMsg({ id, ok: false, text: err instanceof Error ? err.message : 'Ошибка' });
     } finally {
       setVerifying(null);
+    }
+  };
+
+  const handleRetrySSL = async (id: string) => {
+    setRetrying(id);
+    setVerifyMsg(null);
+    try {
+      const result = await api.verifyDomain(id);
+      setVerifyMsg({ id, ok: result.sslStatus === 'ACTIVE', text: result.message });
+      await loadData();
+    } catch (err) {
+      setVerifyMsg({ id, ok: false, text: err instanceof Error ? err.message : 'Ошибка' });
+    } finally {
+      setRetrying(null);
     }
   };
 
@@ -372,10 +536,11 @@ export default function DomainsPage() {
                 type="text"
                 required
                 value={hostname}
-                onChange={(e) => setHostname(e.target.value)}
+                onChange={(e) => setHostname(e.target.value.toLowerCase().replace(/^(https?:\/\/)?(www\.)?/, '').replace(/\/.*$/, ''))}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
                 placeholder="example.com"
               />
+              <p className="text-[10px] text-gray-400 mt-1">Введите домен без http:// и www. Например: mysite.ru</p>
             </div>
 
             <div>
@@ -466,6 +631,20 @@ export default function DomainsPage() {
                       Проверить
                     </button>
                   )}
+                  {domain.verified && domain.sslStatus !== 'ACTIVE' && (
+                    <button
+                      onClick={() => handleRetrySSL(domain.id)}
+                      disabled={retrying === domain.id}
+                      className="px-3 py-1.5 rounded-lg bg-yellow-50 text-yellow-700 text-xs font-medium hover:bg-yellow-100 transition-colors disabled:opacity-50 flex items-center gap-1"
+                    >
+                      {retrying === domain.id ? (
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                      ) : (
+                        <Shield className="w-3 h-3" />
+                      )}
+                      Повторить SSL
+                    </button>
+                  )}
                   <button
                     onClick={() => handleDelete(domain.id)}
                     className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
@@ -486,6 +665,19 @@ export default function DomainsPage() {
                     <AlertTriangle className="w-3.5 h-3.5 inline mr-1" />
                   )}
                   {verifyMsg.text}
+                </div>
+              )}
+
+              {/* SSL error help for verified domains with failed SSL */}
+              {domain.verified && domain.sslStatus === 'FAILED' && !verifyMsg?.id && (
+                <div className="mt-3 ml-6 p-3 rounded-lg bg-red-50 border border-red-100 text-xs text-red-700 space-y-1.5">
+                  <p className="font-medium">SSL-сертификат не удалось выпустить. Частые причины:</p>
+                  <ul className="list-disc ml-4 space-y-1 text-red-600">
+                    <li>DNS ещё не обновился — подождите 10–30 минут после настройки</li>
+                    <li>Если домен на Cloudflare — убедитесь, что Proxy отключён (серое облако, «DNS only»)</li>
+                    <li>Проверьте A-запись на <a href="https://dnschecker.org" target="_blank" rel="noopener noreferrer" className="underline">dnschecker.org</a> — должна быть {SERVER_IP}</li>
+                  </ul>
+                  <p className="text-red-500">Исправьте проблему и нажмите «Повторить SSL» выше.</p>
                 </div>
               )}
 
