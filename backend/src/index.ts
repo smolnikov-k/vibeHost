@@ -28,7 +28,7 @@ import telegramRoutes from './routes/telegram';
 import editRoutes, { publicPatchesRouter as publicPatchesRoutes } from './routes/edit';
 import { siteAuthHandler, siteGateGet, siteGatePost } from './routes/site-gate';
 const app = express();
-(app as any).set('trust proxy', 1); // behind Nginx
+app.set('trust proxy', 1); // behind Nginx
 
 app.use(helmet({
   contentSecurityPolicy: false, // frontend handles CSP
@@ -131,12 +131,94 @@ app.use('/api/gallery', apiLimiter, galleryRoutes);
 app.use('/api/auth', authLimiter, optionalAuth, authRoutes);
 
 // Public: billing webhook (no auth, signature-verified)
+// Capture raw body for HMAC verification before JSON parsing
+app.use('/api/billing/webhook', express.json({
+  verify: (req: any, _res: any, buf: Buffer) => { req.rawBody = buf; },
+}));
 app.use('/api/billing/webhook', billingWebhookRouter);
 
 // Public: site password gate (Nginx auth_request + password form)
 app.get('/api/site-auth', siteAuthHandler);
 app.get('/api/site-gate/:slug', siteGateGet);
-app.post('/api/site-gate/:slug', siteGatePost);
+app.post('/api/site-gate/:slug', authLimiter, siteGatePost);
+
+// Public: editor preview — served via subdomain (slug.hostingvibe.ru/__vibe_preview)
+// Nginx proxies /__vibe_preview from the subdomain to /api/internal/preview
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+app.get('/api/internal/preview', apiLimiter, async (req: Request, res: Response) => {
+  try {
+    const token = req.query.token as string;
+    if (!token) {
+      res.status(401).json({ error: 'Требуется токен' });
+      return;
+    }
+    let userId: string;
+    try {
+      const payload = jwt.verify(token, config.jwtSecret) as { userId: string };
+      userId = payload.userId;
+    } catch {
+      res.status(401).json({ error: 'Недействительный токен' });
+      return;
+    }
+    // Extract slug from Host header (set by Nginx: slug.hostingvibe.ru)
+    const host = req.headers['x-original-host'] as string || req.headers.host || '';
+    const slugMatch = host.match(/^([a-z0-9][-a-z0-9]*)\.hostingvibe\.ru/);
+    if (!slugMatch) {
+      res.status(400).json({ error: 'Недопустимый хост' });
+      return;
+    }
+    const slug = slugMatch[1];
+    const project = await prisma.project.findFirst({
+      where: { slug },
+      select: { id: true, slug: true, userId: true },
+    });
+    if (!project) {
+      res.status(404).json({ error: 'Проект не найден' });
+      return;
+    }
+    if (project.userId !== userId) {
+      res.status(403).json({ error: 'Нет доступа' });
+      return;
+    }
+    const pagePath = (req.query.path as string) || 'index.html';
+    if (pagePath.includes('..') || pagePath.startsWith('/')) {
+      res.status(400).json({ error: 'Недопустимый путь' });
+      return;
+    }
+    const siteDir = path.join(config.sitesDir, project.slug);
+    const filePath = path.resolve(siteDir, pagePath);
+    if (!filePath.startsWith(siteDir + '/') && filePath !== path.join(siteDir, 'index.html')) {
+      res.status(400).json({ error: 'Недопустимый путь' });
+      return;
+    }
+    if (!fs.existsSync(filePath)) {
+      res.status(404).json({ error: `${pagePath} не найден` });
+      return;
+    }
+    let html = fs.readFileSync(filePath, 'utf-8');
+    // Inject bridge script before </body> — origin matches so no CORS issues
+    const bridgeScript = `<script src="${config.frontendUrl}/api/vibe-editor-bridge.js"></script>`;
+    if (html.includes('</body>')) {
+      html = html.replace('</body>', `${bridgeScript}\n</body>`);
+    } else {
+      html += bridgeScript;
+    }
+    // SPA fix: rewrite pathname from /__vibe_preview to / so client-side routers find their root route
+    const spaFix = `<script>history.replaceState(null,'','/');</script>`;
+    if (html.includes('<head>')) {
+      html = html.replace('<head>', `<head>\n${spaFix}`);
+    } else if (html.includes('<head ')) {
+      html = html.replace(/<head([^>]*)>/, `<head$1>\n${spaFix}`);
+    }
+    res.removeHeader('X-Frame-Options');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(html);
+  } catch (err) {
+    logger.error('Edit preview error', { error: (err as Error).message });
+    res.status(500).json({ error: 'Ошибка сервера' });
+  }
+});
 
 // --- Auth middleware for all routes below ---
 app.use('/api', authMiddleware);
@@ -152,7 +234,7 @@ app.use('/api/admin', adminMiddleware, adminRoutes);
 // Error handler
 app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error('Unhandled error', { error: err.message, stack: err.stack });
-  if (err.message === 'Только ZIP-архивы') {
+  if (err.message === 'Только ZIP или TAR.GZ архивы') {
     res.status(400).json({ error: err.message });
     return;
   }

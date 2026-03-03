@@ -52,8 +52,8 @@ export async function siteAuthHandler(req: Request, res: Response) {
     res.status(401).send('password required');
   } catch (err) {
     logger.error('site-auth error:', err);
-    // On error, allow access (fail open) to not block sites
-    res.status(200).send('ok');
+    // Fail closed — deny access on error to protect password-gated sites
+    res.status(401).send('error');
   }
 }
 
@@ -129,8 +129,12 @@ function parseCookies(cookieHeader: string): Record<string, string> {
   return cookies;
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 function passwordPageHtml(slug: string, title: string | null, error = false): string {
-  const siteTitle = title || slug;
+  const siteTitle = escapeHtml(title || slug);
   return `<!DOCTYPE html>
 <html lang="ru">
 <head>

@@ -46,7 +46,7 @@ router.post('/', async (req: Request, res: Response) => {
     await prisma.report.create({
       data: {
         projectId: project.id,
-        reason: reason as any,
+        reason: reason as typeof VALID_REASONS[number],
         message: typeof message === 'string' ? message.slice(0, 1000) : null,
         reporterIp: ip,
       },

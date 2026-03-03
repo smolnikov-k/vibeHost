@@ -69,7 +69,7 @@ router.post('/create-payment', async (req: AuthRequest, res: Response) => {
       customer_email: user.email,
       order_id: subscription.id,
       urlSuccess: `${config.frontendUrl}/billing/success`,
-      urlNotification: 'https://hostingvibe.ru/api/billing/webhook',
+      urlNotification: `${config.frontendUrl}/api/billing/webhook`,
       sys: config.prodamus.systemCode,
     });
 
@@ -113,7 +113,7 @@ router.post('/create-ai-pack', async (req: AuthRequest, res: Response) => {
       customer_email: user.email,
       order_id: orderId,
       urlSuccess: `${config.frontendUrl}/billing/success`,
-      urlNotification: 'https://hostingvibe.ru/api/billing/webhook',
+      urlNotification: `${config.frontendUrl}/api/billing/webhook`,
       sys: config.prodamus.systemCode,
     });
 
@@ -142,7 +142,7 @@ async function handleWebhook(req: Request, res: Response) {
       return;
     }
 
-    const body = JSON.stringify(req.body);
+    const body = (req as any).rawBody?.toString() || JSON.stringify(req.body);
     const expected = crypto.createHmac('sha256', config.prodamus.secretKey).update(body).digest('hex');
 
     // Timing-safe comparison to prevent timing attacks
@@ -173,9 +173,18 @@ async function handleWebhook(req: Request, res: Response) {
       // aipack_{userId}_{pack}_{timestamp}
       const userId = parts[1];
       const pack = parseInt(parts[2], 10);
+      const ALLOWED_PACKS = [10, 50];
 
-      if (!userId || isNaN(pack)) {
+      if (!userId || isNaN(pack) || !ALLOWED_PACKS.includes(pack)) {
         logger.warn('Invalid aipack order_id:', order_id);
+        res.status(200).send('OK');
+        return;
+      }
+
+      // Verify user exists before crediting
+      const targetUser = await prisma.user.findUnique({ where: { id: userId } });
+      if (!targetUser) {
+        logger.warn('Aipack for non-existent user:', userId);
         res.status(200).send('OK');
         return;
       }

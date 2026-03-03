@@ -50,19 +50,41 @@ function findBuildOutput(dir: string): string | null {
  * Timeout: 3 minutes.
  */
 function runBuild(dir: string): { success: boolean; error?: string } {
-  // NODE_ENV must NOT be 'production' during install — devDependencies (typescript, vite, etc.) are needed for build
-  const installOpts = { cwd: dir, timeout: 180_000, stdio: 'pipe' as const, env: { ...process.env, NODE_ENV: 'development' } };
-  const buildOpts = { cwd: dir, timeout: 180_000, stdio: 'pipe' as const, env: { ...process.env, NODE_ENV: 'production' } };
+  // Safe env: only PATH and locale — never leak DATABASE_URL, JWT_SECRET, etc. to user code
+  const safeEnv: Record<string, string> = {
+    PATH: process.env.PATH || '/usr/local/bin:/usr/bin:/bin',
+    HOME: '/tmp',
+    LANG: process.env.LANG || 'en_US.UTF-8',
+    TERM: 'dumb',
+  };
+  const installOpts = { cwd: dir, timeout: 180_000, stdio: 'pipe' as const, env: { ...safeEnv, NODE_ENV: 'development' } };
+  const buildOpts = { cwd: dir, timeout: 180_000, stdio: 'pipe' as const, env: { ...safeEnv, NODE_ENV: 'production' } };
 
   try {
-    // Install all dependencies (including devDeps for build tools)
-    if (fs.existsSync(path.join(dir, 'package-lock.json'))) {
-      execSync('npm ci --no-audit --no-fund', installOpts);
-    } else {
-      execSync('npm install --no-audit --no-fund', installOpts);
+    // Strip dangerous lifecycle hooks to prevent arbitrary code execution
+    const pkgPath = path.join(dir, 'package.json');
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+    const dangerousHooks = ['preinstall', 'postinstall', 'prepare', 'prepublish', 'prepublishOnly', 'prepack', 'postpack'];
+    let hooksRemoved = false;
+    for (const hook of dangerousHooks) {
+      if (pkg.scripts?.[hook]) {
+        delete pkg.scripts[hook];
+        hooksRemoved = true;
+      }
+    }
+    if (hooksRemoved) {
+      fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
     }
 
-    // Run build
+    // Install all dependencies (including devDeps for build tools)
+    // --ignore-scripts prevents lifecycle hooks from running during install
+    if (fs.existsSync(path.join(dir, 'package-lock.json'))) {
+      execSync('npm ci --no-audit --no-fund --ignore-scripts', installOpts);
+    } else {
+      execSync('npm install --no-audit --no-fund --ignore-scripts', installOpts);
+    }
+
+    // Run build explicitly (only the build script, not arbitrary lifecycle hooks)
     execSync('npm run build', buildOpts);
 
     return { success: true };
@@ -264,10 +286,15 @@ export async function processDeploy(deploymentId: string): Promise<void> {
     fs.renameSync(deployDir, siteDir);
 
     // Auto-inject vibe-forms.js into HTML files for Telegram form forwarding
-    try { injectVibeFormsScript(siteDir, project.slug); } catch { /* non-critical */ }
+    try { injectVibeFormsScript(siteDir, project.slug, project.metrikaId); } catch { /* non-critical */ }
 
     // Auto-inject vibe-patches.js for visual patches runtime
     try { injectVibePatchesScript(siteDir, project.slug); } catch { /* non-critical */ }
+
+    // Auto-inject Yandex.Metrika counter if configured
+    if (project.metrikaId) {
+      try { injectYandexMetrika(siteDir, project.metrikaId); } catch { /* non-critical */ }
+    }
 
     // Set permissions for Nginx (safe — no shell interpolation)
     try { setNginxPermissions(siteDir); } catch { /* non-critical */ }
@@ -349,8 +376,9 @@ async function failDeploy(deploymentId: string, projectId: string, error: string
  * Inject vibe-forms.js into all HTML files in the site directory.
  * Adds a script tag before </body> that silently forwards form data to our API.
  */
-function injectVibeFormsScript(dir: string, slug: string): void {
-  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-forms.js" data-vibe-auto data-slug="${slug}"></script>`;
+export function injectVibeFormsScript(dir: string, slug: string, metrikaId?: string | null): void {
+  const metrikaAttr = metrikaId ? ` data-metrika-id="${metrikaId.replace(/\D/g, '')}"` : '';
+  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-forms.js" data-vibe-auto data-slug="${slug}"${metrikaAttr}></script>`;
 
   function walk(current: string) {
     for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
@@ -377,7 +405,7 @@ function injectVibeFormsScript(dir: string, slug: string): void {
  * Inject vibe-patches.js into all HTML files in the site directory.
  * Applies visual patches (text, image, hide) at runtime on user sites.
  */
-function injectVibePatchesScript(dir: string, slug: string): void {
+export function injectVibePatchesScript(dir: string, slug: string): void {
   const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-patches.js" data-slug="${slug}"></script>`;
 
   function walk(current: string) {
@@ -391,6 +419,36 @@ function injectVibePatchesScript(dir: string, slug: string): void {
           if (html.includes('vibe-patches.js')) continue;
           if (html.includes('</body>')) {
             html = html.replace('</body>', scriptTag + '\n</body>');
+            fs.writeFileSync(full, html);
+          }
+        } catch { /* skip unreadable files */ }
+      }
+    }
+  }
+
+  walk(dir);
+}
+
+/**
+ * Inject Yandex.Metrika counter into all HTML files if metrikaId is set.
+ */
+export function injectYandexMetrika(dir: string, metrikaId: string): void {
+  const sanitized = metrikaId.replace(/\D/g, '');
+  if (!sanitized) return;
+
+  const scriptTag = `<!-- Yandex.Metrika counter -->\n<script type="text/javascript">\n   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};\n   m[i].l=1*new Date();\n   for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}\n   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})\n   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");\n   ym(${sanitized}, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true });\n</script>\n<noscript><div><img src="https://mc.yandex.ru/watch/${sanitized}" style="position:absolute; left:-9999px;" alt="" /></div></noscript>\n<!-- /Yandex.Metrika counter -->`;
+
+  function walk(current: string) {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.name.endsWith('.html')) {
+        try {
+          let html = fs.readFileSync(full, 'utf-8');
+          if (html.includes('mc.yandex.ru/metrika')) continue;
+          if (html.includes('</head>')) {
+            html = html.replace('</head>', scriptTag + '\n</head>');
             fs.writeFileSync(full, html);
           }
         } catch { /* skip unreadable files */ }

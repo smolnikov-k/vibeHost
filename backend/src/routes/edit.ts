@@ -122,7 +122,7 @@ router.get('/:id/edit/preview', async (req: AuthRequest, res: Response) => {
       const jwt = await import('jsonwebtoken');
       try {
         const decoded = jwt.default.verify(req.query.token as string, config.jwtSecret) as { userId: string };
-        (req as any).userId = decoded.userId;
+        (req as AuthRequest).userId = decoded.userId;
       } catch { /* ignore invalid token */ }
     }
 
@@ -136,7 +136,11 @@ router.get('/:id/edit/preview', async (req: AuthRequest, res: Response) => {
     }
 
     const siteDir = path.join(config.sitesDir, project.slug);
-    const filePath = path.join(siteDir, pagePath);
+    const filePath = path.resolve(siteDir, pagePath);
+    if (!filePath.startsWith(siteDir + '/') && filePath !== path.join(siteDir, 'index.html')) {
+      res.status(400).json({ error: 'Недопустимый путь' });
+      return;
+    }
 
     if (!fs.existsSync(filePath)) {
       res.status(404).json({ error: `${pagePath} не найден` });
@@ -146,7 +150,7 @@ router.get('/:id/edit/preview', async (req: AuthRequest, res: Response) => {
     let html = fs.readFileSync(filePath, 'utf-8');
 
     // Inject editor bridge script before </body>
-    const bridgeScript = `<script src="https://hostingvibe.ru/api/vibe-editor-bridge.js"></script>`;
+    const bridgeScript = `<script src="${config.frontendUrl}/api/vibe-editor-bridge.js"></script>`;
     if (html.includes('</body>')) {
       html = html.replace('</body>', `${bridgeScript}\n</body>`);
     } else {
@@ -316,7 +320,7 @@ router.post('/:id/edit/assets', assetUpload.single('file'), async (req: AuthRequ
     const project = await getOwnedProject(req, res);
     if (!project) return;
 
-    const file = (req as any).file as { filename: string; path: string; mimetype: string } | undefined;
+    const file = (req as any).file as { filename: string; path: string; mimetype: string; size: number } | undefined;
     if (!file) {
       res.status(400).json({ error: 'Файл не загружен' });
       return;
@@ -383,19 +387,19 @@ router.get('/:id/edit/assets', async (req: AuthRequest, res: Response) => {
 // ======================
 
 router.get('/:id/patches', (req: AuthRequest, res: Response) => {
-  const url = (req as any).originalUrl as string;
+  const url = req.originalUrl;
   res.redirect(url.replace('/patches', '/edit/patches'));
 });
 router.get('/:id/patches/preview', (req: AuthRequest, res: Response) => {
-  const url = (req as any).originalUrl as string;
+  const url = req.originalUrl;
   res.redirect(url.replace('/patches/preview', '/edit/preview'));
 });
 router.get('/:id/editor/pages', (req: AuthRequest, res: Response) => {
-  const url = (req as any).originalUrl as string;
+  const url = req.originalUrl;
   res.redirect(url.replace('/editor/pages', '/edit/pages'));
 });
 router.get('/:id/editor/assets', (req: AuthRequest, res: Response) => {
-  const url = (req as any).originalUrl as string;
+  const url = req.originalUrl;
   res.redirect(url.replace('/editor/assets', '/edit/assets'));
 });
 

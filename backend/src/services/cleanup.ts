@@ -18,9 +18,9 @@ async function runCleanup() {
       include: { user: true },
     });
 
-    if (expired.length === 0) return;
-
-    logger.info(`Cleanup: найдено ${expired.length} просроченных подписок`);
+    if (expired.length > 0) {
+      logger.info(`Cleanup: найдено ${expired.length} просроченных подписок`);
+    }
 
     for (const sub of expired) {
       await prisma.subscription.update({
