@@ -50,15 +50,6 @@ const registrarGuides = [
     ],
   },
   {
-    name: 'Cloudflare',
-    steps: [
-      'Войдите в dash.cloudflare.com → выберите домен',
-      'Перейдите в DNS → Records',
-      'Добавьте A-запись из таблицы ниже',
-      'Убедитесь, что облако рядом с записью серое 🔘 (DNS only), а не оранжевое',
-    ],
-  },
-  {
     name: 'Другой',
     steps: [
       'Войдите в панель управления регистратора',
@@ -230,7 +221,7 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
           <div className="space-y-1.5 text-[11px] text-gray-500">
             <p><span className="font-medium text-gray-600">Что если уже есть A-запись?</span> Удалите старую и добавьте новую с нашим IP.</p>
             <p><span className="font-medium text-gray-600">Можно ли использовать CNAME?</span> Да, для поддоменов (www.site.com). Для корневого домена (site.com) используйте A-запись.</p>
-            <p><span className="font-medium text-gray-600">У меня Cloudflare — какое облако выбрать?</span> Серое (DNS only). SSL-сертификат мы выпускаем автоматически.</p>
+            <p><span className="font-medium text-gray-600">Нужен ли мне CDN или Cloudflare?</span> Нет, просто укажите A-запись на наш IP. SSL мы выпускаем автоматически.</p>
             <p><span className="font-medium text-gray-600">Не работает через час?</span> Проверьте, что записи сохранились в панели регистратора, и попробуйте снова.</p>
           </div>
         </div>
