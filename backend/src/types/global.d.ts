@@ -45,9 +45,12 @@ declare module 'fs' {
   export function cpSync(src: string, dest: string, options?: { recursive?: boolean }): void;
   export function createReadStream(p: string): any;
   export function createWriteStream(p: string): any;
+  export function symlinkSync(target: string, p: string): void;
+  export function copyFileSync(src: string, dest: string): void;
 }
 
 declare module 'path' {
+  export const sep: string;
   export function join(...paths: string[]): string;
   export function resolve(...paths: string[]): string;
   export function dirname(p: string): string;
@@ -67,12 +70,17 @@ declare module 'crypto' {
 }
 
 declare module 'child_process' {
+  export function exec(command: string, options?: any, callback?: (error: any, stdout: string, stderr: string) => void): any;
   export function execSync(command: string, options?: any): Buffer | string;
   export function spawnSync(command: string, args?: string[], options?: any): {
     status: number | null;
     stdout: Buffer | null;
     stderr: Buffer | null;
   };
+}
+
+declare module 'util' {
+  export function promisify<T extends (...args: any[]) => any>(fn: T): (...args: any[]) => Promise<any>;
 }
 
 declare module 'stream' {
@@ -91,9 +99,13 @@ declare module 'express' {
     params: Record<string, string>;
     query: Record<string, string | undefined>;
     headers: Record<string, string | undefined>;
-    file?: { path: string; size: number; originalname: string; mimetype: string };
+    file?: { path: string; size: number; originalname: string; mimetype: string; filename: string };
     ip?: string;
+    originalUrl: string;
+    path: string;
+    method: string;
     socket: { remoteAddress?: string };
+    on(event: string, listener: (...args: any[]) => void): void;
   }
   interface Response {
     status(code: number): Response;
@@ -102,9 +114,12 @@ declare module 'express' {
     sendFile(path: string): void;
     set(field: string, value: string): Response;
     setHeader(field: string, value: string): Response;
+    removeHeader(name: string): void;
     header(field: string, value: string): Response;
     redirect(url: string): void;
     download(path: string, filename?: string): void;
+    write(chunk: string | Buffer): boolean;
+    end(): void;
     headersSent: boolean;
   }
   interface NextFunction { (err?: any): void; }
@@ -117,6 +132,7 @@ declare module 'express' {
     use(...handlers: any[]): Router;
   }
   interface Application extends Router {
+    set(setting: string, val: any): Application;
     listen(port: number, callback?: () => void): any;
   }
   function express(): Application;
@@ -190,6 +206,7 @@ declare module 'dns' {
   export function resolveTxt(hostname: string, callback: (err: any, addresses: string[][]) => void): void;
   export function resolveCname(hostname: string, callback: (err: any, addresses: string[]) => void): void;
   export const promises: {
+    resolve4(hostname: string): Promise<string[]>;
     resolveCname(hostname: string): Promise<string[]>;
     resolveTxt(hostname: string): Promise<string[][]>;
     resolve(hostname: string, rrtype: string): Promise<string[]>;

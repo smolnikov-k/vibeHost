@@ -21,7 +21,11 @@ export const config = {
   backupsDir: process.env.BACKUPS_DIR || '/var/www/vibe-hosting/backups',
 
   // CORS
-  corsOrigins: JSON.parse(process.env.CORS_ORIGINS || '["http://localhost:3000","http://localhost:7002","https://hostingvibe.ru"]'),
+  corsOrigins: (() => {
+    const fallback = ['http://localhost:3000', 'http://localhost:7002', 'https://hostingvibe.ru'];
+    try { return JSON.parse(process.env.CORS_ORIGINS || JSON.stringify(fallback)); }
+    catch { return fallback; }
+  })(),
 
   // Limits
   free: {
@@ -79,6 +83,9 @@ export const config = {
     botToken: process.env.TELEGRAM_BOT_TOKEN || '',
     botUsername: process.env.TELEGRAM_BOT_USERNAME || 'VibeHostingBot',
   },
+
+  // Server IP (for DNS A-record instructions)
+  serverIp: process.env.SERVER_IP || '213.159.209.228',
 
   // Frontend URL
   frontendUrl: process.env.FRONTEND_URL || 'https://hostingvibe.ru',

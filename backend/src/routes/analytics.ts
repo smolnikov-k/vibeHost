@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { trackPageView, getProjectAnalytics } from '../services/analytics.service';
+import { AuthRequest } from '../middleware/auth';
 import { prisma } from '../lib/prisma';
 import logger from '../services/logger';
 
@@ -35,9 +36,9 @@ publicTrackRouter.post('/track', async (req: Request, res: Response) => {
 // Protected: project analytics (requires auth, mounted after authMiddleware)
 const analyticsRouter = Router();
 
-analyticsRouter.get('/:id/analytics', async (req: Request, res: Response) => {
+analyticsRouter.get('/:id/analytics', async (req: AuthRequest, res: Response) => {
   try {
-    const userId = (req as any).userId;
+    const userId = req.userId;
     const project = await prisma.project.findFirst({
       where: { id: req.params.id, userId },
       select: { id: true },

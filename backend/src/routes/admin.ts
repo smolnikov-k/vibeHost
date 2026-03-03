@@ -170,7 +170,10 @@ router.get('/reports', async (req: AuthRequest, res: Response) => {
     const limit = 20;
     const status = req.query.status as string || undefined;
 
-    const where = status ? { status: status as any } : {};
+    const VALID_STATUSES = ['PENDING', 'REVIEWED', 'RESOLVED', 'DISMISSED'] as const;
+    const where = status && VALID_STATUSES.includes(status as typeof VALID_STATUSES[number])
+      ? { status: status as typeof VALID_STATUSES[number] }
+      : {};
 
     const [reports, total] = await Promise.all([
       prisma.report.findMany({

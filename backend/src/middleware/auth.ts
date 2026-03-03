@@ -24,13 +24,20 @@ export function optionalAuth(req: AuthRequest, _res: Response, next: NextFunctio
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction): void {
+  let token: string | undefined;
   const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith('Bearer ')) {
+  if (auth && auth.startsWith('Bearer ')) {
+    token = auth.slice(7);
+  } else if (req.query.token && typeof req.query.token === 'string') {
+    // Fallback for EventSource (SSE) which can't set headers
+    token = req.query.token;
+  }
+  if (!token) {
     res.status(401).json({ error: 'Требуется авторизация' });
     return;
   }
   try {
-    const payload = jwt.verify(auth.slice(7), config.jwtSecret) as { userId: string; email: string };
+    const payload = jwt.verify(token, config.jwtSecret) as { userId: string; email: string };
     req.userId = payload.userId;
     req.userEmail = payload.email;
     next();

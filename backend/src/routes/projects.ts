@@ -1,6 +1,7 @@
 import { Router, Response } from 'express';
 import { prisma } from '../lib/prisma';
 import { spawnSync } from 'child_process';
+import crypto from 'crypto';
 import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
@@ -21,11 +22,14 @@ router.get('/', async (req: AuthRequest, res: Response) => {
       orderBy: { createdAt: 'desc' },
       include: {
         _count: { select: { deployments: true, domains: true } },
+        domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 },
       },
     });
     res.json(projects.map(p => ({
       ...p,
       sizeBytes: Number(p.sizeBytes),
+      customDomain: p.domains[0]?.hostname ?? null,
+      domains: undefined,
     })));
   } catch (err) {
     logger.error('List projects error:', err);
@@ -152,7 +156,7 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const { title, description, isPublic, tags, password, passwordEnabled } = req.body;
+    const { title, description, isPublic, tags, password, passwordEnabled, metrikaId } = req.body;
 
     const data: Record<string, unknown> = {};
     if (title !== undefined) data.title = title;
@@ -167,6 +171,11 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
     } else if (password && typeof password === 'string' && password.length >= 1) {
       data.passwordHash = await bcrypt.hash(password, 10);
       data.passwordEnabled = true;
+    }
+
+    // Yandex.Metrika counter ID (digits only)
+    if (metrikaId !== undefined) {
+      data.metrikaId = typeof metrikaId === 'string' ? metrikaId.replace(/\D/g, '') || null : null;
     }
 
     const project = await prisma.project.update({
@@ -200,7 +209,7 @@ router.get('/:id/export', async (req: AuthRequest, res: Response) => {
     }
 
     const zipName = `${project.slug}-v${project.currentVersion}.zip`;
-    const tmpZip = path.join('/tmp', `vibe-export-${project.id}.zip`);
+    const tmpZip = path.join('/tmp', `vibe-export-${crypto.randomUUID()}.zip`);
 
     // Create ZIP from site directory
     const zipResult = spawnSync('zip', ['-r', tmpZip, '.', '-x', '.*'], {
