@@ -143,16 +143,17 @@ router.post('/forgot-password', async (req: AuthRequest, res: Response) => {
       data: { usedAt: new Date() },
     });
 
-    // Generate secure token (URL-safe)
-    const token = crypto.randomBytes(32).toString('hex');
+    // Generate secure token (URL-safe); store hash in DB, send raw token in email
+    const tokenRaw = crypto.randomBytes(32).toString('hex');
+    const tokenHash = crypto.createHash('sha256').update(tokenRaw).digest('hex');
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
     await prisma.passwordReset.create({
-      data: { userId: user.id, token, expiresAt },
+      data: { userId: user.id, token: tokenHash, expiresAt },
     });
 
-    // Send reset email (fire-and-forget, don't leak success/failure)
-    sendPasswordResetEmail(email, token).catch(() => {});
+    // Send reset email with raw token (fire-and-forget, don't leak success/failure)
+    sendPasswordResetEmail(email, tokenRaw).catch(() => {});
 
     res.json({ message: 'Если аккаунт с таким email существует, ссылка для сброса отправлена' });
   } catch (err) {
@@ -175,8 +176,10 @@ router.post('/reset-password', async (req: AuthRequest, res: Response) => {
       return;
     }
 
+    // Hash the incoming token to compare with stored hash
+    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
     const resetRecord = await prisma.passwordReset.findUnique({
-      where: { token },
+      where: { token: tokenHash },
       include: { user: true },
     });
 

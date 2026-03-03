@@ -53,6 +53,7 @@ model Project {
   currentVersion    Int           @default(0) @map("current_version")
   passwordHash      String?       @map("password_hash")
   passwordEnabled   Boolean       @default(false) @map("password_enabled")
+  metrikaId         String?       @map("metrika_id")
   expiresAt         DateTime?     @map("expires_at")
   createdAt      DateTime      @default(now()) @map("created_at")
   updatedAt      DateTime      @updatedAt @map("updated_at")

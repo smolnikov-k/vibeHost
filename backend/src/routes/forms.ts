@@ -90,10 +90,15 @@ router.post('/:slug', async (req: Request, res: Response) => {
     });
 
     // Redirect for regular form submits (non-AJAX)
+    // Only allow relative URLs or same subdomain to prevent open redirect
     const redirectUrl = req.body._vibe_redirect;
     if (redirectUrl && typeof redirectUrl === 'string' && !req.headers['x-requested-with']) {
-      res.redirect(redirectUrl);
-      return;
+      const isRelative = redirectUrl.startsWith('/') && !redirectUrl.startsWith('//');
+      const isAllowedDomain = redirectUrl.startsWith(`https://${slug}.hostingvibe.ru`);
+      if (isRelative || isAllowedDomain) {
+        res.redirect(redirectUrl);
+        return;
+      }
     }
 
     res.json({

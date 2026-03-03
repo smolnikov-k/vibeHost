@@ -6,6 +6,7 @@
 (function () {
   'use strict';
 
+  var PARENT_ORIGIN = 'https://hostingvibe.ru';
   var IGNORE_TAGS = ['HTML', 'HEAD', 'BODY', 'SCRIPT', 'STYLE', 'NOSCRIPT', 'LINK', 'META', 'TITLE', 'BR'];
   var hoveredEl = null;
   var selectedEl = null;
@@ -178,7 +179,7 @@
       src: type === 'image' ? (el.src || el.getAttribute('src') || '') : '',
       computedStyles: getComputedStyleSubset(el),
       rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height },
-    }, '*');
+    }, PARENT_ORIGIN);
   }, true);
 
   // Получить подмножество computed styles для style-editor
@@ -202,12 +203,13 @@
 
   // Слушаем команды от parent
   window.addEventListener('message', function (e) {
+    if (e.origin !== PARENT_ORIGIN) return;
     var data = e.data;
     if (!data || typeof data.type !== 'string') return;
 
     if (data.type === 'vibe-bridge:init') {
       createOverlay();
-      window.parent.postMessage({ type: 'vibe-bridge:ready' }, '*');
+      window.parent.postMessage({ type: 'vibe-bridge:ready' }, PARENT_ORIGIN);
       return;
     }
 

@@ -17,6 +17,16 @@
   var script = document.currentScript;
   var autoMode = script && script.hasAttribute('data-vibe-auto');
   var globalSlug = script && script.getAttribute('data-slug');
+  var metrikaId = script && script.getAttribute('data-metrika-id');
+
+  // Яндекс.Метрика: отправить цель при отправке формы
+  function sendMetrikaGoal(formName) {
+    if (metrikaId && window.ym) {
+      try {
+        window.ym(Number(metrikaId), 'reachGoal', 'form_submit', { form_name: formName || 'unknown' });
+      } catch (e) { /* ignore */ }
+    }
+  }
 
   function getSlug() {
     if (globalSlug) return globalSlug;
@@ -99,6 +109,7 @@
     document.addEventListener('submit', function (e) {
       if (e.target && e.target.tagName === 'FORM') {
         sendData(e.target);
+        sendMetrikaGoal(detectFormName(e.target));
       }
     }, true);
   }
@@ -139,6 +150,7 @@
         .then(function (res) { return res.json(); })
         .then(function (result) {
           if (result.success) {
+            sendMetrikaGoal(detectFormName(form));
             var redirect = form.getAttribute('data-vibe-redirect');
             if (redirect) { location.href = redirect; return; }
             var msg = form.getAttribute('data-vibe-success') || 'Заявка отправлена!';

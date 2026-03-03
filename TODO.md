@@ -1,6 +1,6 @@
 # Vibe Hosting — TODO
 
-> Прогресс: ~95% к запуску MVP. Лендинг переделан под tiiny.host, добавлены QR/пароль/временные сайты.
+> Прогресс: ~98% к запуску MVP. Все критические этапы (A-D) закрыты. Осталось: E2E тест платежа, git commit.
 > Обновлено: 2026-03-03
 
 ---
@@ -66,14 +66,20 @@
 ## ✅ Этап A: Безопасность — ЗАКРЫТ (2026-03-03)
 
 <details>
-<summary>6 уязвимостей закрыто</summary>
+<summary>12 уязвимостей и проблем закрыто</summary>
 
 - [x] **Prodamus webhook HMAC** — подпись обязательна, `timingSafeEqual`, отклонение без signature/key
 - [x] **Shell Injection** — `execSync` → `spawnSync` с массивом аргументов (projects.ts + deploy.service.ts)
 - [x] **Секреты** — JWT_SECRET = 128-char random, убран из ecosystem.config.js, загружается из .env через dotenv
 - [x] **Analytics auth bypass** — разделён на `publicTrackRouter` (до auth) и `analyticsRouter` (после auth)
 - [x] **Helmet** — `app.use(helmet())` + X-Frame-Options, HSTS, X-Content-Type-Options
-- [x] **readFileSync** — отложено (AdmZip ограничен лимитом 500 МБ по config, не критично)
+- [x] **Rate limit** — brute-force защита на site-gate password (5 req/15min)
+- [x] **Path traversal** — `path.resolve()` + `startsWith()` в визуальном редакторе
+- [x] **Cleanup worker** — убран ранний `return`, блокировавший удаление просроченных подписок
+- [x] **Webhook HMAC raw body** — подпись на оригинальном теле запроса, а не re-serialized JSON
+- [x] **Env isolation** — whitelist env vars при npm build пользовательских сайтов
+- [x] **Streaming hash** — SHA256 через ReadStream вместо загрузки ZIP в память
+- [x] **Type safety** — убраны `as any` касты, дополнены Express/path/crypto типы
 
 </details>
 
@@ -91,15 +97,15 @@
 - [x] Автодаунгрейд — cleanup.ts worker (каждые 15 мин проверяет `currentPeriodEnd`, переводит на FREE)
 - [ ] E2E тест платежа: создать ссылку → тестовая оплата → проверить webhook
 
-## 🟠 Этап D: Полировка MVP — до запуска
+## ✅ Этап D: Полировка MVP — ЗАКРЫТ
 
 - [x] Смена пароля — уже реализовано (POST /auth/change-password + UI в настройках)
 - [x] 401 interceptor — авто-разлогин + redirect на /login при expired JWT
 - [x] Race condition — `currentVersion: { increment: 1 }` (атомарный Prisma increment)
 - [x] In-memory Map — cap 10K entries в analytics + gallery, drop oldest half при overflow
-- [ ] SSE для статуса деплоя (заменить setTimeout polling)
-- [ ] Next.js `middleware.ts` — серверная защита роутов (сейчас только клиентский redirect)
-- [ ] Подсчёт тегов галереи в SQL вместо JS (`gallery.ts:90`)
+- [x] SSE для статуса деплоя — EventSource стрим вместо setTimeout polling
+- [x] Next.js `middleware.ts` — серверная защита роутов (cookie `vibe_token`)
+- [x] Подсчёт тегов галереи в SQL — PostgreSQL `UNNEST` + `GROUP BY`
 
 ---
 
@@ -107,7 +113,7 @@
 
 - [ ] screenshot.service.ts: Puppeteer скриншоты проектов
 - [ ] Авто-обновление скриншота после деплоя
-- [ ] Яндекс Метрика: опциональная инжекция счётчика при деплое (metrikaId в Project)
+- [x] Яндекс Метрика: опциональная инжекция счётчика при деплое (metrikaId в Project)
 
 ## 🟡 Этап F: Кастомные домены — после запуска
 
@@ -156,13 +162,13 @@
 ## Приоритеты запуска (порядок работ)
 
 ```
-1. ✅ Безопасность (Этап A)          — ЗАКРЫТ
+1. ✅ Безопасность (Этап A)          — ЗАКРЫТ (12 фиксов)
 2. ✅ Wildcard SSL (Этап B)           — ЗАКРЫТ
 3. ✅ Платежи Prodamus (Этап C)      — ЗАКРЫТ (осталось: E2E тест)
-4. 🟠 Полировка MVP (Этап D)        — 4/7 сделано (осталось: SSE, middleware, теги SQL)
+4. ✅ Полировка MVP (Этап D)         — ЗАКРЫТ (SSE, middleware, теги SQL)
    ✅ tiiny.host фичи                — QR-код, пароль, временные сайты, редизайн лендинга
 5. 📢 ЗАПУСК MVP                     — хостинг работает без AI-редактора
-6. 🟡 Скриншоты + Метрика (Этап E)  — после запуска
+6. 🟡 Скриншоты (Этап E)            — после запуска (Метрика уже сделана)
 7. 🟡 Кастомные домены (Этап F)     — после запуска
 8. 🟡 AI-редактор GigaChat (Этап G) — после запуска
 9. 🔵 Рост v2 (Этап I)              — по мере необходимости
