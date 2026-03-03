@@ -55,6 +55,7 @@ export default function ProjectPage() {
   const [githubDeploying, setGithubDeploying] = useState(false);
   const [passwordEnabled, setPasswordEnabled] = useState(false);
   const [password, setPassword] = useState('');
+  const [metrikaId, setMetrikaId] = useState('');
   const [showQR, setShowQR] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -84,6 +85,7 @@ export default function ProjectPage() {
       setTagsInput((proj.tags || []).join(', '));
       setIsPublic(proj.isPublic || false);
       setPasswordEnabled(proj.passwordEnabled || false);
+      setMetrikaId(proj.metrikaId || '');
       loadFiles();
     } catch {
       router.push('/projects');
@@ -108,7 +110,7 @@ export default function ProjectPage() {
     setSaveMsg('');
     try {
       const tags = tagsInput.split(',').map(t => t.trim()).filter(Boolean);
-      const update: Record<string, unknown> = { description: description || undefined, isPublic, tags };
+      const update: Record<string, unknown> = { description: description || undefined, isPublic, tags, metrikaId: metrikaId.trim() || null };
       if (passwordEnabled && password) {
         update.password = password;
         update.passwordEnabled = true;
@@ -132,13 +134,20 @@ export default function ProjectPage() {
     setGithubDeploying(true);
     setError('');
     try {
-      await api.deployGithub(id, githubUrl, githubSubdir || undefined);
+      const result = await api.deployGithub(id, githubUrl, githubSubdir || undefined);
       setGithubUrl('');
       setGithubSubdir('');
-      // Poll for completion
-      setTimeout(() => loadData(), 3000);
-      setTimeout(() => loadData(), 8000);
-      setTimeout(() => loadData(), 15000);
+      // If backend returns deploymentId, stream status; otherwise fallback to polling
+      if (result.deploymentId) {
+        api.streamDeployStatus(id, result.deploymentId, (data) => {
+          setDeployments(prev => prev.map(d =>
+            d.id === result.deploymentId ? { ...d, status: data.status as Deployment['status'], errorMessage: data.errorMessage || null } : d
+          ));
+        }, () => loadData());
+      } else {
+        setTimeout(() => loadData(), 3000);
+        setTimeout(() => loadData(), 8000);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ошибка деплоя из GitHub');
     } finally {
@@ -151,9 +160,17 @@ export default function ProjectPage() {
     setUploading(true);
     setError('');
     try {
-      await api.deploy(id, file);
+      const result = await api.deploy(id, file);
       setFile(null);
       await loadData();
+      // Stream status updates for this deployment
+      if (result.deploymentId) {
+        api.streamDeployStatus(id, result.deploymentId, (data) => {
+          setDeployments(prev => prev.map(d =>
+            d.id === result.deploymentId ? { ...d, status: data.status as Deployment['status'], errorMessage: data.errorMessage || null } : d
+          ));
+        }, () => loadData());
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ошибка загрузки');
     } finally {
@@ -644,13 +661,46 @@ export default function ProjectPage() {
 
           {passwordEnabled && (
             <input
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition-all text-sm"
               placeholder={`${project.passwordEnabled ? 'Введите новый пароль (или оставьте пустым)' : 'Задайте пароль для доступа'}`}
+              autoComplete="new-password"
             />
           )}
+
+          {/* Yandex.Metrika */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-1">
+              <BarChart3 className="w-3.5 h-3.5" />
+              Яндекс.Метрика
+            </label>
+            <input
+              type="text"
+              value={metrikaId}
+              onChange={(e) => setMetrikaId(e.target.value.replace(/\D/g, ''))}
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
+              placeholder="Номер счётчика, например 98765432"
+              maxLength={12}
+            />
+            <p className="text-xs text-gray-400 mt-1">Счётчик и отслеживание форм будут внедрены при следующем деплое</p>
+            {metrikaId && (
+              <div className="mt-2 p-2.5 bg-gray-50 rounded-lg border border-gray-100">
+                <p className="text-xs font-medium text-gray-600 mb-1.5">Автоматическое отслеживание заявок</p>
+                <p className="text-[11px] text-gray-500 mb-1.5">
+                  При отправке любой формы на сайте автоматически срабатывает цель <span className="font-mono bg-white px-1 py-0.5 rounded border border-gray-200">form_submit</span>. Чтобы видеть конверсии в Метрике:
+                </p>
+                <ol className="text-[11px] text-gray-500 space-y-0.5 ml-3 list-decimal">
+                  <li>Откройте <a href={`https://metrika.yandex.ru/list`} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">metrika.yandex.ru</a> → ваш счётчик → Настройка → Цели</li>
+                  <li>Нажмите «Добавить цель»</li>
+                  <li>Выберите «JavaScript-событие»</li>
+                  <li>Идентификатор: <span className="font-mono bg-white px-1 py-0.5 rounded border border-gray-200">form_submit</span></li>
+                  <li>Сохраните — готово, заявки будут отображаться как конверсии</li>
+                </ol>
+              </div>
+            )}
+          </div>
 
           <div className="flex items-center gap-3">
             <button

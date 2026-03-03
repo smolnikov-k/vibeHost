@@ -46,9 +46,14 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
       return;
     }
 
-    // Calculate ZIP hash
-    const fileBuffer = fs.readFileSync(req.file.path);
-    const zipHash = crypto.createHash('sha256').update(fileBuffer).digest('hex');
+    // Calculate ZIP hash via stream (no full file in memory)
+    const zipHash = await new Promise<string>((resolve, reject) => {
+      const hash = crypto.createHash('sha256');
+      const stream = fs.createReadStream(req.file!.path);
+      stream.on('data', (chunk: Buffer) => hash.update(chunk));
+      stream.on('end', () => resolve(hash.digest('hex')));
+      stream.on('error', reject);
+    });
 
     // Create deployment record
     const newVersion = project.currentVersion + 1;
@@ -132,6 +137,52 @@ router.get('/:id/deployments/:deployId/status', async (req: AuthRequest, res: Re
   }
 });
 
+// SSE: stream deployment status until terminal state
+router.get('/:id/deployments/:deployId/stream', async (req: AuthRequest, res: Response) => {
+  const deployId = req.params.deployId as string;
+  const projectId = req.params.id as string;
+
+  // Verify ownership once
+  const deployment = await prisma.deployment.findFirst({
+    where: { id: deployId, project: { id: projectId, userId: req.userId } },
+  });
+  if (!deployment) {
+    res.status(404).json({ error: 'Деплой не найден' });
+    return;
+  }
+
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // Nginx: disable proxy buffering
+
+  let lastStatus = '';
+  const TERMINAL = ['LIVE', 'FAILED', 'SUPERSEDED'];
+
+  const poll = setInterval(async () => {
+    try {
+      const d = await prisma.deployment.findUnique({ where: { id: deployId } });
+      if (!d) { clearInterval(poll); res.end(); return; }
+
+      if (d.status !== lastStatus) {
+        lastStatus = d.status;
+        const payload = JSON.stringify({ status: d.status, errorMessage: d.errorMessage });
+        res.write(`data: ${payload}\n\n`);
+      }
+
+      if (TERMINAL.includes(d.status)) {
+        clearInterval(poll);
+        res.end();
+      }
+    } catch {
+      clearInterval(poll);
+      res.end();
+    }
+  }, 1500);
+
+  req.on('close', () => clearInterval(poll));
+});
+
 // Deploy from GitHub
 router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: Response) => {
   try {
@@ -158,10 +209,21 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
       return;
     }
 
-    res.json({ message: 'Деплой из GitHub запущен', status: 'PROCESSING' });
+    // Create deployment record upfront so client can subscribe to SSE
+    const newVersion = project.currentVersion + 1;
+    const deployment = await prisma.deployment.create({
+      data: {
+        projectId: project.id,
+        version: newVersion,
+        status: 'PENDING',
+        zipHash: `github:${repoUrl}`,
+      },
+    });
 
-    // Process in background
-    processGithubDeploy(projectId, repoUrl, subdir).catch(err => {
+    res.json({ message: 'Деплой из GitHub запущен', status: 'PROCESSING', deploymentId: deployment.id });
+
+    // Process in background (pass pre-created deploymentId)
+    processGithubDeploy(projectId, repoUrl, subdir, deployment.id).catch(err => {
       logger.error(`GitHub deploy ${projectId} failed:`, err);
     });
   } catch (err) {

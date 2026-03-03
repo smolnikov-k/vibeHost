@@ -157,8 +157,32 @@ class ApiClient {
     return this.fetch<Deployment[]>(`/projects/${projectId}/deployments`);
   }
 
+  /** SSE stream for deploy status. Returns cleanup function. */
+  streamDeployStatus(
+    projectId: string,
+    deploymentId: string,
+    onStatus: (data: { status: string; errorMessage?: string | null }) => void,
+    onDone?: () => void,
+  ): () => void {
+    const token = this.getToken();
+    const url = `${API_URL}/projects/${projectId}/deployments/${deploymentId}/stream${token ? `?token=${encodeURIComponent(token)}` : ''}`;
+    const es = new EventSource(url);
+    es.onmessage = (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        onStatus(data);
+        if (['LIVE', 'FAILED', 'SUPERSEDED'].includes(data.status)) {
+          es.close();
+          onDone?.();
+        }
+      } catch { /* ignore parse errors */ }
+    };
+    es.onerror = () => { es.close(); onDone?.(); };
+    return () => es.close();
+  }
+
   async deployGithub(projectId: string, repoUrl: string, subdir?: string) {
-    return this.fetch<{ message: string; status: string }>(`/projects/${projectId}/deploy-github`, {
+    return this.fetch<{ message: string; status: string; deploymentId?: string }>(`/projects/${projectId}/deploy-github`, {
       method: 'POST',
       body: JSON.stringify({ repoUrl, subdir: subdir || undefined }),
     });
@@ -205,7 +229,7 @@ class ApiClient {
   }
 
   async verifyDomain(id: string) {
-    return this.fetch<{ verified: boolean; message: string }>(`/domains/${id}/verify`, {
+    return this.fetch<{ verified: boolean; sslStatus?: string; message: string }>(`/domains/${id}/verify`, {
       method: 'POST',
     });
   }
@@ -319,13 +343,17 @@ class ApiClient {
     return this.fetch<{ pages: { path: string; size: number; modified: string }[] }>(`/projects/${projectId}/edit/pages`);
   }
 
-  getEditPreviewUrl(projectId: string, pagePath?: string) {
+  getEditPreviewUrl(projectId: string, pagePath?: string, slug?: string) {
     const token = this.getToken();
     const params = new URLSearchParams();
     if (token) params.set('token', token);
     if (pagePath) params.set('path', pagePath);
     const qs = params.toString();
-    return `${API_URL}/projects/${projectId}/edit/preview${qs ? `?${qs}` : ''}`;
+    // Serve preview from the subdomain so origin matches and assets/SPA routing work
+    if (slug) {
+      return `https://${slug}.hostingvibe.ru/__vibe_preview${qs ? `?${qs}` : ''}`;
+    }
+    return `${API_URL}/internal/preview${qs ? `?${qs}` : ''}`;
   }
 
   async getEditPatches(projectId: string) {
@@ -452,7 +480,9 @@ export interface Project {
   updatedAt: string;
   publishedAt: string | null;
   passwordEnabled?: boolean;
+  metrikaId?: string | null;
   expiresAt?: string | null;
+  customDomain?: string | null;
 }
 
 export interface Deployment {

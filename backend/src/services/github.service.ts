@@ -4,6 +4,7 @@ import { prisma } from '../lib/prisma';
 import { getPlanLimits } from '../utils/limits';
 import { config } from '../config';
 import { setNginxPermissions, gitCloneShallow } from '../utils/shell';
+import { injectVibeFormsScript, injectVibePatchesScript, injectYandexMetrika } from './deploy.service';
 
 /**
  * Clone a public GitHub repo, find the directory with index.html,
@@ -12,7 +13,8 @@ import { setNginxPermissions, gitCloneShallow } from '../utils/shell';
 export async function processGithubDeploy(
   projectId: string,
   repoUrl: string,
-  subdir?: string
+  subdir?: string,
+  existingDeploymentId?: string,
 ): Promise<{ version: number; fileCount: number; sizeBytes: number }> {
   const project = await prisma.project.findUnique({
     where: { id: projectId },
@@ -36,7 +38,11 @@ export async function processGithubDeploy(
     // Find root with index.html
     let deployRoot = cloneDir;
     if (subdir) {
-      const custom = path.join(cloneDir, subdir);
+      const custom = path.resolve(cloneDir, subdir);
+      // Prevent path traversal outside the clone directory
+      if (!custom.startsWith(cloneDir + '/')) {
+        throw new Error('Недопустимый путь поддиректории');
+      }
       if (fs.existsSync(path.join(custom, 'index.html'))) {
         deployRoot = custom;
       } else {
@@ -78,15 +84,23 @@ export async function processGithubDeploy(
 
     const newVersion = project.currentVersion + 1;
 
-    // Create deployment record
-    const deployment = await prisma.deployment.create({
-      data: {
-        projectId: project.id,
-        version: newVersion,
-        status: 'EXTRACTING',
-        zipHash: `github:${repoUrl}`,
-      },
-    });
+    // Use pre-created deployment or create one (backward compat)
+    let deployment;
+    if (existingDeploymentId) {
+      deployment = await prisma.deployment.update({
+        where: { id: existingDeploymentId },
+        data: { status: 'EXTRACTING', version: newVersion },
+      });
+    } else {
+      deployment = await prisma.deployment.create({
+        data: {
+          projectId: project.id,
+          version: newVersion,
+          status: 'EXTRACTING',
+          zipHash: `github:${repoUrl}`,
+        },
+      });
+    }
 
     const siteDir = path.join(config.sitesDir, project.slug);
 
@@ -101,6 +115,13 @@ export async function processGithubDeploy(
 
     // Copy deploy root to site directory
     fs.cpSync(deployRoot, siteDir, { recursive: true });
+
+    // Inject vibe-forms, patches, and Metrika (same as ZIP deploy pipeline)
+    injectVibeFormsScript(siteDir, project.slug, project.metrikaId);
+    injectVibePatchesScript(siteDir, project.slug);
+    if (project.metrikaId) {
+      injectYandexMetrika(siteDir, project.metrikaId);
+    }
 
     // Set permissions for Nginx (safe — no shell interpolation)
     try { setNginxPermissions(siteDir); } catch { /* non-critical */ }
