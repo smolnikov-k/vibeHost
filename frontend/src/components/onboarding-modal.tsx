@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, Upload, Globe, Sparkles, ArrowRight, Rocket } from 'lucide-react';
+import { X, Upload, Pencil, Share2, ArrowRight, Rocket } from 'lucide-react';
 import { animate } from 'animejs';
 
 const ONBOARDING_KEY = 'vibe_onboarding_done';
@@ -11,22 +11,22 @@ const steps = [
   {
     icon: Upload,
     title: 'Загрузите сайт',
-    description: 'Упакуйте ваш статический сайт в ZIP-архив и загрузите через панель. В корне архива должен быть index.html.',
-    tip: 'Поддерживаются HTML, CSS, JS, изображения, шрифты и другие статические файлы.',
+    description: 'ZIP-архив или ссылка на GitHub-репозиторий — сайт будет онлайн через 30 секунд на yoursite.hostingvibe.ru.',
+    tip: 'Поддерживаются HTML, CSS, JS, React, Vue, Astro и другие статические сайты. Сборка (npm build) запускается автоматически.',
     color: 'from-emerald-400 to-green-500',
   },
   {
-    icon: Globe,
-    title: 'Получите домен',
-    description: 'Каждый проект получает бесплатный поддомен вида yoursite.hostingvibe.ru. На PRO-тарифе можно подключить свой домен.',
-    tip: 'Slug проекта = поддомен. Выбирайте короткое и запоминающееся имя.',
+    icon: Pencil,
+    title: 'Редактируйте прямо в браузере',
+    description: 'Визуальный редактор: кликните на любой элемент на сайте — измените текст, картинку, стили или скройте блок.',
+    tip: 'Все изменения применяются мгновенно без повторной загрузки файлов.',
     color: 'from-blue-400 to-indigo-500',
   },
   {
-    icon: Sparkles,
-    title: 'Управляйте версиями',
-    description: 'Обновляйте сайт, загружая новый архив. Все версии сохраняются — можно откатиться в один клик.',
-    tip: 'Также доступен деплой напрямую из публичного GitHub-репозитория.',
+    icon: Share2,
+    title: 'Поделитесь с миром',
+    description: 'QR-код для мгновенного доступа, защита паролем, контроль версий с откатом в один клик.',
+    tip: 'На PRO-тарифе можно подключить свой домен с автоматическим SSL-сертификатом.',
     color: 'from-purple-400 to-pink-500',
   },
 ];
