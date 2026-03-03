@@ -1,0 +1,15 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Галерея проектов — VibeHosting',
+  description: 'Смотрите публичные сайты, созданные на VibeHosting. Вдохновляйтесь проектами других пользователей.',
+  openGraph: {
+    title: 'Галерея проектов — VibeHosting',
+    description: 'Публичные сайты, созданные на VibeHosting. Ищите по тегам, ставьте лайки.',
+    url: 'https://hostingvibe.ru/gallery',
+  },
+};
+
+export default function GalleryLayout({ children }: { children: React.ReactNode }) {
+  return children;
+}

@@ -1,0 +1,298 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  displayName  String?  @map("display_name")
+  plan         Plan     @default(FREE)
+  isAdmin      Boolean  @default(false) @map("is_admin")
+  storageUsed  BigInt   @default(0) @map("storage_used")
+  storageLimit BigInt   @default(52428800) @map("storage_limit") // 50 MB
+  aiCredits    Int      @default(10) @map("ai_credits")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  projects       Project[]
+  domains        Domain[]
+  subscription   Subscription?
+  passwordResets PasswordReset[]
+  projectLikes   ProjectLike[]
+  telegramLink   TelegramLink?
+
+  @@index([email])
+  @@map("users")
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model Project {
+  id             String        @id @default(cuid())
+  userId         String        @map("user_id")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug           String        @unique
+  title          String
+  description    String?
+  sizeBytes      BigInt        @default(0) @map("size_bytes")
+  fileCount      Int           @default(0) @map("file_count")
+  status         ProjectStatus @default(UPLOADING)
+  isPublic       Boolean       @default(false) @map("is_public")
+  tags           String[]      @default([])
+  likes          Int           @default(0)
+  views          Int           @default(0)
+  currentVersion    Int           @default(0) @map("current_version")
+  passwordHash      String?       @map("password_hash")
+  passwordEnabled   Boolean       @default(false) @map("password_enabled")
+  expiresAt         DateTime?     @map("expires_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  publishedAt    DateTime?     @map("published_at")
+
+  deployments     Deployment[]
+  domains         Domain[]
+  projectLikes    ProjectLike[]
+  pageViews       PageView[]
+  reports         Report[]
+  formSubmissions FormSubmission[]
+  editorPages     EditorPage[]
+  visualPatches   VisualPatch[]
+
+  @@index([userId])
+  @@index([slug])
+  @@index([status])
+  @@index([isPublic, likes])
+  @@index([isPublic, createdAt])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  UPLOADING
+  PROCESSING
+  LIVE
+  ERROR
+  SUSPENDED
+}
+
+model Deployment {
+  id           String       @id @default(cuid())
+  projectId    String       @map("project_id")
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  version      Int
+  sizeBytes    BigInt       @default(0) @map("size_bytes")
+  fileCount    Int          @default(0) @map("file_count")
+  status       DeployStatus @default(PENDING)
+  errorMessage String?      @map("error_message")
+  zipHash      String?      @map("zip_hash")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@index([status])
+  @@map("deployments")
+}
+
+enum DeployStatus {
+  PENDING
+  EXTRACTING
+  BUILDING
+  LIVE
+  FAILED
+  SUPERSEDED
+}
+
+model Domain {
+  id          String    @id @default(cuid())
+  projectId   String    @map("project_id")
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hostname    String    @unique
+  verified    Boolean   @default(false)
+  verifyToken String?   @map("verify_token")
+  verifiedAt  DateTime? @map("verified_at")
+  sslStatus   SslStatus @default(PENDING) @map("ssl_status")
+  sslExpiresAt DateTime? @map("ssl_expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([hostname])
+  @@index([projectId])
+  @@index([userId])
+  @@map("domains")
+}
+
+enum SslStatus {
+  PENDING
+  PROVISIONING
+  ACTIVE
+  FAILED
+  EXPIRED
+}
+
+model Subscription {
+  id                  String    @id @default(cuid())
+  userId              String    @unique @map("user_id")
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prodamusOrderId     String?   @map("prodamus_order_id")
+  status              SubStatus @default(INACTIVE)
+  priceRub            Int       @default(386) @map("price_rub")
+  currentPeriodStart  DateTime? @map("current_period_start")
+  currentPeriodEnd    DateTime? @map("current_period_end")
+  cancelledAt         DateTime? @map("cancelled_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@map("subscriptions")
+}
+
+enum SubStatus {
+  INACTIVE
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+model ProjectLike {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("project_likes")
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  path      String   @default("/")
+  ip        String
+  userAgent String?  @map("user_agent")
+  referrer  String?
+  country   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, createdAt])
+  @@index([projectId, path])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+model Report {
+  id        String       @id @default(cuid())
+  projectId String       @map("project_id")
+  project   Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reason    ReportReason
+  message   String?
+  reporterIp String      @map("reporter_ip")
+  status    ReportStatus @default(PENDING)
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@index([status])
+  @@map("reports")
+}
+
+enum ReportReason {
+  SPAM
+  MALWARE
+  PHISHING
+  ILLEGAL
+  COPYRIGHT
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
+model TelegramLink {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatId    String   @map("chat_id")
+  username  String?
+  linkCode  String   @unique @map("link_code")
+  linkedAt  DateTime @default(now()) @map("linked_at")
+
+  @@index([chatId])
+  @@map("telegram_links")
+}
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  formName  String?  @map("form_name")
+  data      Json
+  ip        String?
+  sentToTg  Boolean  @default(false) @map("sent_to_tg")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, createdAt])
+  @@map("form_submissions")
+}
+
+model EditorPage {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  path      String   // "index.html", "about.html"
+  gjsData   Json?    @map("gjs_data")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([projectId, path])
+  @@index([projectId])
+  @@map("editor_pages")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_resets")
+}
+
+model VisualPatch {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  selector  String
+  xpath     String?
+  type      String   // "text" | "image" | "hide"
+  content   String?
+  enabled   Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([projectId])
+  @@map("visual_patches")
+}
