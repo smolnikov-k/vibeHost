@@ -5,12 +5,12 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer className="py-12 border-t border-gray-100">
+    <footer className="py-14 border-t border-gray-100">
       <div className="max-w-5xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-start justify-between gap-8 mb-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-2">
+          <div className="col-span-2 md:col-span-1">
+            <div className="flex items-center gap-2 mb-3">
               <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center">
                 <Zap className="w-4 h-4 text-white" />
               </div>
@@ -18,30 +18,61 @@ export function Footer() {
                 Vibe<span className="text-emerald-500">Hosting</span>
               </span>
             </div>
-            <p className="text-xs text-gray-400">
-              Хостинг для статических сайтов. Серверы в России.
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Простейший хостинг для статических сайтов. Серверы в России.
             </p>
           </div>
 
-          {/* Links */}
-          <div className="flex gap-12 text-sm text-gray-500">
-            <nav className="flex flex-col gap-2">
-              <a href="#features" className="hover:text-emerald-600 transition-colors">Возможности</a>
-              <a href="#pricing" className="hover:text-emerald-600 transition-colors">Тарифы</a>
-              <Link href="/gallery" className="hover:text-emerald-600 transition-colors">Галерея</Link>
-            </nav>
-            <nav className="flex flex-col gap-2">
-              <Link href="/terms" className="hover:text-emerald-600 transition-colors">Соглашение</Link>
-              <Link href="/privacy" className="hover:text-emerald-600 transition-colors">Конфиденциальность</Link>
-              <a href="https://t.me/vibehosting" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 transition-colors">Telegram</a>
-            </nav>
-          </div>
+          {/* Product */}
+          <nav>
+            <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">Продукт</p>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li><a href="#features" className="hover:text-emerald-600 transition-colors">Возможности</a></li>
+              <li><a href="#pricing" className="hover:text-emerald-600 transition-colors">Тарифы</a></li>
+              <li><Link href="/gallery" className="hover:text-emerald-600 transition-colors">Галерея</Link></li>
+              <li><a href="#faq" className="hover:text-emerald-600 transition-colors">FAQ</a></li>
+            </ul>
+          </nav>
+
+          {/* Use Cases */}
+          <nav>
+            <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">Подходит для</p>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li><a href="#use-cases" className="hover:text-emerald-600 transition-colors">Лендинги и сайты</a></li>
+              <li><a href="#use-cases" className="hover:text-emerald-600 transition-colors">Портфолио</a></li>
+              <li><a href="#use-cases" className="hover:text-emerald-600 transition-colors">Веб-приложения</a></li>
+              <li><a href="#use-cases" className="hover:text-emerald-600 transition-colors">Резюме и CV</a></li>
+              <li><a href="#use-cases" className="hover:text-emerald-600 transition-colors">Проекты из AI</a></li>
+            </ul>
+          </nav>
+
+          {/* Legal & Support */}
+          <nav>
+            <p className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">Поддержка</p>
+            <ul className="space-y-2 text-sm text-gray-500">
+              <li>
+                <a href="https://t.me/vibehosting" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 transition-colors">
+                  Telegram
+                </a>
+              </li>
+              <li><Link href="/terms" className="hover:text-emerald-600 transition-colors">Соглашение</Link></li>
+              <li><Link href="/privacy" className="hover:text-emerald-600 transition-colors">Конфиденциальность</Link></li>
+              <li><Link href="/offer" className="hover:text-emerald-600 transition-colors">Оферта</Link></li>
+            </ul>
+          </nav>
         </div>
 
-        <div className="pt-6 border-t border-gray-100 text-center">
+        <div className="pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-3">
           <p className="text-xs text-gray-400">
-            &copy; {new Date().getFullYear()} VibeHosting
+            &copy; {new Date().getFullYear()} VibeHosting. Серверы в России.
           </p>
+          <div className="flex items-center gap-4 text-xs text-gray-400">
+            <span>Оплата в рублях</span>
+            <span>&middot;</span>
+            <span>152-ФЗ</span>
+            <span>&middot;</span>
+            <span>SSL бесплатно</span>
+          </div>
         </div>
       </div>
     </footer>

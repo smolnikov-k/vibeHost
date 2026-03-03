@@ -17,13 +17,16 @@ export function CTA() {
           <p className="text-emerald-100 text-lg mb-8">
             Бесплатно. Без карты. Результат через 30 секунд.
           </p>
-          <Link
-            href="/register"
-            className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-emerald-600 font-bold text-lg hover:bg-emerald-50 transition-all shadow-md hover:-translate-y-0.5"
-          >
-            Попробовать бесплатно
-            <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </Link>
+          <div className="flex flex-col items-center gap-4">
+            <Link
+              href="/register"
+              className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-white text-emerald-600 font-bold text-lg hover:bg-emerald-50 transition-all shadow-md hover:-translate-y-0.5"
+            >
+              Попробовать бесплатно
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Link>
+            <p className="text-emerald-200 text-sm">Регистрация за 10 секунд через Telegram</p>
+          </div>
         </div>
       </div>
     </section>

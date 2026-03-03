@@ -14,6 +14,7 @@ const rows = [
   { feature: 'Оплата в рублях', vibe: true, tilda: true, wordpress: false, tiiny: false },
   { feature: 'Без кода', vibe: true, tilda: true, wordpress: false, tiiny: true },
   { feature: 'Аналитика', vibe: true, tilda: true, wordpress: true, tiiny: 'partial' },
+  { feature: 'Яндекс.Метрика + цели', vibe: true, tilda: 'partial', wordpress: false, tiiny: false },
 ];
 
 function CellIcon({ value }: { value: boolean | string }) {
