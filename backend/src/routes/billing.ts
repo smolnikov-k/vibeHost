@@ -1,42 +1,98 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'crypto';
-import { createClient } from 'redis';
+import { Prisma } from '@prisma/client';
 import { prisma } from '../lib/prisma';
 import { AuthRequest } from '../middleware/auth';
 import { config } from '../config';
 import { sendProUpgradeEmail, sendSubscriptionCancelledEmail } from '../services/email.service';
+import { sendEmailOnce } from '../services/email-events.service';
 import logger from '../services/logger';
 
-// Redis client for webhook idempotency
-let redisClient: ReturnType<typeof createClient> | null = null;
-try {
-  redisClient = createClient({ url: config.redisUrl });
-  redisClient.connect().catch(() => { redisClient = null; });
-  redisClient.on('error', () => {});
-} catch { /* Redis unavailable — fallback to in-memory */ }
+const PRO_PRICE_RUB = 386;
+const PAYMENT_PROVIDER = 'prodamus';
+const PROCESSING_STALE_MS = 10 * 60 * 1000;
+const ensureProPrice = (price?: number | null) => (price && price > 0 ? price : PRO_PRICE_RUB);
 
-// In-memory fallback for idempotency when Redis is not available
-const processedPayments = new Map<string, number>();
-setInterval(() => {
-  const cutoff = Date.now() - 48 * 60 * 60 * 1000;
-  for (const [key, time] of processedPayments) {
-    if (time < cutoff) processedPayments.delete(key);
-  }
-}, 60 * 60 * 1000);
-
-async function isPaymentProcessed(paymentId: string): Promise<boolean> {
-  if (redisClient?.isOpen) {
-    const exists = await redisClient.get(`webhook:${paymentId}`);
-    return !!exists;
-  }
-  return processedPayments.has(paymentId);
+function isUniqueViolation(err: unknown): boolean {
+  return err instanceof Prisma.PrismaClientKnownRequestError && err.code === 'P2002';
 }
 
-async function markPaymentProcessed(paymentId: string): Promise<void> {
-  if (redisClient?.isOpen) {
-    await redisClient.set(`webhook:${paymentId}`, '1', { EX: 48 * 60 * 60 }); // 48h TTL
+async function claimPaymentEvent(providerEventId: string, orderId?: string): Promise<'claimed' | 'processed' | 'inflight'> {
+  try {
+    await prisma.paymentEvent.create({
+      data: {
+        provider: PAYMENT_PROVIDER,
+        providerEventId,
+        orderId,
+        status: 'PROCESSING',
+      },
+    });
+    return 'claimed';
+  } catch (err) {
+    if (!isUniqueViolation(err)) throw err;
   }
-  processedPayments.set(paymentId, Date.now());
+
+  const existing = await prisma.paymentEvent.findUnique({
+    where: {
+      provider_providerEventId: {
+        provider: PAYMENT_PROVIDER,
+        providerEventId,
+      },
+    },
+  });
+
+  if (!existing) return 'inflight';
+  if (existing.status === 'PROCESSED') return 'processed';
+
+  const staleBefore = new Date(Date.now() - PROCESSING_STALE_MS);
+  if (existing.status === 'PROCESSING' && existing.updatedAt > staleBefore) return 'inflight';
+
+  await prisma.paymentEvent.update({
+    where: {
+      provider_providerEventId: {
+        provider: PAYMENT_PROVIDER,
+        providerEventId,
+      },
+    },
+    data: {
+      status: 'PROCESSING',
+      orderId: orderId ?? existing.orderId,
+      lastError: null,
+    },
+  });
+
+  return 'claimed';
+}
+
+async function markPaymentEventProcessed(providerEventId: string, note?: string): Promise<void> {
+  await prisma.paymentEvent.update({
+    where: {
+      provider_providerEventId: {
+        provider: PAYMENT_PROVIDER,
+        providerEventId,
+      },
+    },
+    data: {
+      status: 'PROCESSED',
+      processedAt: new Date(),
+      lastError: note ?? null,
+    },
+  });
+}
+
+async function markPaymentEventFailed(providerEventId: string, err: unknown): Promise<void> {
+  await prisma.paymentEvent.update({
+    where: {
+      provider_providerEventId: {
+        provider: PAYMENT_PROVIDER,
+        providerEventId,
+      },
+    },
+    data: {
+      status: 'FAILED',
+      lastError: err instanceof Error ? err.message.slice(0, 1000) : String(err).slice(0, 1000),
+    },
+  });
 }
 
 const router = Router();
@@ -83,22 +139,22 @@ router.post('/create-payment', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    // Create or update subscription record
     const subscription = await prisma.subscription.upsert({
       where: { userId: user.id },
       create: {
         userId: user.id,
         status: 'INACTIVE',
-        priceRub: 386,
+        priceRub: PRO_PRICE_RUB,
       },
-      update: {},
+      update: {
+        priceRub: PRO_PRICE_RUB,
+      },
     });
 
-    // Build Prodamus payment link
     const params = new URLSearchParams({
       do: 'link',
       'products[0][name]': 'Vibe Hosting PRO — 1 месяц',
-      'products[0][price]': '386',
+      'products[0][price]': String(PRO_PRICE_RUB),
       'products[0][quantity]': '1',
       customer_email: user.email,
       order_id: subscription.id,
@@ -161,8 +217,9 @@ router.post('/create-ai-pack', async (req: AuthRequest, res: Response) => {
 
 // Prodamus webhook handler
 async function handleWebhook(req: Request, res: Response) {
+  let providerEventId: string | null = null;
+
   try {
-    // Verify signature (mandatory)
     if (!config.prodamus.secretKey) {
       logger.error('Prodamus secret key not configured, rejecting webhook');
       res.status(503).json({ error: 'Webhook not configured' });
@@ -179,7 +236,6 @@ async function handleWebhook(req: Request, res: Response) {
     const body = (req as any).rawBody?.toString() || JSON.stringify(req.body);
     const expected = crypto.createHmac('sha256', config.prodamus.secretKey).update(body).digest('hex');
 
-    // Timing-safe comparison to prevent timing attacks
     try {
       const sigBuf = Buffer.from(signature, 'hex');
       const expectedBuf = Buffer.from(expected, 'hex');
@@ -201,34 +257,37 @@ async function handleWebhook(req: Request, res: Response) {
       return;
     }
 
-    // Universal idempotency: check payment_id via Redis (or in-memory fallback)
-    if (payment_id) {
-      const alreadyProcessed = await isPaymentProcessed(String(payment_id));
-      if (alreadyProcessed) {
-        logger.info(`Webhook duplicate skipped: payment_id=${payment_id}`);
-        res.status(200).send('OK');
-        return;
-      }
+    providerEventId = String(payment_id || order_id);
+    const claim = await claimPaymentEvent(providerEventId, String(order_id));
+    if (claim === 'processed') {
+      logger.info(`Webhook duplicate skipped (already processed): event=${providerEventId}`);
+      res.status(200).send('OK');
+      return;
+    }
+    if (claim === 'inflight') {
+      logger.info(`Webhook duplicate skipped (inflight): event=${providerEventId}`);
+      res.status(200).send('OK');
+      return;
     }
 
     // AI pack payment
     if (typeof order_id === 'string' && order_id.startsWith('aipack_')) {
       const parts = order_id.split('_');
-      // aipack_{userId}_{pack}_{timestamp}
       const userId = parts[1];
       const pack = parseInt(parts[2], 10);
       const ALLOWED_PACKS = [10, 50];
 
       if (!userId || isNaN(pack) || !ALLOWED_PACKS.includes(pack)) {
         logger.warn('Invalid aipack order_id:', order_id);
+        await markPaymentEventProcessed(providerEventId, 'ignored_invalid_aipack_order');
         res.status(200).send('OK');
         return;
       }
 
-      // Verify user exists before crediting
       const targetUser = await prisma.user.findUnique({ where: { id: userId } });
       if (!targetUser) {
         logger.warn('Aipack for non-existent user:', userId);
+        await markPaymentEventProcessed(providerEventId, 'ignored_unknown_user');
         res.status(200).send('OK');
         return;
       }
@@ -238,7 +297,7 @@ async function handleWebhook(req: Request, res: Response) {
         data: { aiCredits: { increment: pack } },
       });
 
-      if (payment_id) await markPaymentProcessed(String(payment_id));
+      await markPaymentEventProcessed(providerEventId);
       logger.info(`AI credits +${pack} for user ${userId}`);
       res.status(200).send('OK');
       return;
@@ -251,6 +310,7 @@ async function handleWebhook(req: Request, res: Response) {
     });
 
     if (!subscription) {
+      await markPaymentEventProcessed(providerEventId, 'ignored_unknown_subscription');
       res.status(200).send('OK');
       return;
     }
@@ -258,8 +318,8 @@ async function handleWebhook(req: Request, res: Response) {
     const now = new Date();
     const periodEnd = new Date(now);
     periodEnd.setDate(periodEnd.getDate() + 30);
+    const normalizedPrice = ensureProPrice(subscription.priceRub);
 
-    // Atomic: update subscription + user plan in a single transaction
     await prisma.$transaction([
       prisma.subscription.update({
         where: { id: subscription.id },
@@ -268,6 +328,7 @@ async function handleWebhook(req: Request, res: Response) {
           prodamusOrderId: req.body.payment_id || order_id,
           currentPeriodStart: now,
           currentPeriodEnd: periodEnd,
+          priceRub: normalizedPrice,
         },
       }),
       prisma.user.update({
@@ -279,16 +340,38 @@ async function handleWebhook(req: Request, res: Response) {
       }),
     ]);
 
-    if (payment_id) await markPaymentProcessed(String(payment_id));
+    await sendEmailOnce({
+      dedupeKey: `pro_upgrade:payment:${providerEventId}`,
+      eventType: 'pro_upgrade',
+      recipientEmail: subscription.user.email,
+      userId: subscription.userId,
+      category: 'billing',
+      payload: { subscriptionId: subscription.id, providerEventId },
+    }, () => sendProUpgradeEmail(subscription.user.email, subscription.user.displayName || subscription.user.email.split('@')[0])).catch((err) => {
+      logger.warn('PRO upgrade email send failed', {
+        userId: subscription.userId,
+        providerEventId,
+        error: err instanceof Error ? err.message : String(err),
+      });
+    });
 
-    // Send PRO upgrade email
-    sendProUpgradeEmail(subscription.user.email, subscription.user.displayName || subscription.user.email.split('@')[0]).catch(() => {});
+    await markPaymentEventProcessed(providerEventId);
 
     logger.info(`User ${subscription.userId} upgraded to PRO, period ends ${periodEnd.toISOString()}`);
     res.status(200).send('OK');
   } catch (err) {
+    if (providerEventId) {
+      try {
+        await markPaymentEventFailed(providerEventId, err);
+      } catch (markErr) {
+        logger.warn('Failed to mark payment event as FAILED', {
+          providerEventId,
+          error: markErr instanceof Error ? markErr.message : String(markErr),
+        });
+      }
+    }
     logger.error('Webhook error:', err);
-    res.status(200).send('OK'); // Always 200 to prevent retries
+    res.status(200).send('OK'); // Always 200 to prevent provider retries storm
   }
 }
 
@@ -306,21 +389,28 @@ router.post('/cancel', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    await prisma.subscription.update({
+    const cancelledAt = new Date();
+    const updatedSubscription = await prisma.subscription.update({
       where: { id: subscription.id },
-      data: { status: 'CANCELLED', cancelledAt: new Date() },
+      data: { status: 'CANCELLED', cancelledAt },
     });
 
-    // Send cancellation email
     const user = await prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } });
     if (user) {
-      sendSubscriptionCancelledEmail(user.email, subscription.currentPeriodEnd).catch(() => {});
+      sendEmailOnce({
+        dedupeKey: `sub_cancelled:sub:${subscription.id}:at:${cancelledAt.toISOString().slice(0, 10)}`,
+        eventType: 'subscription_cancelled',
+        recipientEmail: user.email,
+        userId: req.userId,
+        category: 'billing',
+        payload: { subscriptionId: subscription.id, cancelledAt },
+      }, () => sendSubscriptionCancelledEmail(user.email, updatedSubscription.currentPeriodEnd)).catch(() => {});
     }
 
     res.json({
       success: true,
       message: 'Подписка отменена. PRO доступен до конца оплаченного периода.',
-      currentPeriodEnd: subscription.currentPeriodEnd,
+      currentPeriodEnd: updatedSubscription.currentPeriodEnd,
     });
   } catch (err) {
     logger.error('Cancel subscription error:', err);

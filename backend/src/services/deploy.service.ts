@@ -6,6 +6,7 @@ import { validateZip, extractZip } from '../utils/zip';
 import { getPlanLimits } from '../utils/limits';
 import { config } from '../config';
 import { sendDeployNotification } from './email.service';
+import { sendEmailOnce } from './email-events.service';
 import { setNginxPermissions } from '../utils/shell';
 import logger from './logger';
 
@@ -346,9 +347,16 @@ export async function processDeploy(deploymentId: string): Promise<void> {
     // Cleanup ZIP
     fs.unlinkSync(archivePath);
 
-    // Deploy notification (fire-and-forget)
+    // Deploy notification (idempotent fire-and-forget)
     const customDomain = project.domains[0]?.hostname ?? null;
-    sendDeployNotification(user.email, project.title, project.slug, customDomain).catch(() => {});
+    sendEmailOnce({
+      dedupeKey: `deploy_live:deployment:${deployment.id}`,
+      eventType: 'deploy_live',
+      recipientEmail: user.email,
+      userId: user.id,
+      category: 'transactional',
+      payload: { projectId: project.id, deploymentId: deployment.id, customDomain },
+    }, () => sendDeployNotification(user.email, project.title, project.slug, customDomain)).catch(() => {});
 
   } catch (err) {
     await failDeploy(deploymentId, project.id, (err as Error).message);

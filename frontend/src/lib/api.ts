@@ -164,9 +164,9 @@ class ApiClient {
     onStatus: (data: { status: string; errorMessage?: string | null }) => void,
     onDone?: () => void,
   ): () => void {
-    const token = this.getToken();
-    const url = `${API_URL}/projects/${projectId}/deployments/${deploymentId}/stream${token ? `?token=${encodeURIComponent(token)}` : ''}`;
-    const es = new EventSource(url);
+    const url = `${API_URL}/projects/${projectId}/deployments/${deploymentId}/stream`;
+    // Important: no JWT in query string. For cross-origin API_URL, withCredentials makes browser send vibe_token cookie.
+    const es = new EventSource(url, { withCredentials: true });
     es.onmessage = (e) => {
       try {
         const data = JSON.parse(e.data);

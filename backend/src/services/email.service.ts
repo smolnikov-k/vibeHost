@@ -317,16 +317,16 @@ export async function sendProjectSuspendedEmail(email: string, projectTitle: str
 
 export async function sendOnboardingReminderEmail(email: string, displayName: string): Promise<void> {
   const html = baseLayout(`
-    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">${escapeHtml(displayName)}, ваш сайт ждёт вас!</h2>
+    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">${escapeHtml(displayName)}, запустите сайт за 10 минут</h2>
     <p style="margin:0 0 20px;font-size:14px;color:#6b7280;line-height:1.6">
-      Вы зарегистрировались на VibeHosting, но ещё не создали сайт. Это займёт меньше минуты:
+      Вы уже внутри VibeHosting. Остался последний шаг до результата — первый сайт онлайн:
     </p>
 
     ${stepCard(1, 'Подготовьте файлы', 'HTML + CSS + картинки, или попросите нейросеть сделать за вас')}
     ${stepCard(2, 'Загрузите ZIP-архив', 'Перетащите файл в панель — мы сделаем остальное')}
     ${stepCard(3, 'Готово!', 'Ваш сайт доступен по ссылке ваш-сайт.hostingvibe.ru')}
 
-    ${buttonHtml('Создать сайт', `${config.frontendUrl}/projects/new`)}
+    ${buttonHtml('Запустить первый сайт', `${config.frontendUrl}/projects/new`)}
 
     <p style="margin:16px 0 0;font-size:12px;color:#9ca3af;line-height:1.5">
       💡 Совет: отправьте <a href="${config.frontendUrl}/ai" style="color:#10b981;text-decoration:none">AI-промпт</a> в Claude Code или Cursor — нейросеть создаст и задеплоит сайт за вас.
@@ -336,7 +336,7 @@ export async function sendOnboardingReminderEmail(email: string, displayName: st
   await transporter.sendMail({
     from: config.smtp.from,
     to: email,
-    subject: 'Ваш сайт ждёт вас — VibeHosting',
+    subject: 'Сделай первый сайт онлайн за 10 минут — VibeHosting',
     html,
   });
 }
@@ -344,9 +344,9 @@ export async function sendOnboardingReminderEmail(email: string, displayName: st
 export async function sendTipsEmail(email: string, displayName: string, slug: string): Promise<void> {
   const siteUrl = `https://${slug}.hostingvibe.ru`;
   const html = baseLayout(`
-    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">Советы для вашего сайта</h2>
+    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">3 улучшения сайта за 15 минут</h2>
     <p style="margin:0 0 20px;font-size:14px;color:#6b7280;line-height:1.6">
-      ${escapeHtml(displayName)}, ваш сайт <a href="${siteUrl}" style="color:#10b981">${slug}.hostingvibe.ru</a> уже работает! Вот что ещё можно сделать:
+      ${escapeHtml(displayName)}, сайт <a href="${siteUrl}" style="color:#10b981">${slug}.hostingvibe.ru</a> уже в онлайне — вот 3 действия, которые быстро поднимут пользу:
     </p>
 
     ${stepCard(1, 'Опубликуйте в галерее', 'Включите «Показать в галерее» — получайте просмотры и лайки от сообщества')}
@@ -363,16 +363,16 @@ export async function sendTipsEmail(email: string, displayName: string, slug: st
   await transporter.sendMail({
     from: config.smtp.from,
     to: email,
-    subject: 'Советы для вашего сайта — VibeHosting',
+    subject: '3 улучшения сайта за 15 минут — VibeHosting',
     html,
   });
 }
 
 export async function sendWinBackEmail(email: string, displayName: string): Promise<void> {
   const html = baseLayout(`
-    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">Мы скучаем, ${escapeHtml(displayName)}!</h2>
+    <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">${escapeHtml(displayName)}, верните сайт в фокус за 10 минут</h2>
     <p style="margin:0 0 16px;font-size:14px;color:#6b7280;line-height:1.6">
-      Давно вас не видели на VibeHosting. Пока вас не было, мы добавили:
+      Мы подготовили короткий путь, чтобы быстро вернуть пользу от сайта:
     </p>
 
     <div style="background:#f0fdf4;border-radius:10px;padding:16px;margin-bottom:20px">
@@ -390,7 +390,7 @@ export async function sendWinBackEmail(email: string, displayName: string): Prom
   await transporter.sendMail({
     from: config.smtp.from,
     to: email,
-    subject: 'Мы скучаем! Вернитесь в VibeHosting',
+    subject: 'Вернём ваш сайт в фокус за 10 минут — VibeHosting',
     html,
   });
 }

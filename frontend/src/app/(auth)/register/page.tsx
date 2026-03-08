@@ -14,6 +14,7 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [acceptLegal, setAcceptLegal] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -41,6 +42,11 @@ export default function RegisterPage() {
 
     if (password.length < 6) {
       setError('Пароль должен быть минимум 6 символов');
+      return;
+    }
+
+    if (!acceptLegal) {
+      setError('Подтверди согласие с Политикой конфиденциальности и Условиями использования');
       return;
     }
 
@@ -153,6 +159,27 @@ export default function RegisterPage() {
               </p>
             </div>
 
+            <label className="flex items-start gap-2 text-sm text-gray-600">
+              <input
+                type="checkbox"
+                required
+                checked={acceptLegal}
+                onChange={(e) => setAcceptLegal(e.target.checked)}
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+              />
+              <span>
+                Я подтверждаю согласие с{' '}
+                <Link href="/privacy" className="text-emerald-600 hover:text-emerald-700 hover:underline">
+                  Политикой конфиденциальности
+                </Link>{' '}
+                и{' '}
+                <Link href="/terms" className="text-emerald-600 hover:text-emerald-700 hover:underline">
+                  Условиями использования
+                </Link>
+                .
+              </span>
+            </label>
+
             <button
               type="submit"
               disabled={loading}
@@ -162,13 +189,6 @@ export default function RegisterPage() {
               Создать аккаунт
             </button>
           </form>
-
-          <p className="text-xs text-gray-400 text-center mt-4">
-            Нажимая «Создать аккаунт», вы соглашаетесь с{' '}
-            <Link href="/terms" className="text-emerald-500 hover:underline">
-              условиями использования
-            </Link>
-          </p>
         </div>
 
         <p className="text-center text-sm text-gray-500 mt-6">

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { CookieConsentBanner } from '@/components/cookies/CookieConsentBanner';
+import { YandexMetrika } from '@/components/analytics/YandexMetrika';
 import './globals.css';
 
 const inter = Inter({
@@ -34,8 +36,17 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  manifest: '/site.webmanifest',
   icons: {
-    icon: '/favicon.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon.ico' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
   },
   alternates: {
     canonical: 'https://hostingvibe.ru',
@@ -49,25 +60,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru" className={inter.variable} suppressHydrationWarning>
-      <head>
-        {/* Yandex.Metrika counter */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-            m[i].l=1*new Date();
-            for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
-            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-            })(window,document,'script','https://mc.yandex.ru/metrika/tag.js?id=107147478','ym');
-            ym(107147478,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:'dataLayer',accurateTrackBounce:true,trackLinks:true});`,
-          }}
-        />
-        <noscript>
-          <div>
-            <img src="https://mc.yandex.ru/watch/107147478" style={{ position: 'absolute', left: '-9999px' }} alt="" />
-          </div>
-        </noscript>
-      </head>
       <body className="bg-white text-gray-900 antialiased" suppressHydrationWarning>
+        <YandexMetrika />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -94,6 +88,7 @@ export default function RootLayout({
           }}
         />
         {children}
+        <CookieConsentBanner />
       </body>
     </html>
   );

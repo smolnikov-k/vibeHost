@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Галерея проектов — VibeHosting',
   description: 'Смотрите публичные сайты, созданные на VibeHosting. Вдохновляйтесь проектами других пользователей.',
+  alternates: {
+    canonical: '/gallery',
+  },
   openGraph: {
     title: 'Галерея проектов — VibeHosting',
     description: 'Публичные сайты, созданные на VibeHosting. Ищите по тегам, ставьте лайки.',

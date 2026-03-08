@@ -7,6 +7,7 @@ import { config } from '../config';
 import { AuthRequest } from '../middleware/auth';
 import { deleteProjectFiles } from '../services/deploy.service';
 import { sendPasswordResetEmail, sendWelcomeEmail } from '../services/email.service';
+import { sendEmailOnce } from '../services/email-events.service';
 import logger from '../services/logger';
 
 const router = Router();
@@ -46,8 +47,15 @@ router.post('/register', async (req: AuthRequest, res: Response) => {
 
     const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { algorithm: 'HS256', expiresIn: config.jwtExpiresIn });
 
-    // Welcome email (fire-and-forget)
-    sendWelcomeEmail(email, displayName || email.split('@')[0]).catch((err) => {
+    // Welcome email (idempotent fire-and-forget)
+    sendEmailOnce({
+      dedupeKey: `welcome:user:${user.id}`,
+      eventType: 'welcome',
+      recipientEmail: email,
+      userId: user.id,
+      category: 'lifecycle',
+      payload: { displayName: displayName || null },
+    }, () => sendWelcomeEmail(email, displayName || email.split('@')[0])).catch((err) => {
       logger.warn('Welcome email send failed', {
         requestId,
         email,
@@ -172,12 +180,19 @@ router.post('/forgot-password', async (req: AuthRequest, res: Response) => {
     const tokenHash = crypto.createHash('sha256').update(tokenRaw).digest('hex');
     const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
-    await prisma.passwordReset.create({
+    const resetRecord = await prisma.passwordReset.create({
       data: { userId: user.id, token: tokenHash, expiresAt },
     });
 
-    // Send reset email with raw token (fire-and-forget, don't leak success/failure)
-    sendPasswordResetEmail(email, tokenRaw).catch((err) => {
+    // Send reset email with raw token (idempotent fire-and-forget, don't leak success/failure)
+    sendEmailOnce({
+      dedupeKey: `password_reset:reset:${resetRecord.id}`,
+      eventType: 'password_reset',
+      recipientEmail: email,
+      userId: user.id,
+      category: 'transactional',
+      payload: { resetId: resetRecord.id },
+    }, () => sendPasswordResetEmail(email, tokenRaw)).catch((err) => {
       logger.warn('Password reset email send failed', {
         requestId,
         email,

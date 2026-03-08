@@ -5,6 +5,9 @@ import { Zap, FileArchive, AlertTriangle, CheckCircle, XCircle, Info } from 'luc
 export const metadata: Metadata = {
   title: 'Документация по загрузке — VibeHosting',
   description: 'Правила и требования к загрузке сайтов на VibeHosting. Форматы файлов, ограничения, структура архива.',
+  alternates: {
+    canonical: '/docs',
+  },
 };
 
 export default function DocsPage() {

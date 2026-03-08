@@ -28,6 +28,7 @@ model User {
   passwordResets PasswordReset[]
   projectLikes   ProjectLike[]
   telegramLink   TelegramLink?
+  emailEvents    EmailEvent[]
 
   @@index([email])
   @@map("users")
@@ -283,6 +284,59 @@ model PasswordReset {
   @@index([token])
   @@index([userId])
   @@map("password_resets")
+}
+
+
+
+enum EmailEventStatus {
+  PENDING
+  SENT
+  SKIPPED
+  FAILED
+}
+
+model EmailEvent {
+  id             String           @id @default(cuid())
+  dedupeKey      String           @unique @map("dedupe_key")
+  eventType      String           @map("event_type")
+  recipientEmail String           @map("recipient_email")
+  category       String           @default("transactional")
+  userId         String?          @map("user_id")
+  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status         EmailEventStatus @default(PENDING)
+  attempts       Int              @default(0)
+  payloadHash    String?          @map("payload_hash")
+  lastError      String?          @map("last_error")
+  sentAt         DateTime?        @map("sent_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt])
+  @@index([eventType, createdAt])
+  @@index([status, createdAt])
+  @@map("email_events")
+}
+
+enum PaymentEventStatus {
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+model PaymentEvent {
+  id              String             @id @default(cuid())
+  provider        String             @default("prodamus")
+  providerEventId String             @map("provider_event_id")
+  orderId         String?            @map("order_id")
+  status          PaymentEventStatus @default(PROCESSING)
+  lastError       String?            @map("last_error")
+  processedAt     DateTime?          @map("processed_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  @@unique([provider, providerEventId])
+  @@index([status, createdAt])
+  @@map("payment_events")
 }
 
 model VisualPatch {

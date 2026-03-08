@@ -4,35 +4,15 @@ import {
   sendTipsEmail,
   sendWinBackEmail,
 } from './email.service';
+import { canSendMarketingNow, sendEmailOnce } from './email-events.service';
 import logger from './logger';
 
 const INTERVAL_MS = 6 * 60 * 60 * 1000; // every 6 hours
 
-// Track sent emails to avoid duplicates (key → timestamp)
-const sentEmails = new Map<string, number>();
-const COOLDOWN_DAYS: Record<string, number> = {
-  onboarding: 7,  // don't resend onboarding for 7 days
-  tips: 14,       // don't resend tips for 14 days
-  winback: 30,    // don't resend win-back for 30 days
-};
-
-function shouldSend(type: string, userId: string): boolean {
-  const key = `${type}:${userId}`;
-  const last = sentEmails.get(key);
-  const cooldown = (COOLDOWN_DAYS[type] || 7) * 24 * 60 * 60 * 1000;
-  if (last && Date.now() - last < cooldown) return false;
-  sentEmails.set(key, Date.now());
-  return true;
+function dayKey(date: Date | null | undefined): string {
+  if (!date) return 'none';
+  return date.toISOString().slice(0, 10);
 }
-
-// Cleanup old entries daily
-setInterval(() => {
-  const now = Date.now();
-  const maxCooldown = 30 * 24 * 60 * 60 * 1000;
-  for (const [key, time] of sentEmails) {
-    if (now - time > maxCooldown) sentEmails.delete(key);
-  }
-}, 24 * 60 * 60 * 1000);
 
 async function runEngagement() {
   try {
@@ -48,14 +28,34 @@ async function runEngagement() {
         emailOptOut: false,
         projects: { none: { status: 'LIVE' } },
       },
-      select: { id: true, email: true, displayName: true },
+      select: { id: true, email: true, displayName: true, createdAt: true },
     });
 
     for (const user of newUsersNoDeploy) {
-      if (shouldSend('onboarding', user.id)) {
-        const name = user.displayName || user.email.split('@')[0];
-        sendOnboardingReminderEmail(user.email, name).catch(() => {});
-        logger.info(`Engagement: onboarding reminder → ${user.email}`);
+      if (!(await canSendMarketingNow(user.id))) {
+        logger.info(`Engagement: onboarding skipped by quiet-period → ${user.email}`);
+        continue;
+      }
+
+      const name = user.displayName || user.email.split('@')[0];
+      const dedupeKey = `eng_onboarding:user:${user.id}:created:${dayKey(user.createdAt)}`;
+
+      try {
+        const result = await sendEmailOnce({
+          dedupeKey,
+          eventType: 'eng_onboarding',
+          recipientEmail: user.email,
+          userId: user.id,
+          category: 'marketing',
+          payload: { userId: user.id, cohort: dayKey(user.createdAt) },
+        }, () => sendOnboardingReminderEmail(user.email, name));
+
+        if (result.sent) logger.info(`Engagement: onboarding reminder → ${user.email}`);
+      } catch (err) {
+        logger.warn('Engagement onboarding send failed', {
+          userId: user.id,
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
     }
 
@@ -73,6 +73,7 @@ async function runEngagement() {
         id: true,
         email: true,
         displayName: true,
+        createdAt: true,
         projects: {
           where: { status: 'LIVE' },
           select: { slug: true },
@@ -82,10 +83,31 @@ async function runEngagement() {
     });
 
     for (const user of usersWithDeploy) {
-      if (user.projects.length > 0 && shouldSend('tips', user.id)) {
-        const name = user.displayName || user.email.split('@')[0];
-        sendTipsEmail(user.email, name, user.projects[0].slug).catch(() => {});
-        logger.info(`Engagement: tips email → ${user.email}`);
+      if (user.projects.length === 0) continue;
+      if (!(await canSendMarketingNow(user.id))) {
+        logger.info(`Engagement: tips skipped by quiet-period → ${user.email}`);
+        continue;
+      }
+
+      const name = user.displayName || user.email.split('@')[0];
+      const dedupeKey = `eng_tips:user:${user.id}:created:${dayKey(user.createdAt)}`;
+
+      try {
+        const result = await sendEmailOnce({
+          dedupeKey,
+          eventType: 'eng_tips',
+          recipientEmail: user.email,
+          userId: user.id,
+          category: 'marketing',
+          payload: { userId: user.id, cohort: dayKey(user.createdAt), slug: user.projects[0].slug },
+        }, () => sendTipsEmail(user.email, name, user.projects[0].slug));
+
+        if (result.sent) logger.info(`Engagement: tips email → ${user.email}`);
+      } catch (err) {
+        logger.warn('Engagement tips send failed', {
+          userId: user.id,
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
     }
 
@@ -97,20 +119,39 @@ async function runEngagement() {
       where: {
         emailOptOut: false,
         OR: [
-          // lastActiveAt is 30+ days ago
           { lastActiveAt: { gte: thirtyOneDaysAgo, lte: thirtyDaysAgo } },
-          // Never had lastActiveAt, but created 30 days ago
           { lastActiveAt: null, createdAt: { gte: thirtyOneDaysAgo, lte: thirtyDaysAgo } },
         ],
       },
-      select: { id: true, email: true, displayName: true },
+      select: { id: true, email: true, displayName: true, createdAt: true, lastActiveAt: true },
     });
 
     for (const user of inactiveUsers) {
-      if (shouldSend('winback', user.id)) {
-        const name = user.displayName || user.email.split('@')[0];
-        sendWinBackEmail(user.email, name).catch(() => {});
-        logger.info(`Engagement: win-back → ${user.email}`);
+      if (!(await canSendMarketingNow(user.id))) {
+        logger.info(`Engagement: winback skipped by quiet-period → ${user.email}`);
+        continue;
+      }
+
+      const name = user.displayName || user.email.split('@')[0];
+      const inactivityAnchor = dayKey(user.lastActiveAt || user.createdAt);
+      const dedupeKey = `eng_winback:user:${user.id}:anchor:${inactivityAnchor}`;
+
+      try {
+        const result = await sendEmailOnce({
+          dedupeKey,
+          eventType: 'eng_winback',
+          recipientEmail: user.email,
+          userId: user.id,
+          category: 'marketing',
+          payload: { userId: user.id, inactivityAnchor },
+        }, () => sendWinBackEmail(user.email, name));
+
+        if (result.sent) logger.info(`Engagement: win-back → ${user.email}`);
+      } catch (err) {
+        logger.warn('Engagement winback send failed', {
+          userId: user.id,
+          error: err instanceof Error ? err.message : String(err),
+        });
       }
     }
   } catch (err) {
