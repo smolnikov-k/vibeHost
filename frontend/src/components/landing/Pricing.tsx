@@ -8,13 +8,14 @@ const plans = [
   {
     name: 'FREE',
     price: '0',
-    period: 'навсегда',
+    period: 'старт бесплатно',
     description: 'Для старта и экспериментов',
     features: [
       '1 сайт',
       '50 МБ хранилище',
       'Субдомен .hostingvibe.ru',
       '10 ГБ трафик / мес',
+      'Без привязки карты',
       'Базовая аналитика',
       '3 версии для отката',
     ],
@@ -99,6 +100,12 @@ export function Pricing() {
                 ))}
               </ul>
 
+
+              {plan.name === 'FREE' ? (
+                <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mb-4">
+                  Проекты на FREE могут быть приостановлены по правилам тарифа, если долго не обновляются.
+                </p>
+              ) : null}
               <Link
                 href={plan.href}
                 className={`block w-full text-center py-3 rounded-xl font-semibold transition-all ${

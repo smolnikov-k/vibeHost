@@ -95,29 +95,27 @@ export async function sendPasswordResetEmail(email: string, token: string): Prom
 export async function sendWelcomeEmail(email: string, displayName: string): Promise<void> {
   const html = baseLayout(`
     <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#111827">Добро пожаловать, ${escapeHtml(displayName)}!</h2>
-    <p style="margin:0 0 20px;font-size:14px;color:#6b7280;line-height:1.6">
-      Ваш аккаунт на VibeHosting создан. Запустить сайт — проще простого:
+    <p style="margin:0 0 16px;font-size:14px;color:#6b7280;line-height:1.6">
+      Начни с первого деплоя — без карты, сразу выдадим 1 сайт, 50 МБ и ссылку для предпросмотра.
     </p>
 
-    ${stepCard(1, 'Создайте проект', 'Придумайте название — мы выдадим поддомен <b>ваш-сайт.hostingvibe.ru</b>')}
-    ${stepCard(2, 'Загрузите файлы', 'ZIP-архив с HTML, CSS и картинками — или один HTML-файл')}
-    ${stepCard(3, 'Сайт онлайн!', 'Через 30 секунд ваш сайт доступен всему миру')}
+    ${stepCard(1, 'Создай проект', 'Задай название — получишь поддомен <b>ваш-сайт.hostingvibe.ru</b>')}
+    ${stepCard(2, 'Загрузи архив', 'Поддерживаем ZIP с HTML/CSS/картинками или одиночный HTML-файл')}
+    ${stepCard(3, 'Проверь сайт', 'Открывай ссылку, поделись с командой или подключи свой домен')}
 
     ${buttonHtml('Создать первый сайт', `${config.frontendUrl}/projects/new`)}
 
-    <div style="background:#f0fdf4;border-radius:10px;padding:16px;margin:20px 0 0">
+    <div style="background:#f0fdf4;border-radius:10px;padding:14px;margin:18px 0 0">
       <div style="font-size:13px;font-weight:600;color:#166534;margin-bottom:6px">Бесплатный тариф</div>
       <div style="font-size:13px;color:#15803d;line-height:1.6">
-        1 сайт · 50 МБ · 30 дней<br>
-        Нужно больше? <a href="${config.frontendUrl}/billing" style="color:#10b981;font-weight:600;text-decoration:none">Тариф PRO — 386 ₽/мес</a>
+        1 сайт · 50 МБ · 30 дней. Когда понадобится больше — включишь PRO за 386 ₽/мес в любой момент.
       </div>
     </div>
 
-    <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6">
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid #f3f4f6">
       <p style="margin:0;font-size:12px;color:#9ca3af;line-height:1.6">
         📖 <a href="${config.frontendUrl}/docs" style="color:#10b981;text-decoration:none">Документация</a> &nbsp;·&nbsp;
-        🤖 <a href="${config.frontendUrl}/ai" style="color:#10b981;text-decoration:none">AI-промпт для деплоя</a> &nbsp;·&nbsp;
-        🎨 <a href="${config.frontendUrl}/gallery" style="color:#10b981;text-decoration:none">Галерея сайтов</a>
+        ✉️ Ответь на письмо, если нужна помощь — мы читаем.
       </p>
     </div>
   `);

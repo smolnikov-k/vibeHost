@@ -45,7 +45,7 @@ const moreFeatures = [
   { icon: Shield, label: 'Бесплатный HTTPS' },
   { icon: Lock, label: 'Защита паролем' },
   { icon: History, label: 'Версии и откат' },
-  { icon: Users, label: 'Командный доступ' },
+  { icon: Users, label: 'Управление проектами' },
   { icon: FileCode, label: 'React / Vue / Vite' },
   { icon: Download, label: 'Скачать ZIP обратно' },
 ];

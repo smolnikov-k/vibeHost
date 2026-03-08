@@ -40,6 +40,14 @@ export default function RegisterPage() {
     e.preventDefault();
     setError('');
 
+    const trimmedEmail = email.trim();
+    const trimmedName = displayName.trim();
+
+    if (!trimmedEmail || !/[^\s@]+@[^\s@]+\.[^\s@]+/.test(trimmedEmail)) {
+      setError('Укажи корректный email — он нужен для входа и писем о статусе проекта');
+      return;
+    }
+
     if (password.length < 6) {
       setError('Пароль должен быть минимум 6 символов');
       return;
@@ -52,7 +60,7 @@ export default function RegisterPage() {
 
     setLoading(true);
     try {
-      await register(email, password, displayName || undefined);
+      await register(trimmedEmail, password, trimmedName || undefined);
       if (typeof window !== 'undefined' && typeof window.ym === 'function') {
         window.ym(107147478, 'reachGoal', 'registration');
       }
@@ -81,7 +89,10 @@ export default function RegisterPage() {
 
         {/* Card */}
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
-          <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">Регистрация</h1>
+          <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">Регистрация</h1>
+          <p className="text-sm text-gray-600 text-center mb-4">
+            Без карты. Сразу выдадим 1 сайт, 50 МБ и ссылку для предпросмотра.
+          </p>
 
           <div id={errorId} role="alert" aria-live="assertive" className="min-h-6 mb-4">
             {error ? (

@@ -225,7 +225,7 @@ export default function NewProjectPage() {
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
             <h1 className="text-xl font-bold text-gray-900 mb-2">Загрузи сайт</h1>
             <p className="text-sm text-gray-500 mb-6">
-              ZIP, TAR.GZ архив или HTML-файл. В архиве должен быть index.html или package.json.
+              ZIP или TAR.GZ архив. Внутри должен быть index.html или package.json.
             </p>
 
             {error && (
@@ -251,7 +251,7 @@ export default function NewProjectPage() {
               <input
                 ref={fileInputRef}
                 type="file"
-                accept=".zip,.tar.gz,.tgz,.html,.htm,application/zip,application/x-zip-compressed,application/gzip,application/x-gzip,application/x-tar,application/x-compressed-tar"
+                accept=".zip,.tar.gz,.tgz,application/zip,application/x-zip-compressed,application/gzip,application/x-gzip,application/x-tar,application/x-compressed-tar"
                 onChange={handleFileSelect}
                 className="hidden"
               />

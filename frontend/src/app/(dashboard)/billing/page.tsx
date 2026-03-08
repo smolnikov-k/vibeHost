@@ -109,7 +109,7 @@ export default function BillingPage() {
           )}
           <h2 className="text-lg font-bold text-gray-900 mb-1">FREE</h2>
           <p className="text-3xl font-extrabold text-gray-900 mb-4">
-            0 <span className="text-sm font-normal text-gray-400">навсегда</span>
+            0 <span className="text-sm font-normal text-gray-400">бесплатно</span>
           </p>
           <ul className="space-y-2 text-sm text-gray-600">
             <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> 1 сайт</li>
@@ -117,6 +117,9 @@ export default function BillingPage() {
             <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> 10 ГБ трафик/мес</li>
             <li className="flex items-center gap-2"><Check className="w-4 h-4 text-emerald-500" /> 10 AI-запросов</li>
           </ul>
+          <p className="text-xs text-amber-700 bg-amber-50 border border-amber-100 rounded-lg px-3 py-2 mt-4">
+            Если проект долго не обновляется на FREE, он может быть приостановлен по правилам тарифа.
+          </p>
         </div>
 
         {/* PRO */}

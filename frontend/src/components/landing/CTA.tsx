@@ -25,7 +25,7 @@ export function CTA() {
               Попробовать бесплатно
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <p className="text-emerald-200 text-sm">Регистрация за 10 секунд через Telegram</p>
+            <p className="text-emerald-200 text-sm">Быстрая регистрация по email — без карты</p>
           </div>
         </div>
       </div>

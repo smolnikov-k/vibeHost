@@ -162,7 +162,7 @@ export function Hero() {
                 </div>
                 <p className="text-gray-800 font-semibold text-lg mb-1">Перетащите файлы сюда</p>
                 <p id={dropzoneHintId} className="text-sm text-gray-400 mb-5">
-                  ZIP-архив, HTML, папку или ссылку на GitHub. Нажмите Enter или пробел для перехода к регистрации.
+                  ZIP/TAR.GZ архив или ссылку на GitHub. Нажмите Enter или пробел для перехода к регистрации.
                 </p>
                 <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/25 group-hover:shadow-xl">
                   Загрузить файл

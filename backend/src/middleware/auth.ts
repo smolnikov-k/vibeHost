@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma';
 import { config } from '../config';
+import logger from '../services/logger';
 
 export interface AuthRequest extends Request {
   userId?: string;
@@ -37,10 +38,49 @@ function readBearerToken(req: Request): string | undefined {
   return undefined;
 }
 
+function readLegacyQueryToken(req: Request): string | undefined {
+  return typeof req.query.token === 'string' ? req.query.token : undefined;
+}
+
 function verifyAndAttach(token: string, req: AuthRequest): void {
   const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as JwtPayload;
   req.userId = payload.userId;
   req.userEmail = payload.email;
+}
+
+function normalizeOrigin(value: string): string | undefined {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return undefined;
+  }
+}
+
+const TRUSTED_ORIGINS = new Set(
+  [...config.corsOrigins, config.frontendUrl]
+    .map(normalizeOrigin)
+    .filter((v): v is string => Boolean(v)),
+);
+
+function isMutatingMethod(method: string): boolean {
+  return ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method.toUpperCase());
+}
+
+function validateCookieOrigin(req: Request, res: Response): boolean {
+  if (!isMutatingMethod(req.method)) return true;
+
+  const originHeader = req.headers.origin;
+  if (!originHeader || typeof originHeader !== 'string') {
+    // Keep backward compatibility for non-browser clients and same-origin edge cases.
+    return true;
+  }
+
+  const origin = normalizeOrigin(originHeader);
+  if (!origin || !TRUSTED_ORIGINS.has(origin)) {
+    res.status(403).json({ error: 'Запрос отклонён политикой безопасности Origin' });
+    return false;
+  }
+  return true;
 }
 
 // Optional auth — sets userId if token is valid, continues regardless
@@ -57,15 +97,31 @@ export function optionalAuth(req: AuthRequest, _res: Response, next: NextFunctio
 }
 
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction): void {
-  // Priority for SSE/browser auth: cookie -> Authorization header -> legacy query token
-  const token =
-    readCookie(req, 'vibe_token') ||
-    readBearerToken(req) ||
-    (typeof req.query.token === 'string' ? req.query.token : undefined);
+  // Priority for browser auth: cookie -> Authorization header -> legacy query token
+  const cookieToken = readCookie(req, 'vibe_token');
+  const bearerToken = readBearerToken(req);
+  const queryToken = readLegacyQueryToken(req);
+
+  const token = cookieToken || bearerToken || queryToken;
 
   if (!token) {
     res.status(401).json({ error: 'Требуется авторизация' });
     return;
+  }
+
+  // For mutating browser flows using cookie auth, enforce Origin allowlist.
+  if (cookieToken && !bearerToken && !queryToken && !validateCookieOrigin(req, res)) {
+    return;
+  }
+
+  if (queryToken) {
+    res.setHeader('Deprecation', 'true');
+    res.setHeader('Sunset', 'Wed, 31 Dec 2026 23:59:59 GMT');
+    logger.warn('Legacy query token auth used', {
+      path: req.path,
+      method: req.method,
+      requestId: (req as any).requestId,
+    });
   }
 
   try {
