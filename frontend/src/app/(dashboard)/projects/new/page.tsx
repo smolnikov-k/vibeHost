@@ -149,7 +149,7 @@ export default function NewProjectPage() {
 
       <div ref={cardRef} className="max-w-lg mx-auto opacity-0">
         {step === 'info' ? (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
             <h1 className="text-xl font-bold text-gray-900 mb-6">Новый проект</h1>
 
             {error && (
@@ -222,7 +222,7 @@ export default function NewProjectPage() {
             </form>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
             <h1 className="text-xl font-bold text-gray-900 mb-2">Загрузи сайт</h1>
             <p className="text-sm text-gray-500 mb-6">
               ZIP, TAR.GZ архив или HTML-файл. В архиве должен быть index.html или package.json.
@@ -240,7 +240,7 @@ export default function NewProjectPage() {
               onDragLeave={() => setDragOver(false)}
               onDrop={handleDrop}
               onClick={() => fileInputRef.current?.click()}
-              className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition-all ${
+              className={`border-2 border-dashed rounded-xl p-6 sm:p-10 text-center cursor-pointer transition-all ${
                 dragOver
                   ? 'border-emerald-400 bg-emerald-50'
                   : file

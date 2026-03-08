@@ -14,6 +14,22 @@ import logger from '../services/logger';
 
 const router = Router();
 
+// Per-project deploy lock to prevent race conditions
+const deployLocks = new Map<string, Promise<void>>();
+
+function acquireDeployLock(projectId: string): { acquired: boolean; release: () => void } {
+  if (deployLocks.has(projectId)) {
+    return { acquired: false, release: () => {} };
+  }
+  let release: () => void;
+  const promise = new Promise<void>(resolve => { release = resolve; });
+  deployLocks.set(projectId, promise);
+  return {
+    acquired: true,
+    release: () => { deployLocks.delete(projectId); release!(); },
+  };
+}
+
 // Upload ZIP and deploy
 router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: AuthRequest, res: Response) => {
   try {
@@ -32,6 +48,14 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
     if (!project) {
       fs.unlinkSync(req.file.path);
       res.status(404).json({ error: 'Проект не найден' });
+      return;
+    }
+
+    // Prevent concurrent deploys for the same project
+    const lock = acquireDeployLock(projectId);
+    if (!lock.acquired) {
+      fs.unlinkSync(req.file.path);
+      res.status(409).json({ error: 'Деплой уже выполняется для этого проекта. Дождитесь завершения.' });
       return;
     }
 
@@ -79,10 +103,10 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
       message: 'Деплой запущен',
     });
 
-    // Process in background (non-blocking)
-    processDeploy(deployment.id).catch(err => {
-      logger.error(`Deploy ${deployment.id} failed:`, err);
-    });
+    // Process in background (non-blocking), release lock when done
+    processDeploy(deployment.id)
+      .catch(err => { logger.error(`Deploy ${deployment.id} failed:`, err); })
+      .finally(() => { lock.release(); });
 
   } catch (err) {
     logger.error('Deploy error:', err);
@@ -238,8 +262,8 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
     const projectId = req.params.id as string;
     const { version } = req.body;
 
-    if (!version || typeof version !== 'number') {
-      res.status(400).json({ error: 'Номер версии обязателен' });
+    if (!version || typeof version !== 'number' || !Number.isInteger(version) || version < 1) {
+      res.status(400).json({ error: 'Номер версии обязателен (целое число ≥ 1)' });
       return;
     }
 
@@ -249,6 +273,11 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
     });
     if (!project) {
       res.status(404).json({ error: 'Проект не найден' });
+      return;
+    }
+
+    if (project.user.plan !== 'PRO') {
+      res.status(403).json({ error: 'Откат версий доступен только на тарифе PRO' });
       return;
     }
 

@@ -120,7 +120,8 @@ export default function ProjectsPage() {
                   </div>
 
                   {project.status === 'LIVE' && (
-                    <span
+                    <button
+                      type="button"
                       onClick={(e) => {
                         e.preventDefault();
                         window.open(`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`, '_blank');
@@ -129,7 +130,7 @@ export default function ProjectsPage() {
                     >
                       <ExternalLink className="w-3.5 h-3.5" />
                       Открыть
-                    </span>
+                    </button>
                   )}
                 </div>
 

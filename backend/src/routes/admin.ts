@@ -121,6 +121,7 @@ router.get('/projects', async (req: AuthRequest, res: Response) => {
           sizeBytes: true, views: true, likes: true, isPublic: true,
           currentVersion: true, createdAt: true, publishedAt: true,
           user: { select: { email: true, displayName: true } },
+          domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
@@ -130,7 +131,7 @@ router.get('/projects', async (req: AuthRequest, res: Response) => {
     ]);
 
     res.json({
-      projects: projects.map(p => ({ ...p, sizeBytes: Number(p.sizeBytes) })),
+      projects: projects.map(p => ({ ...p, sizeBytes: Number(p.sizeBytes), customDomain: p.domains[0]?.hostname ?? null, domains: undefined })),
       pagination: { page, totalPages: Math.ceil(total / limit), total },
     });
   } catch (err) {
@@ -179,7 +180,7 @@ router.get('/reports', async (req: AuthRequest, res: Response) => {
       prisma.report.findMany({
         where,
         include: {
-          project: { select: { slug: true, title: true, status: true } },
+          project: { select: { slug: true, title: true, status: true, domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 } } },
         },
         orderBy: { createdAt: 'desc' },
         skip: (page - 1) * limit,
@@ -189,7 +190,10 @@ router.get('/reports', async (req: AuthRequest, res: Response) => {
     ]);
 
     res.json({
-      reports,
+      reports: reports.map(r => ({
+        ...r,
+        project: { ...r.project, customDomain: r.project.domains[0]?.hostname ?? null, domains: undefined },
+      })),
       pagination: { page, totalPages: Math.ceil(total / limit), total },
     });
   } catch (err) {

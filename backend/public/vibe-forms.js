@@ -106,8 +106,9 @@
   function initAuto() {
     // Перехватываем submit на всех формах через capture phase
     // Это срабатывает ДО обработчиков сайта — мы просто копируем данные
+    // Пропускаем формы с data-vibe-form — их обрабатывает initManual()
     document.addEventListener('submit', function (e) {
-      if (e.target && e.target.tagName === 'FORM') {
+      if (e.target && e.target.tagName === 'FORM' && !e.target.hasAttribute('data-vibe-form')) {
         sendData(e.target);
         sendMetrikaGoal(detectFormName(e.target));
       }

@@ -64,7 +64,7 @@ function LoginForm() {
         </Link>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">Вход</h1>
 
           {error && (

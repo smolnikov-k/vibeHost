@@ -84,10 +84,69 @@ my-site.zip
 6. Макс. размер: 50 МБ (Free) или 500 МБ (Pro)
 7. Макс. файлов: 5 000
 
+## API для деплоя через терминал
+
+Базовый URL: https://hostingvibe.ru/api
+
+### Регистрация / Вход
+
+\`\`\`bash
+# Регистрация
+curl -s -X POST https://hostingvibe.ru/api/auth/register \\
+  -H "Content-Type: application/json" \\
+  -d '{"email": "USER_EMAIL", "password": "USER_PASSWORD"}'
+
+# Вход
+curl -s -X POST https://hostingvibe.ru/api/auth/login \\
+  -H "Content-Type: application/json" \\
+  -d '{"email": "USER_EMAIL", "password": "USER_PASSWORD"}'
+\`\`\`
+
+Ответ: \`{ "token": "eyJhbG...", "user": { "id": "...", "plan": "FREE" } }\`
+Token действует 30 дней.
+
+### Создание проекта
+
+\`\`\`bash
+curl -s -X POST https://hostingvibe.ru/api/projects \\
+  -H "Content-Type: application/json" \\
+  -H "Authorization: Bearer TOKEN" \\
+  -d '{"title": "Название сайта", "slug": "my-site"}'
+\`\`\`
+
+Ответ: \`{ "id": "PROJECT_ID", "slug": "my-site" }\`
+Сайт будет на: https://my-site.hostingvibe.ru
+
+Slug: строчные латинские буквы, цифры, дефисы. 3–40 символов.
+
+### Загрузка и деплой
+
+\`\`\`bash
+# Упаковка
+zip -r site.zip . -x ".*" "node_modules/*" "__MACOSX/*"
+
+# Деплой
+curl -s -X POST https://hostingvibe.ru/api/projects/PROJECT_ID/deploy \\
+  -H "Authorization: Bearer TOKEN" \\
+  -F "file=@site.zip"
+\`\`\`
+
+Ответ: \`{ "deploymentId": "DEPLOY_ID", "status": "PENDING" }\`
+
+### Проверка статуса
+
+\`\`\`bash
+curl -s https://hostingvibe.ru/api/projects/PROJECT_ID/deployments/DEPLOY_ID/status \\
+  -H "Authorization: Bearer TOKEN"
+\`\`\`
+
+Статусы: PENDING → EXTRACTING → BUILDING → LIVE (успех) / FAILED (ошибка)
+
 ## Ссылки
 
 - Сайт: https://hostingvibe.ru
 - Документация: https://hostingvibe.ru/docs
+- AI-промпт (готовая инструкция для нейросети): https://hostingvibe.ru/ai
 `;
 
   return new Response(content, {

@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: '*',
-        allow: ['/', '/gallery'],
-        disallow: ['/projects', '/billing', '/settings', '/domains'],
+        allow: ['/', '/gallery', '/docs'],
+        disallow: ['/projects', '/billing', '/settings', '/domains', '/admin', '/api/'],
       },
     ],
     sitemap: 'https://hostingvibe.ru/sitemap.xml',

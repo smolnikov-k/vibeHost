@@ -18,12 +18,23 @@ export async function siteAuthHandler(req: Request, res: Response) {
     // Nginx forwards the original Host header
     const host = (req.headers['x-original-host'] || req.headers.host || '') as string;
     const match = host.match(/^([a-z0-9][-a-z0-9]*)\.hostingvibe\.ru/i);
-    if (!match) {
-      res.status(200).send('ok');
-      return;
+
+    let slug: string;
+    if (match) {
+      slug = match[1].toLowerCase();
+    } else {
+      // Custom domain — look up by hostname
+      const domain = await prisma.domain.findUnique({
+        where: { hostname: host.toLowerCase().replace(/:\d+$/, '') },
+        select: { project: { select: { slug: true } } },
+      });
+      if (!domain) {
+        res.status(200).send('ok');
+        return;
+      }
+      slug = domain.project.slug;
     }
 
-    const slug = match[1].toLowerCase();
     const project = await prisma.project.findUnique({
       where: { slug },
       select: { passwordEnabled: true, passwordHash: true },
@@ -65,11 +76,14 @@ export async function siteGateGet(req: Request, res: Response) {
   const { slug } = req.params;
   const project = await prisma.project.findUnique({
     where: { slug },
-    select: { title: true, passwordEnabled: true },
+    select: { title: true, passwordEnabled: true, domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 } },
   });
 
+  // Determine the site host: custom domain or subdomain
+  const siteHost = project?.domains[0]?.hostname || `${slug}.hostingvibe.ru`;
+
   if (!project || !project.passwordEnabled) {
-    res.redirect(`https://${slug}.hostingvibe.ru`);
+    res.redirect(`https://${siteHost}`);
     return;
   }
 
@@ -92,11 +106,15 @@ export async function siteGatePost(req: Request, res: Response) {
 
   const project = await prisma.project.findUnique({
     where: { slug },
-    select: { passwordHash: true, passwordEnabled: true },
+    select: { passwordHash: true, passwordEnabled: true, domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 } },
   });
 
+  // Determine the site host: custom domain or subdomain
+  const customDomain = project?.domains[0]?.hostname;
+  const siteHost = customDomain || `${slug}.hostingvibe.ru`;
+
   if (!project || !project.passwordEnabled || !project.passwordHash) {
-    res.redirect(`https://${slug}.hostingvibe.ru`);
+    res.redirect(`https://${siteHost}`);
     return;
   }
 
@@ -113,11 +131,12 @@ export async function siteGatePost(req: Request, res: Response) {
     .update(slug)
     .digest('hex');
 
+  const cookieDomain = customDomain ? `Domain=${customDomain}` : 'Domain=.hostingvibe.ru';
   res.setHeader(
     'Set-Cookie',
-    `${COOKIE_PREFIX}${slug}=${token}; Path=/; Domain=.hostingvibe.ru; Max-Age=${COOKIE_MAX_AGE / 1000}; HttpOnly; Secure; SameSite=Lax`
+    `${COOKIE_PREFIX}${slug}=${token}; Path=/; ${cookieDomain}; Max-Age=${COOKIE_MAX_AGE / 1000}; HttpOnly; Secure; SameSite=Lax`
   );
-  res.redirect(`https://${slug}.hostingvibe.ru`);
+  res.redirect(`https://${siteHost}`);
 }
 
 function parseCookies(cookieHeader: string): Record<string, string> {

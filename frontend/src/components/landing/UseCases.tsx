@@ -94,7 +94,7 @@ export function UseCases() {
         </div>
 
         {/* Active audience content */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-8 md:p-10 shadow-sm">
+        <div className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-8 md:p-10 shadow-sm">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-3">{current.title}</h3>

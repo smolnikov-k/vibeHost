@@ -143,6 +143,9 @@ export default function ProjectPage() {
           setDeployments(prev => prev.map(d =>
             d.id === result.deploymentId ? { ...d, status: data.status as Deployment['status'], errorMessage: data.errorMessage || null } : d
           ));
+          if (data.status === 'LIVE' && typeof window.ym === 'function') {
+            window.ym(107147478, 'reachGoal', 'deploy_success');
+          }
         }, () => loadData());
       } else {
         setTimeout(() => loadData(), 3000);
@@ -169,6 +172,9 @@ export default function ProjectPage() {
           setDeployments(prev => prev.map(d =>
             d.id === result.deploymentId ? { ...d, status: data.status as Deployment['status'], errorMessage: data.errorMessage || null } : d
           ));
+          if (data.status === 'LIVE' && typeof window.ym === 'function') {
+            window.ym(107147478, 'reachGoal', 'deploy_success');
+          }
         }, () => loadData());
       }
     } catch (err) {
@@ -220,22 +226,22 @@ export default function ProjectPage() {
 
       {/* Project header */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 mb-6">
-        <div className="flex items-start justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 mb-1">{project.title}</h1>
+        <div className="flex items-start justify-between gap-3 flex-wrap">
+          <div className="min-w-0">
+            <h1 className="text-xl font-bold text-gray-900 mb-1 break-words">{project.title}</h1>
             <a
-              href={`https://${project.slug}.hostingvibe.ru`}
+              href={`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-emerald-600 hover:text-emerald-700 flex items-center gap-1"
             >
               <Globe className="w-3.5 h-3.5" />
-              {project.slug}.hostingvibe.ru
+              {project.customDomain || `${project.slug}.hostingvibe.ru`}
               <ExternalLink className="w-3 h-3" />
             </a>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap shrink-0">
             {project.status === 'LIVE' && (
               <Link
                 href={`/projects/${id}/edit`}
@@ -297,7 +303,7 @@ export default function ProjectPage() {
         {showQR && (
           <div className="mt-4 pt-4 border-t border-gray-100 flex items-center gap-4">
             <QRCodeSVG
-              value={`https://${project.slug}.hostingvibe.ru`}
+              value={`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`}
               size={120}
               bgColor="transparent"
               fgColor="#111827"
@@ -307,7 +313,7 @@ export default function ProjectPage() {
               <p className="text-xs text-gray-400 mb-2">Отсканируйте QR-код или скопируйте ссылку</p>
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText(`https://${project.slug}.hostingvibe.ru`);
+                  navigator.clipboard.writeText(`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`);
                 }}
                 className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
               >
@@ -337,7 +343,7 @@ export default function ProjectPage() {
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
             onClick={() => fileInputRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all ${
+            className={`border-2 border-dashed rounded-xl p-4 sm:p-8 text-center cursor-pointer transition-all ${
               dragOver ? 'border-emerald-400 bg-emerald-50'
                 : file ? 'border-emerald-300 bg-emerald-50/50'
                   : 'border-gray-200 hover:border-emerald-300'
@@ -406,6 +412,7 @@ export default function ProjectPage() {
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
               placeholder="https://github.com/user/repo"
+              aria-label="URL репозитория GitHub"
               className="w-full px-3 py-2.5 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
             />
             <input
@@ -413,6 +420,7 @@ export default function ProjectPage() {
               value={githubSubdir}
               onChange={(e) => setGithubSubdir(e.target.value)}
               placeholder="Поддиректория (необязательно, напр. dist)"
+              aria-label="Поддиректория репозитория"
               className="w-full px-3 py-2 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm text-gray-600"
             />
             <button
@@ -525,7 +533,7 @@ export default function ProjectPage() {
           ) : files.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">Нет файлов</p>
           ) : (
-            <div className="border border-gray-100 rounded-lg overflow-hidden">
+            <div className="border border-gray-100 rounded-lg overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 text-gray-500 text-xs">
                   <tr>
@@ -628,6 +636,9 @@ export default function ProjectPage() {
             </div>
             <button
               onClick={() => setIsPublic(!isPublic)}
+              role="switch"
+              aria-checked={isPublic}
+              aria-label="Публичный проект"
               className={`relative w-11 h-6 rounded-full transition-colors ${
                 isPublic ? 'bg-emerald-500' : 'bg-gray-200'
               }`}
@@ -649,6 +660,9 @@ export default function ProjectPage() {
             </div>
             <button
               onClick={() => setPasswordEnabled(!passwordEnabled)}
+              role="switch"
+              aria-checked={passwordEnabled}
+              aria-label="Защита паролем"
               className={`relative w-11 h-6 rounded-full transition-colors ${
                 passwordEnabled ? 'bg-amber-500' : 'bg-gray-200'
               }`}
@@ -688,10 +702,10 @@ export default function ProjectPage() {
             {metrikaId && (
               <div className="mt-2 p-2.5 bg-gray-50 rounded-lg border border-gray-100">
                 <p className="text-xs font-medium text-gray-600 mb-1.5">Автоматическое отслеживание заявок</p>
-                <p className="text-[11px] text-gray-500 mb-1.5">
+                <p className="text-xs text-gray-500 mb-1.5">
                   При отправке любой формы на сайте автоматически срабатывает цель <span className="font-mono bg-white px-1 py-0.5 rounded border border-gray-200">form_submit</span>. Чтобы видеть конверсии в Метрике:
                 </p>
-                <ol className="text-[11px] text-gray-500 space-y-0.5 ml-3 list-decimal">
+                <ol className="text-xs text-gray-500 space-y-0.5 ml-3 list-decimal">
                   <li>Откройте <a href={`https://metrika.yandex.ru/list`} target="_blank" rel="noopener noreferrer" className="text-emerald-600 underline">metrika.yandex.ru</a> → ваш счётчик → Настройка → Цели</li>
                   <li>Нажмите «Добавить цель»</li>
                   <li>Выберите «JavaScript-событие»</li>
@@ -746,8 +760,8 @@ export default function ProjectPage() {
 
         <div className="border-t border-gray-100 pt-4">
           {showDelete ? (
-            <div className="flex items-center gap-3">
-              <p className="text-sm text-red-600 flex-1">
+            <div className="flex items-center gap-3 flex-wrap">
+              <p className="text-sm text-red-600 flex-1 min-w-0">
                 Удалить проект «{project.title}» и все файлы? Это нельзя отменить.
               </p>
               <button

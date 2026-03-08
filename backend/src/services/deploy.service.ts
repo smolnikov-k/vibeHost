@@ -161,7 +161,7 @@ function validateExtractedDir(dir: string, maxSize: number): { valid: boolean; e
 export async function processDeploy(deploymentId: string): Promise<void> {
   const deployment = await prisma.deployment.findUnique({
     where: { id: deploymentId },
-    include: { project: { include: { user: true } } },
+    include: { project: { include: { user: true, domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 } } } },
   });
 
   if (!deployment) throw new Error(`Deployment ${deploymentId} not found`);
@@ -291,6 +291,9 @@ export async function processDeploy(deploymentId: string): Promise<void> {
     // Auto-inject vibe-patches.js for visual patches runtime
     try { injectVibePatchesScript(siteDir, project.slug); } catch { /* non-critical */ }
 
+    // Auto-inject vibe-analytics.js for built-in analytics dashboard
+    try { injectVibeAnalyticsScript(siteDir, project.slug); } catch { /* non-critical */ }
+
     // Auto-inject Yandex.Metrika counter if configured
     if (project.metrikaId) {
       try { injectYandexMetrika(siteDir, project.metrikaId); } catch { /* non-critical */ }
@@ -299,50 +302,53 @@ export async function processDeploy(deploymentId: string): Promise<void> {
     // Set permissions for Nginx (safe — no shell interpolation)
     try { setNginxPermissions(siteDir); } catch { /* non-critical */ }
 
-    // Mark previous deployments as superseded
-    await prisma.deployment.updateMany({
-      where: { projectId: project.id, status: 'LIVE', id: { not: deploymentId } },
-      data: { status: 'SUPERSEDED' },
-    });
+    // Atomic: update deployment status, project, and recalculate storage in a single transaction
+    await prisma.$transaction(async (tx) => {
+      // Mark previous deployments as superseded
+      await tx.deployment.updateMany({
+        where: { projectId: project.id, status: 'LIVE', id: { not: deploymentId } },
+        data: { status: 'SUPERSEDED' },
+      });
 
-    // Update deployment
-    await prisma.deployment.update({
-      where: { id: deploymentId },
-      data: {
-        status: 'LIVE',
-        sizeBytes: totalSize,
-        fileCount: fileCount,
-      },
-    });
+      // Update deployment
+      await tx.deployment.update({
+        where: { id: deploymentId },
+        data: {
+          status: 'LIVE',
+          sizeBytes: totalSize,
+          fileCount: fileCount,
+        },
+      });
 
-    // Update project (atomic increment to avoid race condition)
-    await prisma.project.update({
-      where: { id: project.id },
-      data: {
-        status: 'LIVE',
-        sizeBytes: totalSize,
-        fileCount: fileCount,
-        currentVersion: { increment: 1 },
-        publishedAt: new Date(),
-      },
-    });
+      // Update project (atomic increment to avoid race condition)
+      await tx.project.update({
+        where: { id: project.id },
+        data: {
+          status: 'LIVE',
+          sizeBytes: totalSize,
+          fileCount: fileCount,
+          currentVersion: { increment: 1 },
+          publishedAt: new Date(),
+        },
+      });
 
-    // Recalculate user storage
-    const allProjects = await prisma.project.findMany({
-      where: { userId: user.id },
-      select: { sizeBytes: true },
-    });
-    const totalStorage = allProjects.reduce((sum, p) => sum + Number(p.sizeBytes), 0);
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { storageUsed: totalStorage },
+      // Recalculate user storage (single aggregate instead of findMany + reduce)
+      const agg = await tx.project.aggregate({
+        where: { userId: user.id },
+        _sum: { sizeBytes: true },
+      });
+      await tx.user.update({
+        where: { id: user.id },
+        data: { storageUsed: Number(agg._sum.sizeBytes || 0) },
+      });
     });
 
     // Cleanup ZIP
     fs.unlinkSync(archivePath);
 
     // Deploy notification (fire-and-forget)
-    sendDeployNotification(user.email, project.title, project.slug).catch(() => {});
+    const customDomain = project.domains[0]?.hostname ?? null;
+    sendDeployNotification(user.email, project.title, project.slug, customDomain).catch(() => {});
 
   } catch (err) {
     await failDeploy(deploymentId, project.id, (err as Error).message);
@@ -378,7 +384,7 @@ async function failDeploy(deploymentId: string, projectId: string, error: string
  */
 export function injectVibeFormsScript(dir: string, slug: string, metrikaId?: string | null): void {
   const metrikaAttr = metrikaId ? ` data-metrika-id="${metrikaId.replace(/\D/g, '')}"` : '';
-  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-forms.js" data-vibe-auto data-slug="${slug}"${metrikaAttr}></script>`;
+  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-forms.js" data-vibe-auto data-slug="${slug}"${metrikaAttr} defer></script>`;
 
   function walk(current: string) {
     for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
@@ -388,7 +394,15 @@ export function injectVibeFormsScript(dir: string, slug: string, metrikaId?: str
       } else if (entry.name.endsWith('.html')) {
         try {
           let html = fs.readFileSync(full, 'utf-8');
-          if (html.includes('vibe-forms.js')) continue; // already has it
+          if (html.includes('vibe-forms.js')) {
+            // Replace any existing vibe-forms.js tag (may lack data-vibe-auto / data-slug)
+            const oldTag = html.match(/<script[^>]*vibe-forms\.js[^>]*><\/script>/);
+            if (oldTag && oldTag[0] !== scriptTag) {
+              html = html.replace(oldTag[0], scriptTag);
+              fs.writeFileSync(full, html);
+            }
+            continue;
+          }
           if (html.includes('</body>')) {
             html = html.replace('</body>', scriptTag + '\n</body>');
             fs.writeFileSync(full, html);
@@ -406,7 +420,7 @@ export function injectVibeFormsScript(dir: string, slug: string, metrikaId?: str
  * Applies visual patches (text, image, hide) at runtime on user sites.
  */
 export function injectVibePatchesScript(dir: string, slug: string): void {
-  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-patches.js" data-slug="${slug}"></script>`;
+  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-patches.js" data-slug="${slug}" defer></script>`;
 
   function walk(current: string) {
     for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
@@ -449,6 +463,33 @@ export function injectYandexMetrika(dir: string, metrikaId: string): void {
           if (html.includes('mc.yandex.ru/metrika')) continue;
           if (html.includes('</head>')) {
             html = html.replace('</head>', scriptTag + '\n</head>');
+            fs.writeFileSync(full, html);
+          }
+        } catch { /* skip unreadable files */ }
+      }
+    }
+  }
+
+  walk(dir);
+}
+
+/**
+ * Inject vibe-analytics.js into all HTML files for built-in analytics dashboard.
+ */
+export function injectVibeAnalyticsScript(dir: string, slug: string): void {
+  const scriptTag = `<script src="https://hostingvibe.ru/api/vibe-analytics.js" data-slug="${slug}" defer></script>`;
+
+  function walk(current: string) {
+    for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) {
+        walk(full);
+      } else if (entry.name.endsWith('.html')) {
+        try {
+          let html = fs.readFileSync(full, 'utf-8');
+          if (html.includes('vibe-analytics.js')) continue;
+          if (html.includes('</body>')) {
+            html = html.replace('</body>', scriptTag + '\n</body>');
             fs.writeFileSync(full, html);
           }
         } catch { /* skip unreadable files */ }

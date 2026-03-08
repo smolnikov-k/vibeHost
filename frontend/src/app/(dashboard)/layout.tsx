@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AuthProvider, useAuth } from '@/lib/auth';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Zap, FolderOpen, Settings, LogOut, Loader2, CreditCard, Globe, Shield } from 'lucide-react';
 
 function DashboardShell({ children }: { children: React.ReactNode }) {
@@ -37,7 +38,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen bg-gray-50">
       {/* Top nav */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/projects" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 to-green-500 flex items-center justify-center">
               <Zap className="w-4 h-4 text-white" />
@@ -111,6 +112,7 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
             <button
               onClick={handleLogout}
               className="flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 transition-colors"
+              aria-label="Выйти из аккаунта"
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -118,8 +120,10 @@ function DashboardShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {children}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
       </main>
     </div>
   );

@@ -153,7 +153,7 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
   const [openRegistrar, setOpenRegistrar] = useState<string | null>(null);
 
   return (
-    <div className="mt-4 ml-6 space-y-4">
+    <div className="mt-4 ml-3 sm:ml-6 space-y-4">
       <div className="p-5 bg-gradient-to-b from-gray-50 to-white rounded-xl border border-gray-200">
         <p className="text-sm font-bold text-gray-900 mb-1">Подключение домена {domain.hostname}</p>
         <p className="text-xs text-gray-500 mb-1">Нужно указать вашему домену, что сайт теперь живёт на нашем сервере. Для этого добавьте 2 DNS-записи.</p>
@@ -180,7 +180,7 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                         <button
                           key={r.name}
                           onClick={() => setOpenRegistrar(openRegistrar === r.name ? null : r.name)}
-                          className={`px-2.5 py-1 text-[11px] rounded-md border transition-colors ${
+                          className={`px-2.5 py-1.5 text-xs sm:text-[11px] rounded-md border transition-colors ${
                             openRegistrar === r.name
                               ? 'bg-emerald-50 border-emerald-300 text-emerald-700 font-medium'
                               : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-200 hover:text-emerald-600'
@@ -246,26 +246,26 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                 </p>
               </div>
 
-              <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+              <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
                 <table className="w-full text-xs">
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-100">
-                      <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Тип</th>
-                      <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Имя (Host)</th>
-                      <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Значение (Value)</th>
-                      <th className="text-left px-3 py-1.5 text-gray-400 font-medium">TTL</th>
+                      <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Тип</th>
+                      <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Имя</th>
+                      <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Значение</th>
+                      <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium hidden sm:table-cell">TTL</th>
                       <th className="w-8"></th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr className="border-b border-gray-50">
-                      <td className="px-3 py-2 font-mono font-semibold text-gray-800">A</td>
-                      <td className="px-3 py-2">
+                      <td className="px-2 sm:px-3 py-2 font-mono font-semibold text-gray-800">A</td>
+                      <td className="px-2 sm:px-3 py-2">
                         <span className="font-mono text-gray-700">@</span>
-                        <span className="text-[10px] text-gray-400 block mt-0.5">Где-то нужно оставить пустым, где-то ввести @</span>
+                        <span className="text-[10px] text-gray-400 block mt-0.5 hidden sm:block">Где-то нужно оставить пустым, где-то ввести @</span>
                       </td>
-                      <td className="px-3 py-2 font-mono text-emerald-600 font-semibold">{SERVER_IP}</td>
-                      <td className="px-3 py-2 text-gray-500">3600</td>
+                      <td className="px-2 sm:px-3 py-2 font-mono text-emerald-600 font-semibold">{SERVER_IP}</td>
+                      <td className="px-2 sm:px-3 py-2 text-gray-500 hidden sm:table-cell">3600</td>
                       <td className="px-1 py-2">
                         <button
                           onClick={() => copyToClipboard(SERVER_IP, `a-${domain.id}`)}
@@ -277,10 +277,10 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                       </td>
                     </tr>
                     <tr>
-                      <td className="px-3 py-2 font-mono font-semibold text-gray-800">CNAME</td>
-                      <td className="px-3 py-2 font-mono text-gray-700">www</td>
-                      <td className="px-3 py-2 font-mono text-emerald-600 font-semibold">{domain.hostname}</td>
-                      <td className="px-3 py-2 text-gray-500">3600</td>
+                      <td className="px-2 sm:px-3 py-2 font-mono font-semibold text-gray-800">CNAME</td>
+                      <td className="px-2 sm:px-3 py-2 font-mono text-gray-700">www</td>
+                      <td className="px-2 sm:px-3 py-2 font-mono text-emerald-600 font-semibold break-all">{domain.hostname}</td>
+                      <td className="px-2 sm:px-3 py-2 text-gray-500 hidden sm:table-cell">3600</td>
                       <td className="px-1 py-2">
                         <button
                           onClick={() => copyToClipboard(domain.hostname, `cname-${domain.id}`)}
@@ -311,21 +311,21 @@ function DnsGuide({ domain, copied, copyToClipboard }: {
                 <p className="text-sm text-gray-800 font-medium">Добавьте TXT-запись для проверки</p>
                 <p className="text-xs text-gray-500 mt-1 mb-2">Эта запись подтверждает, что домен принадлежит вам. В поле «Имя» введите <span className="font-mono font-medium">_vibe-verify</span>, в поле «Значение» — код ниже.</p>
 
-                <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                <div className="bg-white rounded-lg border border-gray-200 overflow-x-auto">
                   <table className="w-full text-xs">
                     <thead>
                       <tr className="bg-gray-50 border-b border-gray-100">
-                        <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Тип</th>
-                        <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Имя (Host)</th>
-                        <th className="text-left px-3 py-1.5 text-gray-400 font-medium">Значение (Value)</th>
+                        <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Тип</th>
+                        <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Имя</th>
+                        <th className="text-left px-2 sm:px-3 py-1.5 text-gray-400 font-medium">Значение</th>
                         <th className="w-8"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td className="px-3 py-2 font-mono font-semibold text-gray-800">TXT</td>
-                        <td className="px-3 py-2 font-mono text-gray-700">_vibe-verify</td>
-                        <td className="px-3 py-2 font-mono text-emerald-600 font-semibold break-all">{domain.verifyToken}</td>
+                        <td className="px-2 sm:px-3 py-2 font-mono font-semibold text-gray-800">TXT</td>
+                        <td className="px-2 sm:px-3 py-2 font-mono text-gray-700 break-all">_vibe-verify</td>
+                        <td className="px-2 sm:px-3 py-2 font-mono text-emerald-600 font-semibold break-all">{domain.verifyToken}</td>
                         <td className="px-1 py-2">
                           <button
                             onClick={() => copyToClipboard(domain.verifyToken!, `txt-${domain.id}`)}

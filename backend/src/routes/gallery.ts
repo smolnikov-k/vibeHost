@@ -75,6 +75,7 @@ router.get('/', optionalAuth, async (req: AuthRequest, res: Response) => {
           views: true,
           publishedAt: true,
           user: { select: { displayName: true } },
+          domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 },
         },
       }),
       prisma.project.count({ where }),
@@ -96,6 +97,8 @@ router.get('/', optionalAuth, async (req: AuthRequest, res: Response) => {
     res.json({
       projects: projects.map(p => ({
         ...p,
+        customDomain: p.domains[0]?.hostname ?? null,
+        domains: undefined,
         isLiked: likedIds.has(p.id),
       })),
       pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
@@ -194,27 +197,23 @@ router.post('/:slug/like', optionalAuth, async (req: AuthRequest, res: Response)
       return;
     }
 
-    // Authenticated user — use DB-based likes
+    // Authenticated user — use DB-based likes (transaction for consistency)
     if (req.userId) {
       const existing = await prisma.projectLike.findUnique({
         where: { projectId_userId: { projectId: project.id, userId: req.userId } },
       });
 
       if (existing) {
-        await prisma.projectLike.delete({ where: { id: existing.id } });
-        await prisma.project.update({
-          where: { id: project.id },
-          data: { likes: { decrement: 1 } },
-        });
+        await prisma.$transaction([
+          prisma.projectLike.delete({ where: { id: existing.id } }),
+          prisma.project.update({ where: { id: project.id }, data: { likes: { decrement: 1 } } }),
+        ]);
         res.json({ liked: false, likes: Math.max(0, project.likes - 1) });
       } else {
-        await prisma.projectLike.create({
-          data: { projectId: project.id, userId: req.userId },
-        });
-        await prisma.project.update({
-          where: { id: project.id },
-          data: { likes: { increment: 1 } },
-        });
+        await prisma.$transaction([
+          prisma.projectLike.create({ data: { projectId: project.id, userId: req.userId } }),
+          prisma.project.update({ where: { id: project.id }, data: { likes: { increment: 1 } } }),
+        ]);
         res.json({ liked: true, likes: project.likes + 1 });
       }
       return;

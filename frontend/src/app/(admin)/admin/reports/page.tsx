@@ -128,7 +128,7 @@ export default function AdminReportsPage() {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <a
-                      href={`https://${report.project.slug}.hostingvibe.ru`}
+                      href={`https://${report.project.customDomain || `${report.project.slug}.hostingvibe.ru`}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs text-gray-400 hover:text-emerald-400 transition-colors"

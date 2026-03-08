@@ -41,23 +41,23 @@ export function Comparison() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100">
-                  <th className="text-left py-4 px-5 font-medium text-gray-500 w-[40%]">Функция</th>
-                  <th className="py-4 px-3 text-center">
-                    <span className="font-bold text-emerald-600">VibeHosting</span>
+                  <th className="text-left py-3 sm:py-4 px-3 sm:px-5 font-medium text-gray-500 text-xs sm:text-sm">Функция</th>
+                  <th className="py-3 sm:py-4 px-2 sm:px-3 text-center">
+                    <span className="font-bold text-emerald-600 text-xs sm:text-sm">VibeHosting</span>
                   </th>
-                  <th className="py-4 px-3 text-center font-medium text-gray-500">Tilda</th>
-                  <th className="py-4 px-3 text-center font-medium text-gray-500">WordPress</th>
-                  <th className="py-4 px-3 text-center font-medium text-gray-500">tiiny.host</th>
+                  <th className="py-3 sm:py-4 px-2 sm:px-3 text-center font-medium text-gray-500 text-xs sm:text-sm">Tilda</th>
+                  <th className="py-3 sm:py-4 px-2 sm:px-3 text-center font-medium text-gray-500 text-xs sm:text-sm">WordPress</th>
+                  <th className="py-3 sm:py-4 px-2 sm:px-3 text-center font-medium text-gray-500 text-xs sm:text-sm">tiiny.host</th>
                 </tr>
               </thead>
               <tbody>
                 {rows.map((row) => (
                   <tr key={row.feature} className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50 transition-colors">
-                    <td className="py-3.5 px-5 text-gray-700">{row.feature}</td>
-                    <td className="py-3.5 px-3 text-center"><div className="flex justify-center"><CellIcon value={row.vibe} /></div></td>
-                    <td className="py-3.5 px-3 text-center"><div className="flex justify-center"><CellIcon value={row.tilda} /></div></td>
-                    <td className="py-3.5 px-3 text-center"><div className="flex justify-center"><CellIcon value={row.wordpress} /></div></td>
-                    <td className="py-3.5 px-3 text-center"><div className="flex justify-center"><CellIcon value={row.tiiny} /></div></td>
+                    <td className="py-3 sm:py-3.5 px-3 sm:px-5 text-gray-700 text-xs sm:text-sm">{row.feature}</td>
+                    <td className="py-3 sm:py-3.5 px-2 sm:px-3 text-center"><div className="flex justify-center"><CellIcon value={row.vibe} /></div></td>
+                    <td className="py-3 sm:py-3.5 px-2 sm:px-3 text-center"><div className="flex justify-center"><CellIcon value={row.tilda} /></div></td>
+                    <td className="py-3 sm:py-3.5 px-2 sm:px-3 text-center"><div className="flex justify-center"><CellIcon value={row.wordpress} /></div></td>
+                    <td className="py-3 sm:py-3.5 px-2 sm:px-3 text-center"><div className="flex justify-center"><CellIcon value={row.tiiny} /></div></td>
                   </tr>
                 ))}
               </tbody>

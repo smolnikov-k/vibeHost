@@ -507,6 +507,7 @@ export interface GalleryProject {
   views: number;
   publishedAt: string | null;
   user: { displayName: string | null };
+  customDomain?: string | null;
 }
 
 export interface GalleryResponse {
@@ -574,6 +575,7 @@ export interface AdminProject {
   createdAt: string;
   publishedAt: string | null;
   user: { email: string; displayName: string | null };
+  customDomain?: string | null;
 }
 
 export interface AnalyticsSummary {
@@ -591,7 +593,7 @@ export interface AdminReport {
   reporterIp: string;
   status: 'PENDING' | 'REVIEWED' | 'RESOLVED' | 'DISMISSED';
   createdAt: string;
-  project: { slug: string; title: string; status: string };
+  project: { slug: string; title: string; status: string; customDomain?: string | null };
 }
 
 export interface TelegramStatus {
@@ -602,6 +604,7 @@ export interface TelegramStatus {
 
 export interface FormSubmission {
   id: string;
+  formName: string | null;
   data: Record<string, string>;
   sentToTg: boolean;
   createdAt: string;

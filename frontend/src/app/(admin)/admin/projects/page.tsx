@@ -101,8 +101,8 @@ export default function AdminProjectsPage() {
                 <tr key={p.id} className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
                   <td className="px-4 py-3">
                     <div className="text-gray-200 font-medium">{p.title}</div>
-                    <a href={`https://${p.slug}.hostingvibe.ru`} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:underline flex items-center gap-1">
-                      {p.slug}.hostingvibe.ru <ExternalLink className="w-3 h-3" />
+                    <a href={`https://${p.customDomain || `${p.slug}.hostingvibe.ru`}`} target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:underline flex items-center gap-1">
+                      {p.customDomain || `${p.slug}.hostingvibe.ru`} <ExternalLink className="w-3 h-3" />
                     </a>
                   </td>
                   <td className="px-4 py-3 text-gray-400 text-xs">{p.user.email}</td>

@@ -46,6 +46,14 @@ router.post('/', async (req: AuthRequest, res: Response) => {
       res.status(400).json({ error: 'Название и slug обязательны' });
       return;
     }
+    if (typeof title !== 'string' || title.trim().length > 100) {
+      res.status(400).json({ error: 'Название не более 100 символов' });
+      return;
+    }
+    if (description !== undefined && (typeof description !== 'string' || description.length > 500)) {
+      res.status(400).json({ error: 'Описание не более 500 символов' });
+      return;
+    }
 
     const slugError = validateSlug(slug);
     if (slugError) {
@@ -132,10 +140,12 @@ router.get('/:id', async (req: AuthRequest, res: Response) => {
     }
 
     const { passwordHash: _ph, ...safeResult } = result;
+    const verifiedDomain = result.domains.find(d => d.verified && d.sslStatus === 'ACTIVE');
     res.json({
       ...safeResult,
       sizeBytes: Number(result.sizeBytes),
       isSPA,
+      customDomain: verifiedDomain?.hostname ?? null,
       deployments: result.deployments.map((d: any) => ({ ...d, sizeBytes: Number(d.sizeBytes) })),
     });
   } catch (err) {
@@ -158,11 +168,25 @@ router.put('/:id', async (req: AuthRequest, res: Response) => {
 
     const { title, description, isPublic, tags, password, passwordEnabled, metrikaId } = req.body;
 
+    // Input validation
+    if (title !== undefined && (typeof title !== 'string' || title.length > 100)) {
+      res.status(400).json({ error: 'Название не более 100 символов' });
+      return;
+    }
+    if (description !== undefined && (typeof description !== 'string' || description.length > 500)) {
+      res.status(400).json({ error: 'Описание не более 500 символов' });
+      return;
+    }
+    if (tags !== undefined && (!Array.isArray(tags) || tags.length > 10 || tags.some((t: unknown) => typeof t !== 'string' || (t as string).length > 30))) {
+      res.status(400).json({ error: 'Теги: массив до 10 строк, каждый до 30 символов' });
+      return;
+    }
+
     const data: Record<string, unknown> = {};
-    if (title !== undefined) data.title = title;
-    if (description !== undefined) data.description = description;
-    if (isPublic !== undefined) data.isPublic = isPublic;
-    if (tags !== undefined) data.tags = tags;
+    if (title !== undefined) data.title = (title as string).trim();
+    if (description !== undefined) data.description = (description as string).trim() || null;
+    if (isPublic !== undefined) data.isPublic = !!isPublic;
+    if (tags !== undefined) data.tags = (tags as string[]).map(t => t.trim()).filter(Boolean);
 
     // Password protection
     if (passwordEnabled === false) {
@@ -254,19 +278,19 @@ router.delete('/:id', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    // Удаляем файлы и бэкапы проекта с диска
-    deleteProjectFiles(project.slug);
-
+    // Delete from DB first (cascade deletes related records)
     await prisma.project.delete({ where: { id: projectId } });
 
-    const allProjects = await prisma.project.findMany({
+    // Then delete files from disk (non-critical — won't block response if it fails)
+    try { deleteProjectFiles(project.slug); } catch { /* files may already be gone */ }
+
+    const agg = await prisma.project.aggregate({
       where: { userId: req.userId },
-      select: { sizeBytes: true },
+      _sum: { sizeBytes: true },
     });
-    const totalStorage = allProjects.reduce((sum, p) => sum + Number(p.sizeBytes), 0);
     await prisma.user.update({
       where: { id: req.userId },
-      data: { storageUsed: totalStorage },
+      data: { storageUsed: Number(agg._sum.sizeBytes || 0) },
     });
 
     res.json({ success: true, slug: project.slug });

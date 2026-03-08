@@ -43,33 +43,12 @@ const plans = [
     popular: true,
     accent: true,
   },
-  {
-    name: 'BUSINESS',
-    price: '990',
-    period: '/ мес',
-    description: 'Для команд и агентств',
-    features: [
-      '10 сайтов',
-      '5 ГБ хранилище',
-      'Неограниченные домены',
-      'Безлимит трафик',
-      'Расширенная аналитика',
-      '50 версий для отката',
-      'Приоритетная поддержка',
-      'Командный доступ',
-    ],
-    cta: 'Выбрать Business',
-    href: '/register',
-    popular: false,
-    accent: false,
-  },
 ];
 
 export function Pricing() {
   const leftRef = useScrollReveal({ delay: 0 });
-  const centerRef = useScrollReveal({ delay: 100 });
-  const rightRef = useScrollReveal({ delay: 200 });
-  const refs = [leftRef, centerRef, rightRef];
+  const rightRef = useScrollReveal({ delay: 150 });
+  const refs = [leftRef, rightRef];
 
   return (
     <section id="pricing" className="py-24">
@@ -81,7 +60,7 @@ export function Pricing() {
           Начните бесплатно — масштабируйтесь когда будете готовы
         </p>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-4 md:gap-6 max-w-3xl mx-auto">
           {plans.map((plan, i) => (
             <div
               key={plan.name}
@@ -105,7 +84,7 @@ export function Pricing() {
               </div>
 
               <div className="flex items-baseline gap-1 mb-6">
-                <span className="text-4xl font-extrabold text-gray-900">{plan.price}</span>
+                <span className="text-3xl sm:text-4xl font-extrabold text-gray-900">{plan.price}</span>
                 <span className="text-gray-500">
                   {plan.price !== '0' && '₽'} {plan.period}
                 </span>

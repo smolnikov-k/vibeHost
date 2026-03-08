@@ -16,11 +16,11 @@ const faqs = [
   },
   {
     q: 'Это правда бесплатно?',
-    a: 'Да. Бесплатный тариф — 1 сайт до 50 МБ, навсегда. Без скрытых платежей и привязки карты. PRO и Business — когда понадобится больше.',
+    a: 'Да. Бесплатный тариф — 1 сайт до 50 МБ, навсегда. Без скрытых платежей и привязки карты. PRO — когда понадобится больше.',
   },
   {
     q: 'Как подключить свой домен?',
-    a: 'На тарифе PRO или Business добавьте A-запись, указывающую на наш сервер. SSL-сертификат выпустится автоматически за несколько минут.',
+    a: 'На тарифе PRO добавьте A-запись, указывающую на наш сервер. SSL-сертификат выпустится автоматически за несколько минут.',
   },
   {
     q: 'Как оплатить подписку?',
@@ -103,11 +103,28 @@ function FAQItem({ q, a, index }: { q: string; a: string; index: number }) {
   );
 }
 
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.a,
+    },
+  })),
+};
+
 export function FAQ() {
   const sectionRef = useScrollReveal();
 
   return (
     <section id="faq" className="py-24 bg-gray-50/50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <div className="max-w-2xl mx-auto px-6" ref={sectionRef}>
         <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
           Частые вопросы

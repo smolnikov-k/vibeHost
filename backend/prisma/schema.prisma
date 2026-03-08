@@ -17,6 +17,8 @@ model User {
   storageUsed  BigInt   @default(0) @map("storage_used")
   storageLimit BigInt   @default(52428800) @map("storage_limit") // 50 MB
   aiCredits    Int      @default(10) @map("ai_credits")
+  lastActiveAt DateTime? @map("last_active_at")
+  emailOptOut  Boolean  @default(false) @map("email_opt_out")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
@@ -73,6 +75,8 @@ model Project {
   @@index([status])
   @@index([isPublic, likes])
   @@index([isPublic, createdAt])
+  @@index([isPublic, publishedAt])
+  @@index([expiresAt])
   @@map("projects")
 }
 
@@ -97,6 +101,7 @@ model Deployment {
   createdAt    DateTime     @default(now()) @map("created_at")
 
   @@index([projectId])
+  @@index([projectId, version])
   @@index([status])
   @@map("deployments")
 }
@@ -231,12 +236,11 @@ model TelegramLink {
   id        String   @id @default(cuid())
   userId    String   @unique @map("user_id")
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chatId    String   @map("chat_id")
+  chatId    String   @unique @map("chat_id")
   username  String?
   linkCode  String   @unique @map("link_code")
   linkedAt  DateTime @default(now()) @map("linked_at")
 
-  @@index([chatId])
   @@map("telegram_links")
 }
 
@@ -295,5 +299,6 @@ model VisualPatch {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@index([projectId])
+  @@index([projectId, enabled])
   @@map("visual_patches")
 }

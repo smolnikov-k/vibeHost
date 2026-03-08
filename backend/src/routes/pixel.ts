@@ -9,8 +9,14 @@ router.get('/vibe-analytics.js', (_req: Request, res: Response) => {
 
   const script = `(function(){
   if(typeof window==='undefined')return;
-  var slug=location.hostname.replace('.hostingvibe.ru','');
-  if(!slug||slug===location.hostname)return;
+  var s=document.currentScript;
+  var slug=(s&&s.getAttribute('data-slug'))||'';
+  if(!slug){
+    var h=location.hostname;
+    var m=h.match(/^([a-z0-9-]+)\\.hostingvibe\\.ru$/);
+    if(m)slug=m[1];
+  }
+  if(!slug)return;
   var data=JSON.stringify({
     slug:slug,
     path:location.pathname,

@@ -88,6 +88,7 @@ export function Hero() {
                 value={subdomain}
                 onChange={(e) => setSubdomain(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))}
                 placeholder="ваш-сайт"
+                aria-label="Поддомен для вашего сайта"
                 className="flex-1 text-sm text-gray-700 outline-none bg-transparent min-w-0"
               />
               <span className="text-sm text-gray-400 shrink-0">.hostingvibe.ru</span>
@@ -118,7 +119,7 @@ export function Hero() {
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
             onClick={() => router.push('/register')}
-            className={`relative rounded-2xl border-2 border-dashed p-10 md:p-14 transition-all cursor-pointer group ${
+            className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 md:p-14 transition-all cursor-pointer group ${
               uploaded
                 ? 'border-emerald-400 bg-emerald-50'
                 : dragOver

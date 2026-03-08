@@ -154,15 +154,14 @@ export async function processGithubDeploy(
       },
     });
 
-    // Recalculate user storage
-    const allProjects = await prisma.project.findMany({
+    // Recalculate user storage (single aggregate instead of findMany + reduce)
+    const agg = await prisma.project.aggregate({
       where: { userId: project.user.id },
-      select: { sizeBytes: true },
+      _sum: { sizeBytes: true },
     });
-    const totalStorage = allProjects.reduce((sum, p) => sum + Number(p.sizeBytes), 0);
     await prisma.user.update({
       where: { id: project.user.id },
-      data: { storageUsed: totalStorage },
+      data: { storageUsed: Number(agg._sum.sizeBytes || 0) },
     });
 
     return { version: newVersion, fileCount: allFiles.length, sizeBytes: totalSize };

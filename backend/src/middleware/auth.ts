@@ -13,7 +13,7 @@ export function optionalAuth(req: AuthRequest, _res: Response, next: NextFunctio
   const auth = req.headers.authorization;
   if (auth && auth.startsWith('Bearer ')) {
     try {
-      const payload = jwt.verify(auth.slice(7), config.jwtSecret) as { userId: string; email: string };
+      const payload = jwt.verify(auth.slice(7), config.jwtSecret, { algorithms: ['HS256'] }) as { userId: string; email: string };
       req.userId = payload.userId;
       req.userEmail = payload.email;
     } catch {
@@ -37,7 +37,7 @@ export function authMiddleware(req: AuthRequest, res: Response, next: NextFuncti
     return;
   }
   try {
-    const payload = jwt.verify(token, config.jwtSecret) as { userId: string; email: string };
+    const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as { userId: string; email: string };
     req.userId = payload.userId;
     req.userEmail = payload.email;
     next();

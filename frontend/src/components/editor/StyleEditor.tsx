@@ -46,7 +46,7 @@ export default function StyleEditor({ styles, onChange }: StyleEditorProps) {
               className="w-7 h-7 rounded border border-gray-200 cursor-pointer p-0"
             />
             {styles.color && (
-              <button onClick={() => remove('color')} className="text-xs text-gray-400 hover:text-red-500">✕</button>
+              <button onClick={() => remove('color')} aria-label="Убрать цвет" className="text-xs text-gray-400 hover:text-red-500">✕</button>
             )}
           </div>
 
@@ -92,6 +92,8 @@ export default function StyleEditor({ styles, onChange }: StyleEditorProps) {
                 <button
                   key={value}
                   onClick={() => update('textAlign', value)}
+                  aria-label={value === 'left' ? 'По левому краю' : value === 'center' ? 'По центру' : 'По правому краю'}
+                  aria-pressed={styles.textAlign === value}
                   className={`p-1.5 rounded ${
                     styles.textAlign === value
                       ? 'bg-emerald-100 text-emerald-700'
@@ -123,7 +125,7 @@ export default function StyleEditor({ styles, onChange }: StyleEditorProps) {
               className="w-7 h-7 rounded border border-gray-200 cursor-pointer p-0"
             />
             {styles.backgroundColor && (
-              <button onClick={() => remove('backgroundColor')} className="text-xs text-gray-400 hover:text-red-500">✕</button>
+              <button onClick={() => remove('backgroundColor')} aria-label="Убрать фон" className="text-xs text-gray-400 hover:text-red-500">✕</button>
             )}
           </div>
 

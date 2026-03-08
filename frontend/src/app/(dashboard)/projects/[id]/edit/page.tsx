@@ -24,6 +24,7 @@ export default function EditPage() {
   const projectId = params.id as string;
 
   const [slug, setSlug] = useState<string | null>(null);
+  const [customDomain, setCustomDomain] = useState<string | null>(null);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function EditPage() {
         const res = await api.getProject(projectId);
         const project = (res as any).project || res;
         setSlug(project.slug);
+        setCustomDomain(project.customDomain || null);
       } catch {
         setError('Проект не найден');
       }
@@ -67,6 +69,7 @@ export default function EditPage() {
     <VibeEditor
       projectId={projectId}
       projectSlug={slug}
+      customDomain={customDomain}
       onBack={() => router.push(`/projects/${projectId}`)}
     />
   );

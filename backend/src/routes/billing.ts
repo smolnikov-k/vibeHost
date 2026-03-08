@@ -1,9 +1,43 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'crypto';
+import { createClient } from 'redis';
 import { prisma } from '../lib/prisma';
 import { AuthRequest } from '../middleware/auth';
 import { config } from '../config';
+import { sendProUpgradeEmail, sendSubscriptionCancelledEmail } from '../services/email.service';
 import logger from '../services/logger';
+
+// Redis client for webhook idempotency
+let redisClient: ReturnType<typeof createClient> | null = null;
+try {
+  redisClient = createClient({ url: config.redisUrl });
+  redisClient.connect().catch(() => { redisClient = null; });
+  redisClient.on('error', () => {});
+} catch { /* Redis unavailable — fallback to in-memory */ }
+
+// In-memory fallback for idempotency when Redis is not available
+const processedPayments = new Map<string, number>();
+setInterval(() => {
+  const cutoff = Date.now() - 48 * 60 * 60 * 1000;
+  for (const [key, time] of processedPayments) {
+    if (time < cutoff) processedPayments.delete(key);
+  }
+}, 60 * 60 * 1000);
+
+async function isPaymentProcessed(paymentId: string): Promise<boolean> {
+  if (redisClient?.isOpen) {
+    const exists = await redisClient.get(`webhook:${paymentId}`);
+    return !!exists;
+  }
+  return processedPayments.has(paymentId);
+}
+
+async function markPaymentProcessed(paymentId: string): Promise<void> {
+  if (redisClient?.isOpen) {
+    await redisClient.set(`webhook:${paymentId}`, '1', { EX: 48 * 60 * 60 }); // 48h TTL
+  }
+  processedPayments.set(paymentId, Date.now());
+}
 
 const router = Router();
 
@@ -160,11 +194,21 @@ async function handleWebhook(req: Request, res: Response) {
       return;
     }
 
-    const { order_id, payment_status } = req.body;
+    const { order_id, payment_status, payment_id } = req.body;
 
     if (!order_id || payment_status !== 'success') {
       res.status(200).send('OK');
       return;
+    }
+
+    // Universal idempotency: check payment_id via Redis (or in-memory fallback)
+    if (payment_id) {
+      const alreadyProcessed = await isPaymentProcessed(String(payment_id));
+      if (alreadyProcessed) {
+        logger.info(`Webhook duplicate skipped: payment_id=${payment_id}`);
+        res.status(200).send('OK');
+        return;
+      }
     }
 
     // AI pack payment
@@ -194,6 +238,7 @@ async function handleWebhook(req: Request, res: Response) {
         data: { aiCredits: { increment: pack } },
       });
 
+      if (payment_id) await markPaymentProcessed(String(payment_id));
       logger.info(`AI credits +${pack} for user ${userId}`);
       res.status(200).send('OK');
       return;
@@ -214,23 +259,30 @@ async function handleWebhook(req: Request, res: Response) {
     const periodEnd = new Date(now);
     periodEnd.setDate(periodEnd.getDate() + 30);
 
-    await prisma.subscription.update({
-      where: { id: subscription.id },
-      data: {
-        status: 'ACTIVE',
-        prodamusOrderId: req.body.payment_id || order_id,
-        currentPeriodStart: now,
-        currentPeriodEnd: periodEnd,
-      },
-    });
+    // Atomic: update subscription + user plan in a single transaction
+    await prisma.$transaction([
+      prisma.subscription.update({
+        where: { id: subscription.id },
+        data: {
+          status: 'ACTIVE',
+          prodamusOrderId: req.body.payment_id || order_id,
+          currentPeriodStart: now,
+          currentPeriodEnd: periodEnd,
+        },
+      }),
+      prisma.user.update({
+        where: { id: subscription.userId },
+        data: {
+          plan: 'PRO',
+          storageLimit: BigInt(config.pro.maxTotalStorage),
+        },
+      }),
+    ]);
 
-    await prisma.user.update({
-      where: { id: subscription.userId },
-      data: {
-        plan: 'PRO',
-        storageLimit: BigInt(config.pro.maxTotalStorage),
-      },
-    });
+    if (payment_id) await markPaymentProcessed(String(payment_id));
+
+    // Send PRO upgrade email
+    sendProUpgradeEmail(subscription.user.email, subscription.user.displayName || subscription.user.email.split('@')[0]).catch(() => {});
 
     logger.info(`User ${subscription.userId} upgraded to PRO, period ends ${periodEnd.toISOString()}`);
     res.status(200).send('OK');
@@ -258,6 +310,12 @@ router.post('/cancel', async (req: AuthRequest, res: Response) => {
       where: { id: subscription.id },
       data: { status: 'CANCELLED', cancelledAt: new Date() },
     });
+
+    // Send cancellation email
+    const user = await prisma.user.findUnique({ where: { id: req.userId }, select: { email: true } });
+    if (user) {
+      sendSubscriptionCancelledEmail(user.email, subscription.currentPeriodEnd).catch(() => {});
+    }
 
     res.json({
       success: true,

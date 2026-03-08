@@ -252,7 +252,7 @@ export default function GalleryPage() {
             {projects.map((project) => (
               <a
                 key={project.id}
-                href={`https://${project.slug}.hostingvibe.ru`}
+                href={`https://${project.customDomain || `${project.slug}.hostingvibe.ru`}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-card

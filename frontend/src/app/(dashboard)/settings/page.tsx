@@ -470,7 +470,7 @@ export default function SettingsPage() {
             {deleteError && (
               <p className="text-xs text-red-500 mb-3">{deleteError}</p>
             )}
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-wrap">
               <button
                 className="px-4 py-2 rounded-lg bg-red-500 text-white text-sm font-medium hover:bg-red-600 disabled:opacity-50 flex items-center gap-1"
                 onClick={handleDeleteAccount}

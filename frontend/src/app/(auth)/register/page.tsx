@@ -45,6 +45,9 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(email, password, displayName || undefined);
+      if (typeof window !== 'undefined' && typeof window.ym === 'function') {
+        window.ym(107147478, 'reachGoal', 'registration');
+      }
       router.push('/projects?welcome=1');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ошибка регистрации');
@@ -67,7 +70,7 @@ export default function RegisterPage() {
         </Link>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">Регистрация</h1>
 
           {error && (

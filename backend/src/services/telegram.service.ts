@@ -94,7 +94,14 @@ export function initTelegramBot(): void {
             select: {
               email: true,
               displayName: true,
-              projects: { where: { status: 'LIVE' }, select: { slug: true, title: true } },
+              projects: {
+                where: { status: 'LIVE' },
+                select: {
+                  slug: true,
+                  title: true,
+                  domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 },
+                },
+              },
             },
           },
         },
@@ -107,7 +114,10 @@ export function initTelegramBot(): void {
 
       const projects = link.user.projects;
       const projectList = projects.length > 0
-        ? projects.map(p => `• ${p.title} (${p.slug}.hostingvibe.ru)`).join('\n')
+        ? projects.map(p => {
+            const host = p.domains[0]?.hostname || `${p.slug}.hostingvibe.ru`;
+            return `• ${p.title} (${host})`;
+          }).join('\n')
         : 'Нет активных проектов';
 
       bot!.sendMessage(msg.chat.id,
@@ -120,6 +130,12 @@ export function initTelegramBot(): void {
     }
   });
 
+  // node-telegram-bot-api emits 'polling_error' but types don't expose .on()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (bot as any).on('polling_error', (err: Error) => {
+    logger.error('Telegram polling error', { error: err.message });
+  });
+
   logger.info('Telegram bot started (polling)');
 }
 
@@ -129,6 +145,7 @@ export async function sendFormToTelegram(
   projectSlug: string,
   formData: Record<string, string>,
   formName?: string | null,
+  customDomain?: string | null,
 ): Promise<boolean> {
   if (!bot) return false;
 
@@ -138,10 +155,11 @@ export async function sendFormToTelegram(
     .join('\n');
 
   const formLabel = formName ? `\n📋 Форма: ${escapeHtml(formName)}` : '';
+  const siteHost = customDomain || `${projectSlug}.hostingvibe.ru`;
 
   const message =
     `📩 <b>Новая заявка</b>\n` +
-    `🌐 Сайт: ${escapeHtml(projectSlug)}.hostingvibe.ru` +
+    `🌐 Сайт: ${escapeHtml(siteHost)}` +
     `${formLabel}\n\n` +
     `${fields}`;
 

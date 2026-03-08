@@ -30,6 +30,9 @@ export default function BillingPage() {
     setError(null);
     try {
       const { paymentUrl } = await api.createPayment();
+      if (typeof window.ym === 'function') {
+        window.ym(107147478, 'reachGoal', 'buy_pro_click');
+      }
       window.location.href = paymentUrl;
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Ошибка создания платежа');

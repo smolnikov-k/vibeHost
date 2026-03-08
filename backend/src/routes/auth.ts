@@ -39,7 +39,7 @@ router.post('/register', async (req: AuthRequest, res: Response) => {
       data: { email, passwordHash, displayName: displayName || null },
     });
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
+    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { algorithm: 'HS256', expiresIn: config.jwtExpiresIn });
 
     // Welcome email (fire-and-forget)
     sendWelcomeEmail(email, displayName || email.split('@')[0]).catch(() => {});
@@ -75,7 +75,11 @@ router.post('/login', async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
+    const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { algorithm: 'HS256', expiresIn: config.jwtExpiresIn });
+
+    // Update last active timestamp (fire-and-forget)
+    prisma.user.update({ where: { id: user.id }, data: { lastActiveAt: new Date() } }).catch(() => {});
+
     res.json({ token, user: {
       id: user.id, email: user.email, displayName: user.displayName, plan: user.plan,
       isAdmin: user.isAdmin, storageUsed: Number(user.storageUsed), storageLimit: Number(user.storageLimit), createdAt: user.createdAt,

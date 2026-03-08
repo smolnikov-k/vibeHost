@@ -6,12 +6,13 @@ import StyleEditor from './StyleEditor';
 import {
   ArrowLeft, ExternalLink, Save, ChevronDown, Loader2,
   Type, Image, EyeOff, Paintbrush, Trash2, ToggleLeft, ToggleRight,
-  MousePointerClick, Undo2, Upload, FileImage,
+  MousePointerClick, Undo2, Upload, FileImage, PanelRight, X,
 } from 'lucide-react';
 
 interface VibeEditorProps {
   projectId: string;
   projectSlug: string;
+  customDomain?: string | null;
   onBack: () => void;
 }
 
@@ -26,7 +27,7 @@ interface SelectedElement {
 
 type PatchTab = 'text' | 'image' | 'hide' | 'style';
 
-export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEditorProps) {
+export default function VibeEditor({ projectId, projectSlug, customDomain, onBack }: VibeEditorProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // State
@@ -40,6 +41,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
   const [saving, setSaving] = useState(false);
   const [showPageSelect, setShowPageSelect] = useState(false);
   const [uploadingAsset, setUploadingAsset] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Edit fields
   const [editText, setEditText] = useState('');
@@ -98,6 +100,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
         if (data.computedStyles) {
           setEditStyles({});
         }
+        setSidebarOpen(true);
       }
     }
 
@@ -165,7 +168,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
       setPatches(prev => prev.map(p => p.id === updated.id ? updated : p));
       // Reload iframe to reflect changes
       if (iframeRef.current) {
-        iframeRef.current.src = iframeRef.current.src;
+        iframeRef.current.contentWindow?.location.reload();
       }
     } catch (err) {
       console.error('Failed to toggle patch', err);
@@ -178,7 +181,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
       await api.deleteEditPatch(projectId, patchId);
       setPatches(prev => prev.filter(p => p.id !== patchId));
       if (iframeRef.current) {
-        iframeRef.current.src = iframeRef.current.src;
+        iframeRef.current.contentWindow?.location.reload();
       }
     } catch (err) {
       console.error('Failed to delete patch', err);
@@ -310,14 +313,21 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
 
         <div className="flex items-center gap-2">
           <a
-            href={`https://${projectSlug}.hostingvibe.ru`}
+            href={`https://${customDomain || `${projectSlug}.hostingvibe.ru`}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
+            className="hidden sm:flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
           >
             Открыть сайт
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="md:hidden flex items-center gap-1 text-sm text-gray-500 hover:text-emerald-600 transition-colors"
+            aria-label="Панель редактирования"
+          >
+            <PanelRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
@@ -340,8 +350,22 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
           )}
         </div>
 
+        {/* Mobile overlay backdrop */}
+        {sidebarOpen && (
+          <div className="md:hidden fixed inset-0 bg-black/30 z-30" onClick={() => setSidebarOpen(false)} />
+        )}
+
         {/* Right panel */}
-        <div className="w-80 bg-white border-l border-gray-200 flex flex-col overflow-y-auto">
+        <div className={`fixed md:static inset-y-0 right-0 z-40 w-80 bg-white border-l border-gray-200 flex flex-col overflow-y-auto transition-transform duration-200 ${
+          sidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'
+        }`}>
+          {/* Mobile close button */}
+          <div className="md:hidden flex items-center justify-between px-4 py-2 border-b border-gray-100">
+            <span className="text-sm font-medium text-gray-700">Редактор</span>
+            <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-600" aria-label="Закрыть панель">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
           {!selected ? (
             /* Empty state */
             <div className="flex-1 flex flex-col items-center justify-center text-center px-6 text-gray-400">
@@ -368,6 +392,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
                   </div>
                   <button
                     onClick={deselect}
+                    aria-label="Снять выделение"
                     className="text-xs text-gray-400 hover:text-red-500 transition-colors"
                   >
                     ✕
@@ -548,6 +573,9 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
                         onClick={() => togglePatch(patch)}
                         className="text-gray-400 hover:text-emerald-500"
                         title={patch.enabled ? 'Выключить' : 'Включить'}
+                        aria-label={patch.enabled ? 'Выключить патч' : 'Включить патч'}
+                        role="switch"
+                        aria-checked={patch.enabled}
                       >
                         {patch.enabled ? <ToggleRight className="w-4 h-4" /> : <ToggleLeft className="w-4 h-4" />}
                       </button>
@@ -555,6 +583,7 @@ export default function VibeEditor({ projectId, projectSlug, onBack }: VibeEdito
                         onClick={() => deletePatch(patch.id)}
                         className="text-gray-400 hover:text-red-500"
                         title="Удалить"
+                        aria-label="Удалить патч"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>

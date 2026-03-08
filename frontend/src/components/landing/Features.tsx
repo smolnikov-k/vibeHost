@@ -92,7 +92,7 @@ export function Features() {
         </div>
 
         {/* More features - compact grid */}
-        <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-8">
+        <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-5 sm:p-8">
           <h3 className="text-lg font-bold text-gray-900 text-center mb-6">
             И ещё множество возможностей
           </h3>

@@ -11,6 +11,7 @@ import { prisma } from './lib/prisma';
 
 import { verifySmtpConnection } from './services/email.service';
 import { runCleanupWorker } from './services/cleanup';
+import { runEngagementWorker } from './services/engagement-worker';
 import { initTelegramBot } from './services/telegram.service';
 import logger from './services/logger';
 import authRoutes from './routes/auth';
@@ -45,8 +46,8 @@ app.use(cors({
   },
   credentials: true,
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100kb' }));
+app.use(express.urlencoded({ extended: true, limit: '100kb' }));
 
 // Health check (DB + disk)
 app.get('/api/health', async (_req: Request, res: Response) => {
@@ -94,10 +95,12 @@ app.get('/api/slugs/check', async (req: Request, res: Response) => {
 app.use('/api', pixelRoutes);
 app.use('/api', apiLimiter, publicTrackRouter);
 
-// Public: vibe-forms.js widget (no auth — loaded by user sites)
+// Public: vibe-forms.js widget (no auth — loaded by user sites, including custom domains)
 app.get('/api/vibe-forms.js', (_req: Request, res: Response) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.sendFile(path.join(__dirname, '..', 'public', 'vibe-forms.js'));
 });
 
@@ -114,10 +117,12 @@ app.get('/api/vibe-editor-bridge.js', (_req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '..', 'public', 'vibe-editor-bridge.js'));
 });
 
-// Public: serve vibe-patches.js
+// Public: serve vibe-patches.js (loaded by user sites, including custom domains)
 app.get('/api/vibe-patches.js', (_req: Request, res: Response) => {
   res.setHeader('Content-Type', 'application/javascript');
   res.setHeader('Cache-Control', 'public, max-age=3600');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.sendFile(path.join(__dirname, '..', 'public', 'vibe-patches.js'));
 });
 
@@ -126,6 +131,21 @@ app.use('/api/report', apiLimiter, reportRoutes);
 
 // Public: gallery
 app.use('/api/gallery', apiLimiter, galleryRoutes);
+
+// Public: unsubscribe from marketing emails
+app.get('/api/unsubscribe', apiLimiter, async (req: Request, res: Response) => {
+  try {
+    const token = req.query.token as string;
+    if (!token) { res.status(400).send('Неверная ссылка'); return; }
+    const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as { email: string; action: string };
+    if (payload.action !== 'unsubscribe') { res.status(400).send('Неверная ссылка'); return; }
+    await prisma.user.updateMany({ where: { email: payload.email }, data: { emailOptOut: true } });
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Отписка</title></head><body style="font-family:sans-serif;text-align:center;padding:80px 20px"><h2>Вы отписались от рассылки</h2><p>Вы больше не будете получать маркетинговые письма от VibeHosting.</p><p style="margin-top:24px"><a href="${config.frontendUrl}" style="color:#10b981">Вернуться на сайт</a></p></body></html>`);
+  } catch {
+    res.status(400).send('Ссылка недействительна или просрочена');
+  }
+});
 
 // Auth routes: optionalAuth sets userId if token present, handlers enforce auth where needed
 app.use('/api/auth', authLimiter, optionalAuth, authRoutes);
@@ -155,7 +175,7 @@ app.get('/api/internal/preview', apiLimiter, async (req: Request, res: Response)
     }
     let userId: string;
     try {
-      const payload = jwt.verify(token, config.jwtSecret) as { userId: string };
+      const payload = jwt.verify(token, config.jwtSecret, { algorithms: ['HS256'] }) as { userId: string };
       userId = payload.userId;
     } catch {
       res.status(401).json({ error: 'Недействительный токен' });
@@ -244,5 +264,6 @@ app.use((err: Error, _req: express.Request, res: express.Response, _next: expres
 app.listen(config.port, () => {
   logger.info(`Backend started on port ${config.port}`);
   runCleanupWorker();
+  runEngagementWorker();
   initTelegramBot();
 });

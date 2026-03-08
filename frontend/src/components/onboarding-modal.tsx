@@ -110,6 +110,7 @@ export function OnboardingModal({ show }: { show: boolean }) {
         <div className={`relative bg-gradient-to-br ${current.color} px-6 pt-6 pb-8`}>
           <button
             onClick={close}
+            aria-label="Закрыть"
             className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center transition-colors"
           >
             <X className="w-4 h-4 text-white" />

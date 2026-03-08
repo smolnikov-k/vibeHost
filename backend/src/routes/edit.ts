@@ -28,7 +28,7 @@ const assetUpload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req: Request, file: Express.Multer.File, cb: (error: Error | null, acceptFile?: boolean) => void) => {
     const allowed = [
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
       'image/avif', 'font/woff', 'font/woff2', 'application/font-woff',
       'video/mp4', 'video/webm',
     ];
@@ -46,7 +46,7 @@ async function getOwnedProject(req: AuthRequest, res: Response) {
   const { id } = req.params;
   const project = await prisma.project.findUnique({
     where: { id },
-    select: { id: true, slug: true, userId: true, status: true },
+    select: { id: true, slug: true, userId: true, status: true, domains: { where: { verified: true, sslStatus: 'ACTIVE' }, select: { hostname: true }, take: 1 } },
   });
   if (!project) {
     res.status(404).json({ error: 'Проект не найден' });
@@ -121,7 +121,7 @@ router.get('/:id/edit/preview', async (req: AuthRequest, res: Response) => {
     if (!req.userId && req.query.token) {
       const jwt = await import('jsonwebtoken');
       try {
-        const decoded = jwt.default.verify(req.query.token as string, config.jwtSecret) as { userId: string };
+        const decoded = jwt.default.verify(req.query.token as string, config.jwtSecret, { algorithms: ['HS256'] }) as { userId: string };
         (req as AuthRequest).userId = decoded.userId;
       } catch { /* ignore invalid token */ }
     }
@@ -158,7 +158,8 @@ router.get('/:id/edit/preview', async (req: AuthRequest, res: Response) => {
     }
 
     // Add <base> tag for correct relative asset resolution
-    const baseTag = `<base href="https://${project.slug}.hostingvibe.ru/">`;
+    const siteHost = project.domains[0]?.hostname || `${project.slug}.hostingvibe.ru`;
+    const baseTag = `<base href="https://${siteHost}/">`;
     if (html.includes('<head>')) {
       html = html.replace('<head>', `<head>\n${baseTag}`);
     } else if (html.includes('<head ')) {
@@ -206,8 +207,24 @@ router.post('/:id/edit/patches', async (req: AuthRequest, res: Response) => {
       res.status(400).json({ error: 'Укажите selector и type' });
       return;
     }
+    if (typeof selector !== 'string' || selector.length > 500) {
+      res.status(400).json({ error: 'Некорректный selector' });
+      return;
+    }
+    // Basic CSS selector sanitization — block dangerous patterns
+    if (/[<>{}]|javascript:|expression\s*\(/i.test(selector)) {
+      res.status(400).json({ error: 'Недопустимые символы в selector' });
+      return;
+    }
     if (!['text', 'image', 'hide', 'style'].includes(type)) {
       res.status(400).json({ error: 'type должен быть text, image, hide или style' });
+      return;
+    }
+
+    // Limit patches per project to prevent abuse
+    const patchCount = await prisma.visualPatch.count({ where: { projectId: project.id } });
+    if (patchCount >= 200) {
+      res.status(400).json({ error: 'Лимит патчей: 200 на проект' });
       return;
     }
 
@@ -335,7 +352,8 @@ router.post('/:id/edit/assets', assetUpload.single('file'), async (req: AuthRequ
     const dest = path.join(imgDir, file.filename);
     fs.renameSync(file.path, dest);
 
-    const src = `https://${project.slug}.hostingvibe.ru/img/${file.filename}`;
+    const assetHost = project.domains[0]?.hostname || `${project.slug}.hostingvibe.ru`;
+    const src = `https://${assetHost}/img/${file.filename}`;
     res.json({ src, name: file.filename, type: file.mimetype });
   } catch (err) {
     logger.error('Edit asset upload error', { error: (err as Error).message });
@@ -350,6 +368,7 @@ router.get('/:id/edit/assets', async (req: AuthRequest, res: Response) => {
     if (!project) return;
 
     const siteDir = path.join(config.sitesDir, project.slug);
+    const assetHost = project.domains[0]?.hostname || `${project.slug}.hostingvibe.ru`;
     const assets: { src: string; name: string; type: string }[] = [];
     const imgExts = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.avif', '.mp4', '.webm'];
 
@@ -365,7 +384,7 @@ router.get('/:id/edit/assets', async (req: AuthRequest, res: Response) => {
           if (imgExts.includes(ext)) {
             const relPath = path.relative(siteDir, path.join(dir, entry.name));
             assets.push({
-              src: `https://${project!.slug}.hostingvibe.ru/${relPath}`,
+              src: `https://${assetHost}/${relPath}`,
               name: entry.name,
               type: ext === '.svg' ? 'image/svg+xml' : `image/${ext.slice(1)}`,
             });
