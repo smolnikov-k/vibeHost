@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useId } from 'react';
 import { useRouter } from 'next/navigation';
 import { Upload, ArrowRight, Check, FileCode, Image, Code2, FileText } from 'lucide-react';
 import { animate } from 'animejs';
@@ -27,6 +27,7 @@ export function Hero() {
   const [uploaded, setUploaded] = useState(false);
   const [activeTab, setActiveTab] = useState('html');
   const [subdomain, setSubdomain] = useState('');
+  const dropzoneHintId = useId();
 
   useEffect(() => {
     if (heroRef.current) {
@@ -41,11 +42,22 @@ export function Hero() {
     }
   }, []);
 
+  const goToRegister = () => {
+    router.push('/register');
+  };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
     setUploaded(true);
     setTimeout(() => router.push('/register'), 1200);
+  };
+
+  const handleDropzoneKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      goToRegister();
+    }
   };
 
   return (
@@ -115,20 +127,28 @@ export function Hero() {
 
           {/* Drop zone */}
           <div
-            onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragOver(true);
+            }}
             onDragLeave={() => setDragOver(false)}
             onDrop={handleDrop}
-            onClick={() => router.push('/register')}
-            className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 md:p-14 transition-all cursor-pointer group ${
+            onClick={goToRegister}
+            onKeyDown={handleDropzoneKeyDown}
+            role="button"
+            tabIndex={0}
+            aria-label="Открыть регистрацию и загрузить сайт"
+            aria-describedby={dropzoneHintId}
+            className={`relative rounded-2xl border-2 border-dashed p-6 sm:p-10 md:p-14 transition-all cursor-pointer group focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-emerald-200 focus-visible:border-emerald-400 ${
               uploaded
                 ? 'border-emerald-400 bg-emerald-50'
                 : dragOver
-                ? 'border-emerald-400 bg-emerald-50/50 scale-[1.02]'
-                : 'border-gray-300 bg-white hover:border-emerald-400 hover:bg-emerald-50/30'
+                  ? 'border-emerald-400 bg-emerald-50/50 scale-[1.02]'
+                  : 'border-gray-300 bg-white hover:border-emerald-400 hover:bg-emerald-50/30'
             }`}
           >
             {uploaded ? (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center" aria-live="polite">
                 <div className="w-16 h-16 rounded-full bg-emerald-500 flex items-center justify-center mb-4">
                   <Check className="w-8 h-8 text-white" />
                 </div>
@@ -140,11 +160,9 @@ export function Hero() {
                 <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-emerald-50 flex items-center justify-center group-hover:scale-110 transition-transform">
                   <Upload className="w-7 h-7 text-emerald-500" />
                 </div>
-                <p className="text-gray-800 font-semibold text-lg mb-1">
-                  Перетащите файлы сюда
-                </p>
-                <p className="text-sm text-gray-400 mb-5">
-                  ZIP-архив, HTML, папку или ссылку на GitHub
+                <p className="text-gray-800 font-semibold text-lg mb-1">Перетащите файлы сюда</p>
+                <p id={dropzoneHintId} className="text-sm text-gray-400 mb-5">
+                  ZIP-архив, HTML, папку или ссылку на GitHub. Нажмите Enter или пробел для перехода к регистрации.
                 </p>
                 <div className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 text-white font-semibold hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/25 group-hover:shadow-xl">
                   Загрузить файл
@@ -160,7 +178,7 @@ export function Hero() {
             {examples.map((ex) => (
               <button
                 key={ex.label}
-                onClick={() => router.push('/register')}
+                onClick={goToRegister}
                 className="px-3 py-1.5 rounded-lg bg-gray-50 border border-gray-100 text-xs text-gray-600 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700 transition-all"
               >
                 {ex.emoji} {ex.label}

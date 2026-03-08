@@ -104,27 +104,40 @@ router.get('/', optionalAuth, async (req: AuthRequest, res: Response) => {
       pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
     });
   } catch (err) {
-    logger.error('Gallery error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('Gallery error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
-// Popular tags — SQL UNNEST aggregation (must be before /:slug to avoid conflict)
-router.get('/meta/tags', async (_req: Request, res: Response) => {
+// Popular tags — aggregate via Prisma to avoid raw SQL/table-name drift
+router.get('/meta/tags', async (req: Request, res: Response) => {
   try {
-    const tags = await prisma.$queryRaw<{ name: string; count: bigint }[]>`
-      SELECT tag AS name, COUNT(*) AS count
-      FROM "Project", UNNEST(tags) AS tag
-      WHERE "is_public" = true AND status = 'LIVE'
-      GROUP BY tag
-      ORDER BY count DESC
-      LIMIT 30
-    `;
+    const projects = await prisma.project.findMany({
+      where: { isPublic: true, status: 'LIVE' },
+      select: { tags: true },
+      take: 2000, // quick-fix safeguard: enough for current catalog size
+    });
 
-    res.json(tags.map(t => ({ name: t.name, count: Number(t.count) })));
+    const counts = new Map<string, number>();
+    for (const project of projects) {
+      for (const rawTag of project.tags || []) {
+        const tag = rawTag.trim();
+        if (!tag) continue;
+        counts.set(tag, (counts.get(tag) || 0) + 1);
+      }
+    }
+
+    const tags = [...counts.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+      .slice(0, 30);
+
+    res.json(tags);
   } catch (err) {
-    logger.error('Tags error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('Tags error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
@@ -178,8 +191,9 @@ router.get('/:slug', optionalAuth, async (req: AuthRequest, res: Response) => {
 
     res.json({ ...project, isLiked });
   } catch (err) {
-    logger.error('Gallery project error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('Gallery project error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
@@ -245,8 +259,9 @@ router.post('/:slug/like', optionalAuth, async (req: AuthRequest, res: Response)
       res.json({ liked: true, likes: project.likes + 1 });
     }
   } catch (err) {
-    logger.error('Like error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('Like error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 

@@ -24,7 +24,9 @@ declare class URLSearchParams {
   toString(): string;
 }
 declare namespace Express {
-  interface Request {}
+  interface Request {
+    requestId?: string;
+  }
 }
 declare namespace NodeJS {
   interface Process { env: Record<string, string | undefined>; }
@@ -104,6 +106,7 @@ declare module 'express' {
     originalUrl: string;
     path: string;
     method: string;
+    requestId?: string;
     socket: { remoteAddress?: string };
     on(event: string, listener: (...args: any[]) => void): void;
   }

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function DocsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden">
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
@@ -26,8 +26,8 @@ export default function DocsPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-10">
-        <article className="prose prose-sm prose-gray max-w-none">
+      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 overflow-x-hidden">
+        <article className="prose prose-sm prose-gray max-w-none break-words">
           <h1>Документация по загрузке сайтов</h1>
           <p className="lead text-gray-600">
             Эта страница описывает все правила и ограничения загрузки файлов на VibeHosting.
@@ -67,41 +67,43 @@ export default function DocsPage() {
           </div>
 
           <h2>Ограничения по тарифам</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Параметр</th>
-                <th>Free</th>
-                <th>Pro</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Количество проектов</td>
-                <td>1</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>Макс. размер сайта</td>
-                <td>50 МБ</td>
-                <td>500 МБ</td>
-              </tr>
-              <tr>
-                <td>Общее хранилище</td>
-                <td>50 МБ</td>
-                <td>1 ГБ</td>
-              </tr>
-              <tr>
-                <td>Макс. файлов в архиве</td>
-                <td colSpan={2}>5 000</td>
-              </tr>
-              <tr>
-                <td>Свой домен</td>
-                <td>—</td>
-                <td>Да</td>
-              </tr>
-            </tbody>
-          </table>
+          <div className="not-prose my-4 overflow-x-auto rounded-lg border border-gray-200 bg-white">
+            <table className="w-full min-w-[520px] text-sm">
+              <thead>
+                <tr>
+                  <th className="px-4 py-3 text-left font-semibold">Параметр</th>
+                  <th className="px-4 py-3 text-left font-semibold">Free</th>
+                  <th className="px-4 py-3 text-left font-semibold">Pro</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3">Количество проектов</td>
+                  <td className="px-4 py-3">1</td>
+                  <td className="px-4 py-3">3</td>
+                </tr>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3">Макс. размер сайта</td>
+                  <td className="px-4 py-3">50 МБ</td>
+                  <td className="px-4 py-3">500 МБ</td>
+                </tr>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3">Общее хранилище</td>
+                  <td className="px-4 py-3">50 МБ</td>
+                  <td className="px-4 py-3">1 ГБ</td>
+                </tr>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3">Макс. файлов в архиве</td>
+                  <td className="px-4 py-3" colSpan={2}>5 000</td>
+                </tr>
+                <tr className="border-t border-gray-100">
+                  <td className="px-4 py-3">Свой домен</td>
+                  <td className="px-4 py-3">—</td>
+                  <td className="px-4 py-3">Да</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
           <h2>Запрещённые типы файлов</h2>
           <p>
@@ -143,7 +145,7 @@ export default function DocsPage() {
           </div>
 
           <h2>Правильная структура архива</h2>
-          <div className="not-prose bg-gray-900 rounded-lg p-4 my-4 font-mono text-sm text-gray-100 leading-relaxed">
+          <div className="not-prose bg-gray-900 rounded-lg p-4 my-4 font-mono text-sm text-gray-100 leading-relaxed overflow-x-auto">
             <div className="text-emerald-400 mb-2"># Вариант 1: файлы в корне архива</div>
             <div>my-site.zip</div>
             <div className="text-gray-400">├── index.html</div>
@@ -201,7 +203,7 @@ export default function DocsPage() {
             Если вы просите нейросеть (ChatGPT, Claude, YandexGPT) сделать сайт для VibeHosting,
             отправьте ей эту инструкцию:
           </p>
-          <div className="not-prose bg-gray-900 rounded-lg p-4 my-4 font-mono text-sm text-gray-100 leading-relaxed whitespace-pre-wrap">{`Сделай статический сайт для хостинга VibeHosting (hostingvibe.ru).
+          <div className="not-prose bg-gray-900 rounded-lg p-4 my-4 font-mono text-sm text-gray-100 leading-relaxed whitespace-pre-wrap break-words overflow-x-auto">{`Сделай статический сайт для хостинга VibeHosting (hostingvibe.ru).
 
 Правила:
 - Только HTML + CSS + JS (серверный код запрещён)

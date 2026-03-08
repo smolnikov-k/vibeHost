@@ -1,8 +1,9 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
+import crypto from 'crypto';
 import { config } from './config';
 import { authMiddleware, adminMiddleware, optionalAuth } from './middleware/auth';
 import { authLimiter, apiLimiter } from './middleware/rateLimit';
@@ -30,6 +31,19 @@ import editRoutes, { publicPatchesRouter as publicPatchesRoutes } from './routes
 import { siteAuthHandler, siteGateGet, siteGatePost } from './routes/site-gate';
 const app = express();
 app.set('trust proxy', 1); // behind Nginx
+
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const rawRequestId = req.headers['x-request-id'];
+  const incomingRequestId = Array.isArray(rawRequestId) ? rawRequestId[0] : rawRequestId;
+  const requestId = incomingRequestId && incomingRequestId.trim()
+    ? incomingRequestId.trim().slice(0, 64)
+    : crypto.randomUUID();
+
+  req.requestId = requestId;
+  res.setHeader('X-Request-Id', requestId);
+  next();
+});
 
 app.use(helmet({
   contentSecurityPolicy: false, // frontend handles CSP
@@ -86,8 +100,10 @@ app.get('/api/slugs/check', async (req: Request, res: Response) => {
     }
     const existing = await prisma.project.findUnique({ where: { slug } });
     res.json({ available: !existing });
-  } catch {
-    res.status(500).json({ error: 'Ошибка сервера' });
+  } catch (err) {
+    const requestId = req.requestId || 'unknown';
+    logger.error('Slug check error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
@@ -235,8 +251,12 @@ app.get('/api/internal/preview', apiLimiter, async (req: Request, res: Response)
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.send(html);
   } catch (err) {
-    logger.error('Edit preview error', { error: (err as Error).message });
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('Edit preview error', {
+      requestId,
+      error: err instanceof Error ? err.message : String(err),
+    });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
@@ -252,13 +272,20 @@ app.use('/api/projects', apiLimiter, editRoutes);
 app.use('/api/admin', adminMiddleware, adminRoutes);
 
 // Error handler
-app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error('Unhandled error', { error: err.message, stack: err.stack });
+app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  const requestId = req.requestId || 'unknown';
+  logger.error('Unhandled error', {
+    requestId,
+    method: req.method,
+    path: req.originalUrl,
+    error: err.message,
+    stack: err.stack,
+  });
   if (err.message === 'Только ZIP или TAR.GZ архивы') {
-    res.status(400).json({ error: err.message });
+    res.status(400).json({ error: err.message, requestId });
     return;
   }
-  res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+  res.status(500).json({ error: 'Внутренняя ошибка сервера', requestId });
 });
 
 app.listen(config.port, () => {

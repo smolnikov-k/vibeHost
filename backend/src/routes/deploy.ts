@@ -30,11 +30,37 @@ function acquireDeployLock(projectId: string): { acquired: boolean; release: () 
   };
 }
 
+function safeUnlink(filePath: string, requestId: string): void {
+  try {
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  } catch (err) {
+    logger.warn('Failed to cleanup temporary upload', {
+      requestId,
+      filePath,
+      error: err instanceof Error ? err.message : String(err),
+    });
+  }
+}
+
+function sendError(res: Response, status: number, error: string, requestId: string, extra: Record<string, unknown> = {}): void {
+  res.status(status).json({ error, ...extra, requestId });
+}
+
 // Upload ZIP and deploy
 router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
+  let lock: { release: () => void } | null = null;
+  let lockReleased = false;
+  const releaseLock = () => {
+    if (lock && !lockReleased) {
+      lock.release();
+      lockReleased = true;
+    }
+  };
+
   try {
     if (!req.file) {
-      res.status(400).json({ error: 'ZIP-файл обязателен' });
+      sendError(res, 400, 'ZIP-файл обязателен', requestId);
       return;
     }
 
@@ -46,27 +72,32 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
       include: { user: true },
     });
     if (!project) {
-      fs.unlinkSync(req.file.path);
-      res.status(404).json({ error: 'Проект не найден' });
+      safeUnlink(req.file.path, requestId);
+      sendError(res, 404, 'Проект не найден', requestId);
       return;
     }
 
     // Prevent concurrent deploys for the same project
-    const lock = acquireDeployLock(projectId);
-    if (!lock.acquired) {
-      fs.unlinkSync(req.file.path);
-      res.status(409).json({ error: 'Деплой уже выполняется для этого проекта. Дождитесь завершения.' });
+    const acquiredLock = acquireDeployLock(projectId);
+    if (!acquiredLock.acquired) {
+      safeUnlink(req.file.path, requestId);
+      sendError(res, 409, 'Деплой уже выполняется для этого проекта. Дождитесь завершения.', requestId);
       return;
     }
+    lock = acquiredLock;
 
     // Check file size against plan limit
     const limits = getPlanLimits(project.user.plan);
     if (req.file.size > limits.maxSiteSize) {
-      fs.unlinkSync(req.file.path);
-      res.status(413).json({
-        error: `Размер файла превышает лимит (${Math.round(limits.maxSiteSize / 1024 / 1024)} МБ)`,
-        code: 'SIZE_LIMIT',
-      });
+      safeUnlink(req.file.path, requestId);
+      releaseLock();
+      sendError(
+        res,
+        413,
+        `Размер файла превышает лимит (${Math.round(limits.maxSiteSize / 1024 / 1024)} МБ)`,
+        requestId,
+        { code: 'SIZE_LIMIT' },
+      );
       return;
     }
 
@@ -105,27 +136,34 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
 
     // Process in background (non-blocking), release lock when done
     processDeploy(deployment.id)
-      .catch(err => { logger.error(`Deploy ${deployment.id} failed:`, err); })
-      .finally(() => { lock.release(); });
+      .catch(err => {
+        logger.error(`Deploy ${deployment.id} failed`, {
+          requestId,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      })
+      .finally(() => { releaseLock(); });
 
   } catch (err) {
-    logger.error('Deploy error:', err);
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
+    releaseLock();
+    logger.error('Deploy error', { requestId, error: err });
+    if (req.file) {
+      safeUnlink(req.file.path, requestId);
     }
-    res.status(500).json({ error: 'Ошибка сервера' });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // List deployments
 router.get('/:id/deployments', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const projectId = req.params.id as string;
     const project = await prisma.project.findFirst({
       where: { id: projectId, userId: req.userId },
     });
     if (!project) {
-      res.status(404).json({ error: 'Проект не найден' });
+      sendError(res, 404, 'Проект не найден', requestId);
       return;
     }
 
@@ -137,13 +175,14 @@ router.get('/:id/deployments', async (req: AuthRequest, res: Response) => {
 
     res.json(deployments.map(d => ({ ...d, sizeBytes: Number(d.sizeBytes) })));
   } catch (err) {
-    logger.error('List deployments error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('List deployments error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Get deployment status
 router.get('/:id/deployments/:deployId/status', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const deployId = req.params.deployId as string;
     const projectId = req.params.id as string;
@@ -151,77 +190,94 @@ router.get('/:id/deployments/:deployId/status', async (req: AuthRequest, res: Re
       where: { id: deployId, project: { id: projectId, userId: req.userId } },
     });
     if (!deployment) {
-      res.status(404).json({ error: 'Деплой не найден' });
+      sendError(res, 404, 'Деплой не найден', requestId);
       return;
     }
     res.json({ status: deployment.status, errorMessage: deployment.errorMessage });
   } catch (err) {
-    logger.error('Deployment status error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Deployment status error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // SSE: stream deployment status until terminal state
 router.get('/:id/deployments/:deployId/stream', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   const deployId = req.params.deployId as string;
   const projectId = req.params.id as string;
 
-  // Verify ownership once
-  const deployment = await prisma.deployment.findFirst({
-    where: { id: deployId, project: { id: projectId, userId: req.userId } },
-  });
-  if (!deployment) {
-    res.status(404).json({ error: 'Деплой не найден' });
-    return;
-  }
+  try {
+    // Verify ownership once
+    const deployment = await prisma.deployment.findFirst({
+      where: { id: deployId, project: { id: projectId, userId: req.userId } },
+    });
+    if (!deployment) {
+      sendError(res, 404, 'Деплой не найден', requestId);
+      return;
+    }
 
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  res.setHeader('X-Accel-Buffering', 'no'); // Nginx: disable proxy buffering
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('X-Accel-Buffering', 'no'); // Nginx: disable proxy buffering
 
-  let lastStatus = '';
-  const TERMINAL = ['LIVE', 'FAILED', 'SUPERSEDED'];
+    let lastStatus = '';
+    const TERMINAL = ['LIVE', 'FAILED', 'SUPERSEDED'];
 
-  const poll = setInterval(async () => {
-    try {
-      const d = await prisma.deployment.findUnique({ where: { id: deployId } });
-      if (!d) { clearInterval(poll); res.end(); return; }
+    const poll = setInterval(async () => {
+      try {
+        const d = await prisma.deployment.findUnique({ where: { id: deployId } });
+        if (!d) { clearInterval(poll); res.end(); return; }
 
-      if (d.status !== lastStatus) {
-        lastStatus = d.status;
-        const payload = JSON.stringify({ status: d.status, errorMessage: d.errorMessage });
-        res.write(`data: ${payload}\n\n`);
-      }
+        if (d.status !== lastStatus) {
+          lastStatus = d.status;
+          const payload = JSON.stringify({ status: d.status, errorMessage: d.errorMessage });
+          res.write(`data: ${payload}\n\n`);
+        }
 
-      if (TERMINAL.includes(d.status)) {
+        if (TERMINAL.includes(d.status)) {
+          clearInterval(poll);
+          res.end();
+        }
+      } catch (err) {
+        logger.warn('Deployment stream poll failed', {
+          requestId,
+          deployId,
+          error: err instanceof Error ? err.message : String(err),
+        });
         clearInterval(poll);
         res.end();
       }
-    } catch {
-      clearInterval(poll);
-      res.end();
-    }
-  }, 1500);
+    }, 1500);
 
-  req.on('close', () => clearInterval(poll));
+    req.on('close', () => clearInterval(poll));
+  } catch (err) {
+    logger.error('Deployment stream error', {
+      requestId,
+      deployId,
+      projectId,
+      error: err instanceof Error ? err.message : String(err),
+    });
+    sendError(res, 500, 'Ошибка сервера', requestId);
+  }
 });
 
 // Deploy from GitHub
 router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: Response) => {
   try {
+    const requestId = req.requestId || 'unknown';
     const projectId = req.params.id as string;
     const { repoUrl, subdir } = req.body;
 
     if (!repoUrl) {
-      res.status(400).json({ error: 'URL репозитория обязателен' });
+      sendError(res, 400, 'URL репозитория обязателен', requestId);
       return;
     }
 
     // Validate GitHub URL
     const urlPattern = /^https:\/\/github\.com\/[\w.-]+\/[\w.-]+(\.git)?$/;
     if (!urlPattern.test(repoUrl)) {
-      res.status(400).json({ error: 'Некорректный URL GitHub-репозитория. Формат: https://github.com/user/repo' });
+      sendError(res, 400, 'Некорректный URL GitHub-репозитория. Формат: https://github.com/user/repo', requestId);
       return;
     }
 
@@ -229,7 +285,7 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
       where: { id: projectId, userId: req.userId },
     });
     if (!project) {
-      res.status(404).json({ error: 'Проект не найден' });
+      sendError(res, 404, 'Проект не найден', requestId);
       return;
     }
 
@@ -248,22 +304,27 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
 
     // Process in background (pass pre-created deploymentId)
     processGithubDeploy(projectId, repoUrl, subdir, deployment.id).catch(err => {
-      logger.error(`GitHub deploy ${projectId} failed:`, err);
+      logger.error(`GitHub deploy ${projectId} failed`, {
+        requestId,
+        error: err instanceof Error ? err.message : String(err),
+      });
     });
   } catch (err) {
-    logger.error('GitHub deploy error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    const requestId = req.requestId || 'unknown';
+    logger.error('GitHub deploy error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Rollback to a previous version (PRO only — uses backups)
 router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const projectId = req.params.id as string;
     const { version } = req.body;
 
     if (!version || typeof version !== 'number' || !Number.isInteger(version) || version < 1) {
-      res.status(400).json({ error: 'Номер версии обязателен (целое число ≥ 1)' });
+      sendError(res, 400, 'Номер версии обязателен (целое число ≥ 1)', requestId);
       return;
     }
 
@@ -272,24 +333,24 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
       include: { user: true },
     });
     if (!project) {
-      res.status(404).json({ error: 'Проект не найден' });
+      sendError(res, 404, 'Проект не найден', requestId);
       return;
     }
 
     if (project.user.plan !== 'PRO') {
-      res.status(403).json({ error: 'Откат версий доступен только на тарифе PRO' });
+      sendError(res, 403, 'Откат версий доступен только на тарифе PRO', requestId);
       return;
     }
 
     if (version === project.currentVersion) {
-      res.status(400).json({ error: 'Это уже текущая версия' });
+      sendError(res, 400, 'Это уже текущая версия', requestId);
       return;
     }
 
     // Check backup exists
     const backupDir = path.join(config.backupsDir, project.slug, `v${version}`);
     if (!fs.existsSync(backupDir)) {
-      res.status(404).json({ error: 'Бэкап этой версии не найден. Откат доступен только для PRO.' });
+      sendError(res, 404, 'Бэкап этой версии не найден. Откат доступен только для PRO.', requestId);
       return;
     }
 
@@ -335,20 +396,21 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
       version,
     });
   } catch (err) {
-    logger.error('Rollback error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Rollback error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // List project files
 router.get('/:id/files', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const projectId = req.params.id as string;
     const project = await prisma.project.findFirst({
       where: { id: projectId, userId: req.userId },
     });
     if (!project) {
-      res.status(404).json({ error: 'Проект не найден' });
+      sendError(res, 404, 'Проект не найден', requestId);
       return;
     }
 
@@ -364,12 +426,12 @@ router.get('/:id/files', async (req: AuthRequest, res: Response) => {
     const targetDir = path.join(siteDir, safePath);
 
     if (!targetDir.startsWith(siteDir)) {
-      res.status(400).json({ error: 'Недопустимый путь' });
+      sendError(res, 400, 'Недопустимый путь', requestId);
       return;
     }
 
     if (!fs.existsSync(targetDir) || !fs.statSync(targetDir).isDirectory()) {
-      res.status(404).json({ error: 'Директория не найдена' });
+      sendError(res, 404, 'Директория не найдена', requestId);
       return;
     }
 
@@ -397,8 +459,8 @@ router.get('/:id/files', async (req: AuthRequest, res: Response) => {
       total: files.length,
     });
   } catch (err) {
-    logger.error('List files error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('List files error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 

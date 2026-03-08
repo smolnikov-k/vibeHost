@@ -11,26 +11,31 @@ import logger from '../services/logger';
 
 const router = Router();
 
+function sendError(res: Response, status: number, error: string, requestId: string, extra: Record<string, unknown> = {}): void {
+  res.status(status).json({ error, ...extra, requestId });
+}
+
 router.post('/register', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const { email, password, displayName } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ error: 'Email и пароль обязательны' });
+      sendError(res, 400, 'Email и пароль обязательны', requestId);
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      res.status(400).json({ error: 'Некорректный формат email' });
+      sendError(res, 400, 'Некорректный формат email', requestId);
       return;
     }
     if (password.length < 6) {
-      res.status(400).json({ error: 'Пароль минимум 6 символов' });
+      sendError(res, 400, 'Пароль минимум 6 символов', requestId);
       return;
     }
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
-      res.status(409).json({ error: 'Email уже зарегистрирован' });
+      sendError(res, 409, 'Email уже зарегистрирован', requestId);
       return;
     }
 
@@ -42,58 +47,72 @@ router.post('/register', async (req: AuthRequest, res: Response) => {
     const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { algorithm: 'HS256', expiresIn: config.jwtExpiresIn });
 
     // Welcome email (fire-and-forget)
-    sendWelcomeEmail(email, displayName || email.split('@')[0]).catch(() => {});
+    sendWelcomeEmail(email, displayName || email.split('@')[0]).catch((err) => {
+      logger.warn('Welcome email send failed', {
+        requestId,
+        email,
+        error: err instanceof Error ? err.message : String(err),
+      });
+    });
 
     res.json({ token, user: {
       id: user.id, email: user.email, displayName: user.displayName, plan: user.plan,
       isAdmin: user.isAdmin, storageUsed: Number(user.storageUsed), storageLimit: Number(user.storageLimit), createdAt: user.createdAt,
     } });
   } catch (err) {
-    logger.error('Register error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Register error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 router.post('/login', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json({ error: 'Email и пароль обязательны' });
+      sendError(res, 400, 'Email и пароль обязательны', requestId);
       return;
     }
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      res.status(401).json({ error: 'Неверный email или пароль' });
+      sendError(res, 401, 'Неверный email или пароль', requestId);
       return;
     }
 
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) {
-      res.status(401).json({ error: 'Неверный email или пароль' });
+      sendError(res, 401, 'Неверный email или пароль', requestId);
       return;
     }
 
     const token = jwt.sign({ userId: user.id, email: user.email }, config.jwtSecret, { algorithm: 'HS256', expiresIn: config.jwtExpiresIn });
 
     // Update last active timestamp (fire-and-forget)
-    prisma.user.update({ where: { id: user.id }, data: { lastActiveAt: new Date() } }).catch(() => {});
+    prisma.user.update({ where: { id: user.id }, data: { lastActiveAt: new Date() } }).catch((err) => {
+      logger.warn('Failed to update lastActiveAt', {
+        requestId,
+        userId: user.id,
+        error: err instanceof Error ? err.message : String(err),
+      });
+    });
 
     res.json({ token, user: {
       id: user.id, email: user.email, displayName: user.displayName, plan: user.plan,
       isAdmin: user.isAdmin, storageUsed: Number(user.storageUsed), storageLimit: Number(user.storageLimit), createdAt: user.createdAt,
     } });
   } catch (err) {
-    logger.error('Login error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Login error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 router.get('/me', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     if (!req.userId) {
-      res.status(401).json({ error: 'Требуется авторизация' });
+      sendError(res, 401, 'Требуется авторизация', requestId);
       return;
     }
     const user = await prisma.user.findUnique({
@@ -111,7 +130,7 @@ router.get('/me', async (req: AuthRequest, res: Response) => {
       },
     });
     if (!user) {
-      res.status(404).json({ error: 'Пользователь не найден' });
+      sendError(res, 404, 'Пользователь не найден', requestId);
       return;
     }
     res.json({
@@ -120,17 +139,18 @@ router.get('/me', async (req: AuthRequest, res: Response) => {
       storageLimit: Number(user.storageLimit),
     });
   } catch (err) {
-    logger.error('Me error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Me error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Forgot password — generate reset token
 router.post('/forgot-password', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const { email } = req.body;
     if (!email) {
-      res.status(400).json({ error: 'Email обязателен' });
+      sendError(res, 400, 'Email обязателен', requestId);
       return;
     }
 
@@ -157,26 +177,33 @@ router.post('/forgot-password', async (req: AuthRequest, res: Response) => {
     });
 
     // Send reset email with raw token (fire-and-forget, don't leak success/failure)
-    sendPasswordResetEmail(email, tokenRaw).catch(() => {});
+    sendPasswordResetEmail(email, tokenRaw).catch((err) => {
+      logger.warn('Password reset email send failed', {
+        requestId,
+        email,
+        error: err instanceof Error ? err.message : String(err),
+      });
+    });
 
     res.json({ message: 'Если аккаунт с таким email существует, ссылка для сброса отправлена' });
   } catch (err) {
-    logger.error('Forgot password error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Forgot password error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Reset password with token
 router.post('/reset-password', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     const { token, password } = req.body;
 
     if (!token || !password) {
-      res.status(400).json({ error: 'Токен и новый пароль обязательны' });
+      sendError(res, 400, 'Токен и новый пароль обязательны', requestId);
       return;
     }
     if (password.length < 6) {
-      res.status(400).json({ error: 'Пароль минимум 6 символов' });
+      sendError(res, 400, 'Пароль минимум 6 символов', requestId);
       return;
     }
 
@@ -188,7 +215,7 @@ router.post('/reset-password', async (req: AuthRequest, res: Response) => {
     });
 
     if (!resetRecord || resetRecord.usedAt || resetRecord.expiresAt < new Date()) {
-      res.status(400).json({ error: 'Недействительная или просроченная ссылка' });
+      sendError(res, 400, 'Недействительная или просроченная ссылка', requestId);
       return;
     }
 
@@ -206,38 +233,39 @@ router.post('/reset-password', async (req: AuthRequest, res: Response) => {
 
     res.json({ message: 'Пароль успешно изменён' });
   } catch (err) {
-    logger.error('Reset password error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Reset password error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Change password
 router.post('/change-password', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     if (!req.userId) {
-      res.status(401).json({ error: 'Требуется авторизация' });
+      sendError(res, 401, 'Требуется авторизация', requestId);
       return;
     }
 
     const { currentPassword, newPassword } = req.body;
     if (!currentPassword || !newPassword) {
-      res.status(400).json({ error: 'Текущий и новый пароль обязательны' });
+      sendError(res, 400, 'Текущий и новый пароль обязательны', requestId);
       return;
     }
     if (newPassword.length < 6) {
-      res.status(400).json({ error: 'Новый пароль минимум 6 символов' });
+      sendError(res, 400, 'Новый пароль минимум 6 символов', requestId);
       return;
     }
 
     const user = await prisma.user.findUnique({ where: { id: req.userId } });
     if (!user) {
-      res.status(404).json({ error: 'Пользователь не найден' });
+      sendError(res, 404, 'Пользователь не найден', requestId);
       return;
     }
 
     const ok = await bcrypt.compare(currentPassword, user.passwordHash);
     if (!ok) {
-      res.status(401).json({ error: 'Неверный текущий пароль' });
+      sendError(res, 401, 'Неверный текущий пароль', requestId);
       return;
     }
 
@@ -246,28 +274,29 @@ router.post('/change-password', async (req: AuthRequest, res: Response) => {
 
     res.json({ message: 'Пароль успешно изменён' });
   } catch (err) {
-    logger.error('Change password error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Change password error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Update profile
 router.put('/profile', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     if (!req.userId) {
-      res.status(401).json({ error: 'Требуется авторизация' });
+      sendError(res, 401, 'Требуется авторизация', requestId);
       return;
     }
 
     const { displayName } = req.body;
     if (displayName !== undefined && typeof displayName !== 'string') {
-      res.status(400).json({ error: 'Некорректное имя' });
+      sendError(res, 400, 'Некорректное имя', requestId);
       return;
     }
 
     const trimmed = displayName?.trim() || null;
     if (trimmed && trimmed.length > 50) {
-      res.status(400).json({ error: 'Имя не более 50 символов' });
+      sendError(res, 400, 'Имя не более 50 символов', requestId);
       return;
     }
 
@@ -283,22 +312,23 @@ router.put('/profile', async (req: AuthRequest, res: Response) => {
       storageLimit: Number(user.storageLimit),
     });
   } catch (err) {
-    logger.error('Update profile error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Update profile error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 
 // Delete account (152-ФЗ compliance)
 router.delete('/account', async (req: AuthRequest, res: Response) => {
+  const requestId = req.requestId || 'unknown';
   try {
     if (!req.userId) {
-      res.status(401).json({ error: 'Требуется авторизация' });
+      sendError(res, 401, 'Требуется авторизация', requestId);
       return;
     }
 
     const { password } = req.body;
     if (!password) {
-      res.status(400).json({ error: 'Введите пароль для подтверждения' });
+      sendError(res, 400, 'Введите пароль для подтверждения', requestId);
       return;
     }
 
@@ -307,20 +337,29 @@ router.delete('/account', async (req: AuthRequest, res: Response) => {
       include: { projects: true },
     });
     if (!user) {
-      res.status(404).json({ error: 'Пользователь не найден' });
+      sendError(res, 404, 'Пользователь не найден', requestId);
       return;
     }
 
     // Verify password
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) {
-      res.status(401).json({ error: 'Неверный пароль' });
+      sendError(res, 401, 'Неверный пароль', requestId);
       return;
     }
 
-    // Delete all project files from disk
+    // Delete all project files from disk (best-effort)
     for (const project of user.projects) {
-      deleteProjectFiles(project.slug);
+      try {
+        deleteProjectFiles(project.slug);
+      } catch (err) {
+        logger.error('Delete account file cleanup failed', {
+          requestId,
+          projectId: project.id,
+          slug: project.slug,
+          error: err instanceof Error ? err.message : String(err),
+        });
+      }
     }
 
     // Delete user (cascades: projects, deployments, domains, passwordResets)
@@ -328,8 +367,8 @@ router.delete('/account', async (req: AuthRequest, res: Response) => {
 
     res.json({ message: 'Аккаунт удалён' });
   } catch (err) {
-    logger.error('Delete account error:', err);
-    res.status(500).json({ error: 'Ошибка сервера' });
+    logger.error('Delete account error', { requestId, error: err });
+    res.status(500).json({ error: 'Ошибка сервера', requestId });
   }
 });
 

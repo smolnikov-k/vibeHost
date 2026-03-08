@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Zap, Eye, EyeOff, Loader2 } from 'lucide-react';
@@ -17,6 +17,8 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const errorId = useId();
+  const passwordHintId = useId();
 
   useEffect(() => {
     if (user) router.push('/projects');
@@ -56,6 +58,8 @@ export default function RegisterPage() {
     }
   };
 
+  const passwordDescribedBy = error ? `${passwordHintId} ${errorId}` : passwordHintId;
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div ref={cardRef} className="w-full max-w-sm opacity-0">
@@ -73,13 +77,13 @@ export default function RegisterPage() {
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">Регистрация</h1>
 
-          {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-100 text-sm text-red-600">
-              {error}
-            </div>
-          )}
+          <div id={errorId} role="alert" aria-live="assertive" className="min-h-6 mb-4">
+            {error ? (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-100 text-sm text-red-600">{error}</div>
+            ) : null}
+          </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" noValidate>
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                 Имя <span className="text-gray-400">(необязательно)</span>
@@ -87,6 +91,7 @@ export default function RegisterPage() {
               <input
                 id="name"
                 type="text"
+                autoComplete="name"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
@@ -102,8 +107,13 @@ export default function RegisterPage() {
                 id="email"
                 type="email"
                 required
+                autoComplete="email"
+                autoCapitalize="none"
+                spellCheck={false}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                aria-invalid={error ? true : undefined}
+                aria-describedby={error ? errorId : undefined}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm"
                 placeholder="your@email.com"
               />
@@ -119,19 +129,28 @@ export default function RegisterPage() {
                   type={showPassword ? 'text' : 'password'}
                   required
                   minLength={6}
+                  autoComplete="new-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  aria-invalid={error ? true : undefined}
+                  aria-describedby={passwordDescribedBy}
                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100 outline-none transition-all text-sm pr-10"
                   placeholder="Минимум 6 символов"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-controls="password"
+                  aria-pressed={showPassword}
+                  aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400 rounded"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              <p id={passwordHintId} className="mt-1 text-xs text-gray-500">
+                Минимум 6 символов.
+              </p>
             </div>
 
             <button
