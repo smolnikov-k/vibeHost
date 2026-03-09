@@ -2,6 +2,7 @@ import path from 'path';
 import { Router, Request, Response } from 'express';
 
 const router = Router();
+const publicDir = path.resolve(__dirname, '..', '..', 'public');
 
 function sendPublicScript(res: Response, fileName: string, options: { allowAllOrigins?: boolean } = {}): void {
   res.setHeader('Content-Type', 'application/javascript');
@@ -12,7 +13,7 @@ function sendPublicScript(res: Response, fileName: string, options: { allowAllOr
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
 
-  res.sendFile(path.join(__dirname, '..', 'public', fileName));
+  res.sendFile(path.join(publicDir, fileName));
 }
 
 router.get('/vibe-forms.js', (_req: Request, res: Response) => {
@@ -20,7 +21,7 @@ router.get('/vibe-forms.js', (_req: Request, res: Response) => {
 });
 
 router.get('/vibe-editor-bridge.js', (_req: Request, res: Response) => {
-  sendPublicScript(res, 'vibe-editor-bridge.js');
+  sendPublicScript(res, 'vibe-editor-bridge.js', { allowAllOrigins: true });
 });
 
 router.get('/vibe-patches.js', (_req: Request, res: Response) => {
