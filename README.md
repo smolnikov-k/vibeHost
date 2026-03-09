@@ -39,6 +39,8 @@ npm run dev
 Запуск/перезапуск через PM2 и reverse proxy через Nginx.
 Основной домен: `https://hostingvibe.ru`
 
+PM2-конфигурация для продакшена хранится в `ecosystem.config.js`.
+
 ## Полезные команды
 
 ```bash

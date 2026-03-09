@@ -9,26 +9,11 @@ import { deployLimiter } from '../middleware/rateLimit';
 import { getPlanLimits } from '../utils/limits';
 import { processDeploy } from '../services/deploy.service';
 import { processGithubDeploy } from '../services/github.service';
+import { acquireProjectOperationLock } from '../services/project-operation-lock';
 import { config } from '../config';
 import logger from '../services/logger';
 
 const router = Router();
-
-// Per-project deploy lock to prevent race conditions
-const deployLocks = new Map<string, Promise<void>>();
-
-function acquireDeployLock(projectId: string): { acquired: boolean; release: () => void } {
-  if (deployLocks.has(projectId)) {
-    return { acquired: false, release: () => {} };
-  }
-  let release: () => void;
-  const promise = new Promise<void>(resolve => { release = resolve; });
-  deployLocks.set(projectId, promise);
-  return {
-    acquired: true,
-    release: () => { deployLocks.delete(projectId); release!(); },
-  };
-}
 
 function safeUnlink(filePath: string, requestId: string): void {
   try {
@@ -78,7 +63,7 @@ router.post('/:id/deploy', deployLimiter, uploadZip.single('file'), async (req: 
     }
 
     // Prevent concurrent deploys for the same project
-    const acquiredLock = acquireDeployLock(projectId);
+    const acquiredLock = acquireProjectOperationLock(projectId);
     if (!acquiredLock.acquired) {
       safeUnlink(req.file.path, requestId);
       sendError(res, 409, 'Деплой уже выполняется для этого проекта. Дождитесь завершения.', requestId);
@@ -264,6 +249,15 @@ router.get('/:id/deployments/:deployId/stream', async (req: AuthRequest, res: Re
 
 // Deploy from GitHub
 router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: Response) => {
+  let lock: { release: () => void } | null = null;
+  let lockReleased = false;
+  const releaseLock = () => {
+    if (lock && !lockReleased) {
+      lock.release();
+      lockReleased = true;
+    }
+  };
+
   try {
     const requestId = req.requestId || 'unknown';
     const projectId = req.params.id as string;
@@ -289,6 +283,13 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
       return;
     }
 
+    const acquiredLock = acquireProjectOperationLock(projectId);
+    if (!acquiredLock.acquired) {
+      sendError(res, 409, 'Операция с проектом уже выполняется. Дождитесь завершения.', requestId);
+      return;
+    }
+    lock = acquiredLock;
+
     // Create deployment record upfront so client can subscribe to SSE
     const newVersion = project.currentVersion + 1;
     const deployment = await prisma.deployment.create({
@@ -308,8 +309,9 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
         requestId,
         error: err instanceof Error ? err.message : String(err),
       });
-    });
+    }).finally(() => { releaseLock(); });
   } catch (err) {
+    releaseLock();
     const requestId = req.requestId || 'unknown';
     logger.error('GitHub deploy error', { requestId, error: err });
     res.status(500).json({ error: 'Ошибка сервера', requestId });
@@ -319,6 +321,15 @@ router.post('/:id/deploy-github', deployLimiter, async (req: AuthRequest, res: R
 // Rollback to a previous version (PRO only — uses backups)
 router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
   const requestId = req.requestId || 'unknown';
+  let lock: { release: () => void } | null = null;
+  let lockReleased = false;
+  const releaseLock = () => {
+    if (lock && !lockReleased) {
+      lock.release();
+      lockReleased = true;
+    }
+  };
+
   try {
     const projectId = req.params.id as string;
     const { version } = req.body;
@@ -337,12 +348,21 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
       return;
     }
 
+    const acquiredLock = acquireProjectOperationLock(projectId);
+    if (!acquiredLock.acquired) {
+      sendError(res, 409, 'Операция с проектом уже выполняется. Дождитесь завершения.', requestId);
+      return;
+    }
+    lock = acquiredLock;
+
     if (project.user.plan !== 'PRO') {
+      releaseLock();
       sendError(res, 403, 'Откат версий доступен только на тарифе PRO', requestId);
       return;
     }
 
     if (version === project.currentVersion) {
+      releaseLock();
       sendError(res, 400, 'Это уже текущая версия', requestId);
       return;
     }
@@ -350,6 +370,7 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
     // Check backup exists
     const backupDir = path.join(config.backupsDir, project.slug, `v${version}`);
     if (!fs.existsSync(backupDir)) {
+      releaseLock();
       sendError(res, 404, 'Бэкап этой версии не найден. Откат доступен только для PRO.', requestId);
       return;
     }
@@ -398,6 +419,8 @@ router.post('/:id/rollback', async (req: AuthRequest, res: Response) => {
   } catch (err) {
     logger.error('Rollback error', { requestId, error: err });
     res.status(500).json({ error: 'Ошибка сервера', requestId });
+  } finally {
+    releaseLock();
   }
 });
 
