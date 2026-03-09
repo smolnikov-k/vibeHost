@@ -76,6 +76,15 @@ router.get('/internal/preview', async (req: Request, res: Response) => {
       html += bridgeScript;
     }
 
+    const assetBasePath = path.posix.dirname(`/${pagePath}`).replace(/\/$/, '') || '';
+    const baseHref = `https://${project.slug}.hostingvibe.ru${assetBasePath}/`;
+    const baseTag = `<base href="${baseHref}">`;
+    if (html.includes('<head>')) {
+      html = html.replace('<head>', `<head>\n${baseTag}`);
+    } else if (html.includes('<head ')) {
+      html = html.replace(/<head([^>]*)>/, `<head$1>\n${baseTag}`);
+    }
+
     const spaFix = `<script>history.replaceState(null,'','/');</script>`;
     if (html.includes('<head>')) {
       html = html.replace('<head>', `<head>\n${spaFix}`);

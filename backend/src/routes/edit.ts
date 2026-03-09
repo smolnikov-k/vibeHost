@@ -66,6 +66,31 @@ const ALLOWED_STYLE_PROPS = [
   'padding', 'margin', 'border', 'boxShadow', 'fontFamily', 'display',
 ];
 
+function isValidSelector(selector: unknown): selector is string {
+  return typeof selector === 'string'
+    && selector.length > 0
+    && selector.length <= 500
+    && !/[<>{}]|javascript:|expression\s*\(/i.test(selector);
+}
+
+function validateStyleContent(content: unknown): { valid: boolean; error?: string } {
+  if (typeof content !== 'string' || !content) {
+    return { valid: false, error: 'Для style-патча нужен content с CSS-свойствами' };
+  }
+
+  try {
+    const styles = JSON.parse(content) as Record<string, unknown>;
+    const invalid = Object.keys(styles).filter(k => !ALLOWED_STYLE_PROPS.includes(k));
+    if (invalid.length > 0) {
+      return { valid: false, error: `Недопустимые CSS-свойства: ${invalid.join(', ')}` };
+    }
+  } catch {
+    return { valid: false, error: 'content для style должен быть валидным JSON' };
+  }
+
+  return { valid: true };
+}
+
 // ======================
 // PAGES
 // ======================
@@ -207,13 +232,8 @@ router.post('/:id/edit/patches', async (req: AuthRequest, res: Response) => {
       res.status(400).json({ error: 'Укажите selector и type' });
       return;
     }
-    if (typeof selector !== 'string' || selector.length > 500) {
+    if (!isValidSelector(selector)) {
       res.status(400).json({ error: 'Некорректный selector' });
-      return;
-    }
-    // Basic CSS selector sanitization — block dangerous patterns
-    if (/[<>{}]|javascript:|expression\s*\(/i.test(selector)) {
-      res.status(400).json({ error: 'Недопустимые символы в selector' });
       return;
     }
     if (!['text', 'image', 'hide', 'style'].includes(type)) {
@@ -230,19 +250,9 @@ router.post('/:id/edit/patches', async (req: AuthRequest, res: Response) => {
 
     // Validate style patch
     if (type === 'style') {
-      if (!content) {
-        res.status(400).json({ error: 'Для style-патча нужен content с CSS-свойствами' });
-        return;
-      }
-      try {
-        const styles = JSON.parse(content);
-        const invalid = Object.keys(styles).filter(k => !ALLOWED_STYLE_PROPS.includes(k));
-        if (invalid.length > 0) {
-          res.status(400).json({ error: `Недопустимые CSS-свойства: ${invalid.join(', ')}` });
-          return;
-        }
-      } catch {
-        res.status(400).json({ error: 'content для style должен быть валидным JSON' });
+      const styleValidation = validateStyleContent(content);
+      if (!styleValidation.valid) {
+        res.status(400).json({ error: styleValidation.error });
         return;
       }
     }
@@ -286,6 +296,36 @@ router.put('/:id/edit/patches/:patchId', async (req: AuthRequest, res: Response)
     }
 
     const { selector, type, content, enabled, order } = req.body;
+    if (selector !== undefined && !isValidSelector(selector)) {
+      res.status(400).json({ error: 'Некорректный selector' });
+      return;
+    }
+
+    if (type !== undefined && !['text', 'image', 'hide', 'style'].includes(type)) {
+      res.status(400).json({ error: 'type должен быть text, image, hide или style' });
+      return;
+    }
+
+    const effectiveType = (type ?? existing.type) as 'text' | 'image' | 'hide' | 'style';
+    const effectiveContent = content ?? existing.content;
+    if (effectiveType === 'style') {
+      const styleValidation = validateStyleContent(effectiveContent);
+      if (!styleValidation.valid) {
+        res.status(400).json({ error: styleValidation.error });
+        return;
+      }
+    }
+
+    if (enabled !== undefined && typeof enabled !== 'boolean') {
+      res.status(400).json({ error: 'enabled должен быть boolean' });
+      return;
+    }
+
+    if (order !== undefined && (!Number.isInteger(order) || order < 0)) {
+      res.status(400).json({ error: 'order должен быть целым числом >= 0' });
+      return;
+    }
+
     const patch = await prisma.visualPatch.update({
       where: { id: patchId },
       data: {

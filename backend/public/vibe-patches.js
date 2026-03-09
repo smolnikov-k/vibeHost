@@ -35,7 +35,14 @@
     for (var j = 0; j < all.length; j++) {
       var attrs = all[j].attributes;
       for (var k = attrs.length - 1; k >= 0; k--) {
-        if (attrs[k].name.toLowerCase().indexOf('on') === 0) {
+        var attrName = attrs[k].name.toLowerCase();
+        var attrValue = (attrs[k].value || '').trim().toLowerCase();
+        if (attrName.indexOf('on') === 0) {
+          all[j].removeAttribute(attrs[k].name);
+          continue;
+        }
+        if ((attrName === 'href' || attrName === 'src' || attrName === 'xlink:href')
+          && /^(javascript:|vbscript:|data:)/.test(attrValue)) {
           all[j].removeAttribute(attrs[k].name);
         }
       }

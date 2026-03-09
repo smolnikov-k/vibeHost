@@ -27,6 +27,32 @@ interface SelectedElement {
 
 type PatchTab = 'text' | 'image' | 'hide' | 'style';
 
+function rgbToHex(color: string | undefined): string | undefined {
+  if (!color) return undefined;
+  const normalized = color.trim().toLowerCase();
+  if (normalized.startsWith('#')) return normalized;
+
+  const match = normalized.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)$/);
+  if (!match) return undefined;
+
+  const toHex = (value: string) => Number(value).toString(16).padStart(2, '0');
+  return `#${toHex(match[1])}${toHex(match[2])}${toHex(match[3])}`;
+}
+
+function normalizeComputedStyles(styles?: Record<string, string>): Record<string, string> {
+  if (!styles) return {};
+
+  const next = { ...styles };
+  if (styles.color) {
+    next.color = rgbToHex(styles.color) || styles.color;
+  }
+  if (styles.backgroundColor) {
+    next.backgroundColor = rgbToHex(styles.backgroundColor) || styles.backgroundColor;
+  }
+
+  return next;
+}
+
 export default function VibeEditor({ projectId, projectSlug, customDomain, onBack }: VibeEditorProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -42,6 +68,7 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
   const [showPageSelect, setShowPageSelect] = useState(false);
   const [uploadingAsset, setUploadingAsset] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const skipResetOnNextDeselectRef = useRef(false);
 
   // Edit fields
   const [editText, setEditText] = useState('');
@@ -98,7 +125,7 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
           setEditText(data.text || '');
         }
         if (data.computedStyles) {
-          setEditStyles({});
+          setEditStyles(normalizeComputedStyles(data.computedStyles));
         }
         setSidebarOpen(true);
       }
@@ -128,11 +155,20 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
 
   // Deselect element
   const deselect = useCallback(() => {
+    const shouldReset = !skipResetOnNextDeselectRef.current;
+    skipResetOnNextDeselectRef.current = false;
+
+    if (shouldReset && selected && iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage({
+        type: 'vibe-bridge:reset',
+        selector: selected.selector,
+      }, expectedOrigin);
+    }
     setSelected(null);
     if (iframeRef.current?.contentWindow) {
       iframeRef.current.contentWindow.postMessage({ type: 'vibe-bridge:deselect' }, expectedOrigin);
     }
-  }, [expectedOrigin]);
+  }, [expectedOrigin, selected]);
 
   // Save patch
   const savePatch = useCallback(async () => {
@@ -151,6 +187,7 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
       });
 
       setPatches(prev => [...prev, patch]);
+      skipResetOnNextDeselectRef.current = true;
       deselect();
     } catch (err) {
       console.error('Failed to save patch', err);
@@ -221,11 +258,17 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
 
   // Switch page
   const switchPage = useCallback((pagePath: string) => {
+    if (selected && iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage({
+        type: 'vibe-bridge:reset',
+        selector: selected.selector,
+      }, expectedOrigin);
+    }
     setCurrentPath(pagePath);
     setShowPageSelect(false);
     setSelected(null);
     setBridgeReady(false);
-  }, []);
+  }, [expectedOrigin, selected]);
 
   // Live preview on edit
   useEffect(() => {
@@ -409,6 +452,12 @@ export default function VibeEditor({ projectId, projectSlug, customDomain, onBac
                   <button
                     key={tab}
                     onClick={() => {
+                      if (selected && activeTab === 'hide' && tab !== 'hide' && iframeRef.current?.contentWindow) {
+                        iframeRef.current.contentWindow.postMessage({
+                          type: 'vibe-bridge:reset',
+                          selector: selected.selector,
+                        }, expectedOrigin);
+                      }
                       setActiveTab(tab);
                       if (tab === 'hide' && selected) {
                         sendPreview(selected.selector, 'hide', '');
