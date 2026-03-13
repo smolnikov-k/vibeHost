@@ -12,7 +12,7 @@ import publicAssetRoutes from '../routes/public-assets';
 import reportRoutes from '../routes/report';
 import slugRoutes from '../routes/slug-check';
 import unsubscribeRoutes from '../routes/unsubscribe';
-import { siteAuthHandler, siteGateGet, siteGatePost } from '../routes/site-gate';
+import { siteAuthHandler, siteContextGet, siteGateGet, siteGatePost } from '../routes/site-gate';
 import editRoutes, { publicPatchesRouter as publicPatchesRoutes } from '../routes/edit';
 
 type AppInstance = ReturnType<typeof express>;
@@ -23,6 +23,7 @@ export function registerPublicRoutes(app: AppInstance): void {
   app.use('/api', pixelRoutes);
   app.use('/api', apiLimiter, publicTrackRouter);
   app.use('/api', publicAssetRoutes);
+  app.get('/api/site-context', apiLimiter, siteContextGet);
   app.use('/api/forms', apiLimiter, formsRoutes);
   app.use('/api/patches', apiLimiter, publicPatchesRoutes);
   app.use('/api/report', apiLimiter, reportRoutes);
