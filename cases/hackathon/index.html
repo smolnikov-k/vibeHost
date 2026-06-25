@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EcoRoute — хакатон-проект экологичных маршрутов</title>
+<meta name="description" content="EcoRoute — студенческий проект для построения экологичных маршрутов по городу. 1 место на HackMoscow 2026.">
+<style>
+:root{--g:#22c55e;--g2:#16a34a;--d:#0f172a;--d2:#1e293b;--m:#64748b;--bg:#f0fdf2;--line:#c6e9cc;--soft:#dcfce7;--energy:#f0fdf4}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{font:16px/1.6 'Segoe UI',system-ui,sans-serif;color:var(--d);background:linear-gradient(180deg,var(--energy),#f8fafc 40%,#fff)}a{text-decoration:none;color:inherit}
+.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 64px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0;flex-wrap:wrap;gap:12px}
+.brand{font-weight:900;letter-spacing:.12em;color:var(--d)}
+.nav{display:flex;gap:22px;color:var(--m);font-size:14px;font-weight:500}
+.nav a:hover{color:var(--g2)}
+.badge{padding:8px 16px;border-radius:999px;background:var(--soft);color:var(--g2);font-weight:800;font-size:14px;border:1px solid var(--line)}
+.btn,.ghost{display:inline-block;padding:13px 20px;border-radius:12px;font-weight:800;font-size:14px;transition:all .2s}
+.btn{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;box-shadow:0 12px 28px rgba(34,197,94,.22)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(34,197,94,.3)}
+.ghost{border:1px solid var(--line);background:#fff}
+.ghost:hover{border-color:var(--g)}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;padding:30px 0 76px}
+.hero h1{font-size:clamp(40px,6vw,72px);line-height:.94;margin-bottom:12px}
+.hero h1 span{color:var(--g2)}
+.hero .tagline{font-size:20px;color:var(--g2);font-weight:700;margin-bottom:12px}
+.hero>div:first-child>p{color:var(--m);font-size:17px}
+.hero-img{border-radius:22px;overflow:hidden;aspect-ratio:4/3;position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(56,189,248,.12));pointer-events:none}
+
+h2{font-size:30px;margin-bottom:20px}
+
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;transition:all .2s}
+.card:hover{box-shadow:0 6px 20px rgba(34,197,94,.08);transform:translateY(-2px)}
+.card p{color:var(--m)}
+.n{font-size:36px;font-weight:900;color:var(--g2);margin-bottom:4px}
+
+.flow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{padding:22px;border-radius:20px;background:var(--soft);border:1px solid var(--line);position:relative;transition:all .2s}
+.step:hover{background:#fff}
+.step b{display:block;margin-bottom:6px;font-size:17px}
+.step p{color:var(--m)}
+.step-num{display:inline-block;width:32px;height:32px;border-radius:50%;background:var(--g2);color:#fff;font-weight:800;font-size:14px;line-height:32px;text-align:center;margin-bottom:12px}
+
+.timeline{position:relative;padding-left:36px;margin-bottom:64px}
+.timeline::before{content:'';position:absolute;left:14px;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--g),var(--line));border-radius:2px}
+.tl-item{position:relative;margin-bottom:28px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:18px}
+.tl-item::before{content:'';position:absolute;left:-29px;top:24px;width:14px;height:14px;border-radius:50%;background:var(--g);border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}
+.tl-item b{display:block;font-size:17px;margin-bottom:4px}
+.tl-item .tl-date{font-size:13px;font-weight:700;color:var(--g2);margin-bottom:6px}
+.tl-item p{color:var(--m);font-size:15px}
+
+.stack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.chip{padding:14px;background:#fff;border:1px solid var(--line);border-radius:14px;text-align:center;font-weight:700;transition:all .2s}
+.chip:hover{border-color:var(--g);color:var(--g2)}
+
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.member{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
+.member p{color:var(--m)}
+.ava{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--soft),#86efac);font-weight:800;color:var(--g2);margin-bottom:12px;font-size:18px}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;text-align:center}
+.stat b{display:block;font-size:32px;color:var(--g2)}
+
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.review{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
+.review p{color:var(--m)}
+.stars{color:#f59e0b;font-size:14px;margin-bottom:10px}
+
+.cta{padding:38px;border-radius:24px;background:linear-gradient(135deg,var(--d),#14532d);color:#fff;text-align:center;margin-bottom:56px}
+.cta p{color:#94a3b8;max-width:600px;margin:10px auto 20px}
+
+.foot{padding:22px 0 40px;text-align:center;color:var(--m);font-size:14px}
+.foot a{color:var(--g2)}
+
+@media(max-width:960px){.hero,.facts,.flow,.stack,.team,.stats,.reviews{grid-template-columns:1fr 1fr}.top .nav{display:none}}
+@media(max-width:620px){.hero,.facts,.flow,.stack,.team,.stats,.reviews{grid-template-columns:1fr}.timeline{padding-left:30px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <nav class="top">
+    <div class="brand">ECOROUTE</div>
+    <div class="nav"><a href="#problem">Проблема</a><a href="#solution">Решение</a><a href="#team">Команда</a><a href="#roadmap">Roadmap</a></div>
+    <div class="badge">HackMoscow 2026 &mdash; 1 место</div>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <h1>Eco<span>Route</span></h1>
+      <div class="tagline">Выбирай маршрут &mdash; спасай планету</div>
+      <p>EcoRoute строит городские маршруты с учётом выбросов CO2, предлагает эко-альтернативы и мотивирует пользователей менять транспортные привычки с помощью геймификации.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+        <a class="btn" href="#beta">Хочу в бета-тест</a>
+        <a class="ghost" href="#solution">Как это работает</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=450&fit=crop&q=70" alt="Велосипедист на экологичном маршруте" width="600" height="450" loading="eager">
+    </div>
+  </div>
+</div>
+
+<section class="w" id="problem">
+  <h2>Проблема</h2>
+  <div class="facts">
+    <div class="card"><div class="n">24%</div><p>городских выбросов CO2 приходится на транспорт и короткие ежедневные поездки.</p></div>
+    <div class="card"><div class="n">68%</div><p>людей готовы менять привычки, если сервис показывает понятный личный эффект.</p></div>
+    <div class="card"><div class="n">18%</div><p>снижения выбросов можно достичь за счёт эко-маршрутов и смены транспорта.</p></div>
+  </div>
+</section>
+
+<section class="w" id="solution">
+  <h2>Решение</h2>
+  <div class="flow">
+    <div class="step"><div class="step-num">1</div><b>Анализ маршрута</b><p>Пользователь вводит точку А и Б, система рассчитывает время и экологический след.</p></div>
+    <div class="step"><div class="step-num">2</div><b>Эко-альтернативы</b><p>Приложение предлагает сценарии на велосипеде, самокате, пешком или комбинированно.</p></div>
+    <div class="step"><div class="step-num">3</div><b>Мотивация</b><p>За экологичные маршруты пользователь получает баллы и видит накопленный эффект.</p></div>
+  </div>
+</section>
+
+<section class="w">
+  <h2>Что внутри MVP</h2>
+  <div class="flow">
+    <div class="card"><b>Карта маршрутов</b><p>Несколько сценариев передвижения со сравнением по времени, удобству и выбросам.</p></div>
+    <div class="card"><b>CO2-калькулятор</b><p>Показывает, насколько экологичнее выбранный путь по сравнению с автомобилем.</p></div>
+    <div class="card"><b>Геймификация</b><p>Поощряет за повторяющиеся эко-привычки и делает полезное поведение видимым.</p></div>
+  </div>
+</section>
+
+<section class="w">
+  <h2>Стек технологий</h2>
+  <div class="stack">
+    <div class="chip">React Native</div>
+    <div class="chip">Node.js</div>
+    <div class="chip">PostgreSQL</div>
+    <div class="chip">OpenRouteService API</div>
+    <div class="chip">Yandex Maps</div>
+    <div class="chip">Python для расчётов</div>
+  </div>
+</section>
+
+<section class="w" id="team">
+  <h2>Команда</h2>
+  <div class="team">
+    <div class="member"><div class="ava">AK</div><b>Аня Климова</b><p>Frontend. Интерфейсы приложения, UX потока маршрутов, дизайн презентации.</p></div>
+    <div class="member"><div class="ava">MП</div><b>Максим Петров</b><p>Backend. API маршрутов, логика расчётов, хранение истории поездок.</p></div>
+    <div class="member"><div class="ava">ДС</div><b>Даша Соколова</b><p>ML / Data. Экологические коэффициенты, метрики и модель рекомендаций.</p></div>
+  </div>
+</section>
+
+<section class="w">
+  <h2>Результаты хакатона</h2>
+  <div class="stats">
+    <div class="stat"><b>48 ч</b><span>на сборку MVP и финальный питч</span></div>
+    <div class="stat"><b>1 место</b><span>из 40 команд на HackMoscow 2026</span></div>
+    <div class="stat"><b>300 000 &#8381;</b><span>призовой фонд и грант на доработку</span></div>
+  </div>
+</section>
+
+<section class="w">
+  <h2>Отзывы жюри</h2>
+  <div class="reviews">
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Ментор трека Smart City</b><p>&#171;Редкий баланс между технической реализацией и понятной пользовательской ценностью.&#187;</p></div>
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Представитель партнёра</b><p>&#171;EcoRoute не просто считает CO2, а переводит экологию в реальное поведение пользователя.&#187;</p></div>
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Член жюри</b><p>&#171;Проект выглядит как продукт, который можно довести до пилота уже в ближайшие месяцы.&#187;</p></div>
+  </div>
+</section>
+
+<section class="w" id="roadmap">
+  <h2>Roadmap после хакатона</h2>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-date">Q2 2026</div>
+      <b>Доработка и кабинет пользователя</b>
+      <p>Доработка расчётов, кабинет пользователя и накопление личной статистики маршрутов.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Q3 2026</div>
+      <b>Бета-тест в Москве</b>
+      <p>Бета-тест на ограниченной группе пользователей и сбор обратной связи.</p>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">Q4 2026</div>
+      <b>Партнёрства и расширение</b>
+      <p>Партнёрства с городскими инициативами и новые транспортные сценарии.</p>
+    </div>
+  </div>
+</section>
+
+<section class="w" id="beta">
+  <div class="cta">
+    <h2 style="font-size:34px;margin:0 0 8px;color:#fff">Хотите попробовать EcoRoute?</h2>
+    <p>Оставьте email для раннего доступа к бета-тесту. Мы первыми пригласим тех, кто хочет осмысленнее перемещаться по городу.</p>
+    <a class="ghost" style="background:#fff;color:var(--g2)" href="#">Оставить email</a>
+  </div>
+</section>
+
+<div class="foot">EcoRoute Team &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></div>
+</body>
+</html>

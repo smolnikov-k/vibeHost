@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPARK — Вебинар по цифровому маркетингу</title>
+  <meta name="description" content="Узнайте стратегии digital-маркетинга, которые работают в 2026 году. Онлайн. Бесплатно. Регистрация открыта.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --orange: #FF6B35;
+      --orange-dark: #E85A25;
+      --dark: #1A1A2E;
+      --darker: #0F0F1A;
+      --gray: #6B7280;
+      --light: #F8F9FA;
+      --white: #FFFFFF;
+    }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--dark); line-height: 1.6; }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      min-height: 520px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      color: white;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(26,26,46,0.92) 0%, rgba(15,52,96,0.85) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 80px 0 60px;
+      text-align: center;
+      width: 100%;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(255,107,53,0.15);
+      color: var(--orange);
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(255,107,53,0.25);
+    }
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero h1 span { color: var(--orange); }
+    .hero-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      margin: 0 auto 32px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--orange);
+      color: white;
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(255,107,53,0.35);
+    }
+    .cta-btn:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(255,107,53,0.45); }
+
+    /* Timer */
+    .timer-section {
+      background: var(--darker);
+      padding: 32px 0;
+      text-align: center;
+      color: white;
+    }
+    .timer-label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+    .timer-block {
+      background: rgba(255,107,53,0.12);
+      border: 1px solid rgba(255,107,53,0.25);
+      border-radius: 12px;
+      padding: 14px 20px;
+      min-width: 80px;
+    }
+    .timer-num {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--orange);
+      line-height: 1;
+    }
+    .timer-unit {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Speaker */
+    .speaker-section {
+      padding: 64px 0;
+      background: var(--light);
+    }
+    .speaker-section h2 { text-align: center; font-size: 28px; margin-bottom: 40px; }
+    .speaker-card {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 32px;
+      align-items: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .speaker-photo {
+      width: 260px;
+      height: 300px;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+    .speaker-info h3 { font-size: 22px; margin-bottom: 4px; }
+    .speaker-info .role { color: var(--orange); font-weight: 600; font-size: 14px; margin-bottom: 12px; }
+    .speaker-info p { font-size: 14px; color: var(--gray); line-height: 1.7; }
+    .speaker-stats {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .speaker-stats div { text-align: center; }
+    .speaker-stats strong { display: block; font-size: 22px; color: var(--dark); }
+    .speaker-stats span { font-size: 12px; color: var(--gray); }
+
+    /* Program */
+    .program { padding: 64px 0; }
+    .program h2 { text-align: center; font-size: 28px; margin-bottom: 40px; }
+    .timeline { max-width: 620px; margin: 0 auto; }
+    .timeline-item {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 28px;
+      position: relative;
+    }
+    .timeline-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 23px;
+      top: 48px;
+      bottom: 0;
+      width: 2px;
+      background: #E5E7EB;
+    }
+    .timeline-time {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--orange);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .timeline-content h3 { font-size: 16px; margin-bottom: 4px; }
+    .timeline-content p { font-size: 14px; color: var(--gray); }
+
+    /* Audience photo */
+    .audience-section {
+      position: relative;
+      height: 320px;
+      overflow: hidden;
+    }
+    .audience-section img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .audience-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(26,26,46,0.6), rgba(26,26,46,0.85));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      text-align: center;
+      padding: 24px;
+    }
+    .audience-overlay h2 { font-size: 28px; margin-bottom: 8px; }
+    .audience-overlay p { color: rgba(255,255,255,0.65); max-width: 480px; font-size: 16px; }
+
+    /* Form */
+    .form-section {
+      padding: 64px 0;
+      background: linear-gradient(135deg, #1A1A2E, #0F3460);
+      color: white;
+    }
+    .form-section h2 { text-align: center; font-size: 28px; margin-bottom: 8px; }
+    .form-section > .container > p { text-align: center; color: rgba(255,255,255,0.6); margin-bottom: 32px; }
+    .reg-form {
+      max-width: 420px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .reg-form input {
+      padding: 14px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    .reg-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .reg-form input:focus { border-color: var(--orange); }
+    .form-note { text-align: center; font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 8px; }
+
+    /* Footer */
+    .footer {
+      padding: 24px 0;
+      border-top: 1px solid #E5E7EB;
+      text-align: center;
+      font-size: 13px;
+      color: var(--gray);
+    }
+    .footer a { color: var(--orange); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .hero-content { padding: 60px 0 40px; }
+      .timer { gap: 8px; }
+      .timer-block { min-width: 64px; padding: 10px 12px; }
+      .timer-num { font-size: 24px; }
+      .speaker-card { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+      .speaker-photo { width: 200px; height: 220px; }
+      .speaker-stats { justify-content: center; }
+      .audience-section { height: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-bg" src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop" alt="SPARK Conference">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="container">
+        <div class="badge">SPARK 2026 / БЕСПЛАТНЫЙ ВЕБИНАР</div>
+        <h1>Вебинар по <span>цифровому маркетингу</span></h1>
+        <p class="hero-sub">Узнайте стратегии, которые работают в 2026 году. Онлайн. Бесплатно.</p>
+        <a href="#register" class="cta-btn">Зарегистрироваться бесплатно</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timer -->
+  <section class="timer-section">
+    <div class="container">
+      <div class="timer-label">До начала вебинара осталось</div>
+      <div class="timer" id="countdown">
+        <div class="timer-block"><div class="timer-num" id="cd-days">03</div><div class="timer-unit">дней</div></div>
+        <div class="timer-block"><div class="timer-num" id="cd-hours">14</div><div class="timer-unit">часов</div></div>
+        <div class="timer-block"><div class="timer-num" id="cd-mins">22</div><div class="timer-unit">минут</div></div>
+        <div class="timer-block"><div class="timer-num" id="cd-secs">47</div><div class="timer-unit">секунд</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Speaker -->
+  <section class="speaker-section">
+    <div class="container">
+      <h2>Спикер</h2>
+      <div class="speaker-card">
+        <img class="speaker-photo" src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=600&fit=crop" alt="Анна Соколова">
+        <div class="speaker-info">
+          <h3>Анна Соколова</h3>
+          <div class="role">Head of Digital Marketing, ex-Яндекс, ex-VK</div>
+          <p>12+ лет опыта в performance-маркетинге. Спикер конференций РИФ, Стачка, Digital Marketing Day. Помогла 200+ компаниям выстроить digital-стратегию.</p>
+          <div class="speaker-stats">
+            <div><strong>12+</strong><span>лет опыта</span></div>
+            <div><strong>200+</strong><span>проектов</span></div>
+            <div><strong>50M+</strong><span>рекл. бюджет</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo strip: networking & presentation -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;">
+    <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&h=600&fit=crop" alt="Нетворкинг на конференции" style="width:100%;height:220px;object-fit:cover;">
+    <img src="https://images.unsplash.com/photo-1560439514-4e9645039924?w=800&h=600&fit=crop" alt="Презентация на экране" style="width:100%;height:220px;object-fit:cover;">
+  </div>
+
+  <!-- Program -->
+  <section class="program">
+    <div class="container">
+      <h2>Программа вебинара</h2>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-time">10:00</div>
+          <div class="timeline-content">
+            <h3>Открытие. Тренды digital-маркетинга 2026</h3>
+            <p>Разбираем ключевые изменения рынка и что из них можно применить уже сейчас.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">10:30</div>
+          <div class="timeline-content">
+            <h3>Контент-стратегия: от идеи до ROI</h3>
+            <p>Как строить контент, который не просто набирает охваты, а приносит выручку.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">11:15</div>
+          <div class="timeline-content">
+            <h3>Кофе-брейк</h3>
+            <p>15 минут отдыха и нетворкинга в чате.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">11:30</div>
+          <div class="timeline-content">
+            <h3>Таргетированная реклама: VK Ads, Яндекс Директ, Telegram Ads</h3>
+            <p>Практические кейсы настройки кампаний с ROI от 300%.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">12:15</div>
+          <div class="timeline-content">
+            <h3>Аналитика и автоматизация воронок</h3>
+            <p>Инструменты, дашборды и триггерные цепочки, которые экономят время и деньги.</p>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-time">13:00</div>
+          <div class="timeline-content">
+            <h3>Q&A сессия с экспертом</h3>
+            <p>Живые ответы на вопросы участников. Разбор конкретных ситуаций.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Audience photo -->
+  <section class="audience-section">
+    <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=600&fit=crop" alt="Аудитория вебинара">
+    <div class="audience-overlay">
+      <h2>Уже 1 200+ регистраций</h2>
+      <p>Присоединяйтесь к маркетологам, предпринимателям и фрилансерам, которые готовы расти в 2026 году.</p>
+    </div>
+  </section>
+
+  <!-- Registration Form -->
+  <section class="form-section" id="register">
+    <div class="container">
+      <h2>Забронируйте место</h2>
+      <p>Количество мест ограничено. Запись закрывается за 24 часа до начала.</p>
+      <form class="reg-form" data-vibe-form="webinar-reg">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="tel" name="phone" placeholder="Телефон (WhatsApp/Telegram)" required>
+        <button type="submit" class="cta-btn" style="width:100%;text-align:center;">Зарегистрироваться бесплатно</button>
+      </form>
+      <div class="form-note">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>SPARK Agency &copy; 2026 &mdash; Сайт создан на <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var target = new Date();
+      target.setDate(target.getDate() + 3);
+      target.setHours(10, 0, 0, 0);
+      function update() {
+        var now = new Date();
+        var diff = Math.max(0, target - now);
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('cd-days').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-mins').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-secs').textContent = String(s).padStart(2, '0');
+      }
+      update();
+      setInterval(update, 1000);
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planly — управляйте проектами без хаоса</title>
+<meta name="description" content="Planly: планирование задач, контроль дедлайнов и аналитика команды в одном окне. Бесплатно для команд до 5 человек.">
+<style>
+:root{--p:#7c3aed;--p2:#6d28d9;--p3:#a78bfa;--bg:#faf8ff;--fg:#1e1040;--m:#6b7280;--line:#e5e0f5;--soft:#f3f0ff;--grad:linear-gradient(135deg,#7c3aed,#2563eb)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{font:16px/1.6 'Segoe UI',system-ui,sans-serif;color:var(--fg);background:var(--bg)}a{text-decoration:none;color:inherit}
+.w{max-width:1140px;margin:auto;padding:0 20px}section{padding:0 0 64px}
+.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 0;flex-wrap:wrap;gap:12px}
+.brand{font-weight:900;font-size:22px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.links{display:flex;gap:24px;color:var(--m);font-size:14px;font-weight:500}
+.links a:hover{color:var(--p)}
+.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:700;font-size:14px;transition:all .2s}
+.btn{background:var(--grad);color:#fff;box-shadow:0 12px 28px rgba(124,58,237,.22)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(124,58,237,.3)}
+.ghost{border:1px solid var(--line);background:#fff}
+.ghost:hover{border-color:var(--p3)}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;padding:36px 0 80px}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.05;margin-bottom:16px}
+.hero h1 span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-text p{color:var(--m);font-size:17px;max-width:500px}
+.hero-img{border-radius:20px;overflow:hidden;aspect-ratio:4/3;position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(37,99,235,.08));pointer-events:none}
+
+h2{font-size:30px;margin-bottom:20px}
+
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;transition:all .2s}
+.card:hover{box-shadow:0 8px 24px rgba(124,58,237,.08);transform:translateY(-2px)}
+.card p{color:var(--m);font-size:15px}
+.icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:var(--soft);font-size:22px;margin-bottom:14px}
+.card b{display:block;margin-bottom:6px}
+
+.feat-img{border-radius:20px;overflow:hidden;margin-top:28px;max-height:360px}
+.feat-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+.integrations{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.int-chip{padding:16px;background:#fff;border:1px solid var(--line);border-radius:14px;text-align:center;font-weight:700;font-size:15px;transition:all .2s}
+.int-chip:hover{border-color:var(--p3);color:var(--p)}
+
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column}
+.plan b.plan-name{font-size:20px;display:block;margin-bottom:4px}
+.plan .plan-desc{color:var(--m);font-size:14px;margin-bottom:8px}
+.plan .sum{font-size:38px;font-weight:800;line-height:1;margin:8px 0 16px}
+.plan .sum small{font-size:15px;font-weight:400;color:var(--m)}
+.plan ul{margin:0 0 20px;padding:0 0 0 18px;flex:1;color:var(--m);font-size:14px;line-height:1.8}
+.plan.pro{background:linear-gradient(180deg,var(--soft),#fff);border-color:var(--p3)}
+
+.team-img{border-radius:20px;overflow:hidden;margin-top:28px;max-height:340px}
+.team-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+.reviews{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.review{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+.review p{color:var(--m);font-size:15px;font-style:italic;margin-bottom:12px}
+.review .author{font-weight:700;font-size:14px;color:var(--fg)}
+
+.cta{padding:42px;border-radius:24px;background:var(--grad);color:#fff;text-align:center;margin-bottom:60px}
+.cta h2{color:#fff}
+.cta p{color:rgba(255,255,255,.78);max-width:600px;margin:10px auto 20px}
+
+.foot{padding:0 0 40px;text-align:center;color:var(--m);font-size:13px}
+.foot a{color:var(--p)}
+.foot-links{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-bottom:8px}
+
+@media(max-width:960px){.hero,.feat,.plans,.reviews,.integrations{grid-template-columns:1fr 1fr}.nav .links{display:none}}
+@media(max-width:620px){.hero,.feat,.plans,.reviews,.integrations{grid-template-columns:1fr}.hero{padding:20px 0 50px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <nav class="nav">
+    <div class="brand">Planly</div>
+    <div class="links"><a href="#features">Фичи</a><a href="#integrations">Интеграции</a><a href="#pricing">Цены</a><a href="#reviews">Отзывы</a></div>
+    <div><a class="btn" href="#pricing">Попробовать бесплатно</a></div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Управляйте проектами <span>без хаоса</span></h1>
+      <p>Планирование задач, контроль дедлайнов и аналитика команды в одном окне. Бесплатно для команд до 5 человек.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+        <a class="btn" href="#pricing">Попробовать бесплатно</a>
+        <a class="ghost" href="#features">Посмотреть возможности</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&h=600&fit=crop" alt="Dashboard и канбан-доска Planly" width="800" height="600" loading="eager">
+    </div>
+  </div>
+
+  <section id="features">
+    <h2>Что умеет Planly</h2>
+    <div class="feat">
+      <div class="card"><div class="icon">&#9776;</div><b>Канбан-доски</b><p>Визуальное управление задачами с drag-and-drop. Статусы, приоритеты, фильтры.</p></div>
+      <div class="card"><div class="icon">&#128200;</div><b>Гант-диаграммы</b><p>Планирование сроков и зависимостей. Видно, что от чего зависит и где узкое место.</p></div>
+      <div class="card"><div class="icon">&#9201;</div><b>Таймтрекинг</b><p>Учёт времени на каждую задачу. Знайте, куда реально уходят часы команды.</p></div>
+      <div class="card"><div class="icon">&#128202;</div><b>Аналитика команды</b><p>Отчёты по продуктивности в реальном времени. Кто перегружен, кто свободен.</p></div>
+      <div class="card"><div class="icon">&#128268;</div><b>Интеграции</b><p>Slack, Telegram, Google Calendar, Jira, GitHub и другие инструменты.</p></div>
+      <div class="card"><div class="icon">&#128187;</div><b>API для разработчиков</b><p>Кастомные интеграции через REST API. Подключайте свои сервисы.</p></div>
+    </div>
+    <div class="feat-img">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop" alt="Аналитика на экране ноутбука" width="800" height="600" loading="lazy">
+    </div>
+  </section>
+
+  <section id="integrations">
+    <h2>Интеграции</h2>
+    <div class="integrations">
+      <div class="int-chip">Slack</div>
+      <div class="int-chip">Telegram</div>
+      <div class="int-chip">Google Calendar</div>
+      <div class="int-chip">Jira</div>
+      <div class="int-chip">GitHub</div>
+      <div class="int-chip">Notion</div>
+      <div class="int-chip">Figma</div>
+      <div class="int-chip">Trello</div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <h2>Тарифы</h2>
+    <div class="plans">
+      <div class="plan">
+        <b class="plan-name">Free</b>
+        <div class="plan-desc">Для небольших команд и личных проектов</div>
+        <div class="sum">0 &#8381;<small>/мес</small></div>
+        <ul>
+          <li>До 5 пользователей</li>
+          <li>3 проекта</li>
+          <li>1 ГБ хранилище</li>
+          <li>Канбан-доски</li>
+        </ul>
+        <a class="ghost" href="#">Начать бесплатно</a>
+      </div>
+      <div class="plan pro">
+        <b class="plan-name">Pro</b>
+        <div class="plan-desc">Для растущих команд с серьёзными задачами</div>
+        <div class="sum">990 &#8381;<small>/мес</small></div>
+        <ul>
+          <li>До 25 пользователей</li>
+          <li>Безлимит проектов</li>
+          <li>50 ГБ хранилище</li>
+          <li>Гант-диаграммы</li>
+          <li>Таймтрекинг</li>
+        </ul>
+        <a class="btn" href="#">Выбрать Pro</a>
+      </div>
+      <div class="plan">
+        <b class="plan-name">Business</b>
+        <div class="plan-desc">Для крупных команд и компаний</div>
+        <div class="sum">2 990 &#8381;<small>/мес</small></div>
+        <ul>
+          <li>Безлимит пользователей</li>
+          <li>Безлимит проектов</li>
+          <li>500 ГБ хранилище</li>
+          <li>API доступ</li>
+          <li>Приоритетная поддержка</li>
+        </ul>
+        <a class="ghost" href="#">Связаться с нами</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review">
+        <p>&#171;Planly заменил нам Trello и Asana одновременно. Удобный, быстрый, без лишнего.&#187;</p>
+        <div class="author">Дмитрий К., тимлид</div>
+      </div>
+      <div class="review">
+        <p>&#171;Аналитика команды -- просто огонь. Теперь видим, кто перегружен, а кто свободен.&#187;</p>
+        <div class="author">Алина М., PM</div>
+      </div>
+    </div>
+    <div class="team-img">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop" alt="Команда за работой" width="800" height="600" loading="lazy">
+    </div>
+  </section>
+
+  <div class="cta">
+    <h2 style="margin:0 0 8px;font-size:34px">Начните управлять проектами эффективно</h2>
+    <p>Бесплатно для команд до 5 человек. Без карты. Настройка за 5 минут.</p>
+    <a class="ghost" style="background:#fff;color:var(--p)" href="#">Попробовать бесплатно</a>
+  </div>
+
+  <footer class="foot">
+    <div class="foot-links">
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Условия использования</a>
+      <a href="mailto:support@planly.ru">support@planly.ru</a>
+    </div>
+    <p>Planly &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></p>
+  </footer>
+</div>
+</body>
+</html>

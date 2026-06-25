@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DentaClinic — современная стоматология в Новосибирске</title>
+<meta name="description" content="DentaClinic — стоматологическая клиника в Новосибирске. Лечение, имплантация, ортодонтия, отбеливание. 3D-томограф, безболезненное лечение. С 2015 года.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#f4f9ff;color:#0d2040;font:16px/1.6 'Segoe UI',Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,151,214,.06)}
+.header .wrap{max-width:1200px;margin:auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;font-weight:900;color:#0097d6}
+.logo span{color:#0d2040}
+nav{display:flex;gap:22px;align-items:center}
+nav a{font-size:14px;color:#4a6882;transition:color .2s}
+nav a:hover{color:#0097d6}
+.nav-btn{background:linear-gradient(135deg,#0097d6,#0077aa);color:#fff;padding:10px 22px;border-radius:24px;font-weight:700;font-size:14px;box-shadow:0 4px 16px rgba(0,151,214,.2)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:#0d2040}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:68px}
+.hero-bg{position:absolute;inset:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(244,249,255,.95) 0%,rgba(244,249,255,.75) 50%,rgba(244,249,255,.3) 100%)}
+.hero-content{position:relative;z-index:2;max-width:600px;padding:0 24px;margin-left:max(24px,calc((100% - 1200px)/2 + 24px))}
+.hero-badge{display:inline-block;background:linear-gradient(135deg,#e3f0fb,#a8e6cf);color:#0097d6;font-size:13px;font-weight:700;padding:6px 16px;border-radius:24px;margin-bottom:16px}
+.hero h1{font-size:clamp(36px,6vw,64px);line-height:.95;margin-bottom:18px;font-weight:800}
+.hero h1 em{font-style:normal;color:#0097d6}
+.hero p{max-width:480px;color:#4a6882;font-size:17px;margin-bottom:28px}
+.btn{display:inline-block;padding:14px 26px;border-radius:24px;font-weight:700;font-size:15px;transition:transform .2s,box-shadow .2s}
+.btn-blue{background:linear-gradient(135deg,#0097d6,#0077aa);color:#fff;box-shadow:0 6px 24px rgba(0,151,214,.25)}
+.btn-blue:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(0,151,214,.35)}
+.btn-white{border:1px solid #bdd8f0;background:#fff;color:#4a6882}
+.btn-white:hover{border-color:#0097d6;color:#0097d6}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+section{padding:80px 0}
+.section-label{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#0097d6;margin-bottom:6px}
+h2{font-size:clamp(26px,4vw,42px);font-weight:800;margin-bottom:40px}
+
+.stats{background:#fff;border-top:1px solid #e3f0fb;border-bottom:1px solid #e3f0fb;box-shadow:0 2px 20px rgba(0,151,214,.04)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;gap:20px}
+.stats-grid .num{font-size:34px;font-weight:800;color:#0097d6;display:block}
+.stats-grid .label{color:#4a6882;font-size:14px;margin-top:4px}
+
+.prices-section h3{font-size:20px;margin:32px 0 16px;color:#0097d6;padding-bottom:8px;border-bottom:2px solid #e3f0fb}
+.prices-section h3:first-child{margin-top:0}
+.price-list{display:grid;gap:8px}
+.price-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:14px 20px;background:#fff;border:1px solid #e3f0fb;border-radius:12px;box-shadow:0 1px 6px rgba(0,151,214,.03)}
+.price-row b{font-size:15px}
+.price-row span{color:#0097d6;font-weight:700;font-size:15px;white-space:nowrap}
+.price-row.free span{color:#a8e6cf;background:#e8faf2;padding:2px 10px;border-radius:8px;font-size:13px}
+
+.why-bg{background:#fff;border-top:1px solid #e3f0fb;border-bottom:1px solid #e3f0fb}
+.why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.why-card{padding:32px;background:#f4f9ff;border:1px solid #e3f0fb;border-radius:20px}
+.why-card b{font-size:17px;display:block;margin-bottom:8px;color:#0d2040}
+.why-card p{color:#4a6882;font-size:15px}
+
+.doctors-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.doctor{background:#fff;border:1px solid #e3f0fb;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,151,214,.04);transition:transform .25s}
+.doctor:hover{transform:translateY(-4px)}
+.doctor-img{height:220px;overflow:hidden;position:relative}
+.doctor-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,#fff,transparent)}
+.doctor-body{padding:18px;margin-top:-20px;position:relative;z-index:2}
+.doctor-body b{font-size:16px;display:block;margin-bottom:4px}
+.doctor-body p{color:#4a6882;font-size:13px}
+
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.review{padding:28px;background:#fff;border:1px solid #e3f0fb;border-radius:20px;box-shadow:0 2px 12px rgba(0,151,214,.04)}
+.review-stars{color:#f59e0b;margin-bottom:12px;font-size:14px}
+.review-name{font-weight:700;margin-bottom:8px;display:block}
+.review-text{color:#4a6882;font-size:15px;font-style:italic}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-item{border-radius:16px;overflow:hidden;height:220px;box-shadow:0 2px 12px rgba(0,151,214,.06)}
+.gallery-item img{transition:transform .4s}
+.gallery-item:hover img{transform:scale(1.06)}
+
+.booking-cta{background:linear-gradient(135deg,#0097d6,#0077aa);border-radius:24px;padding:50px;text-align:center;color:#fff;box-shadow:0 8px 40px rgba(0,151,214,.2)}
+.booking-cta h2{color:#fff;margin-bottom:10px}
+.booking-cta p{color:rgba(255,255,255,.8);max-width:540px;margin:0 auto 28px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px;margin:0 auto}
+input,select{width:100%;padding:14px 18px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:12px;color:#fff;font-size:15px;outline:none;transition:border-color .2s}
+input:focus,select:focus{border-color:rgba(255,255,255,.7)}
+input::placeholder{color:rgba(255,255,255,.6)}
+select option{color:#0d2040;background:#fff}
+.full{grid-column:1/-1}
+.btn-white-solid{background:#fff;color:#0097d6;font-weight:700;padding:14px 28px;border-radius:12px;display:flex;align-items:center;justify-content:center;transition:transform .2s;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.btn-white-solid:hover{transform:translateY(-2px)}
+
+.contacts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.contact-card{padding:28px;background:#fff;border:1px solid #e3f0fb;border-radius:20px;box-shadow:0 2px 12px rgba(0,151,214,.04)}
+.contact-card b{font-size:16px;display:block;margin-bottom:8px;color:#0097d6}
+.contact-card p{color:#4a6882;font-size:15px}
+
+.footer{padding:24px 0 40px;text-align:center;color:#4a6882;font-size:14px}
+.footer a{color:#0097d6;font-weight:700}
+
+@media(max-width:1200px){.gallery-grid,.doctors-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){nav{display:none}.hamburger{display:flex}.hero-content{margin-left:auto;margin-right:auto;max-width:none}.hero h1{font-size:34px}.stats-grid,.why-grid,.doctors-grid,.reviews-grid,.contacts-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.booking-cta{padding:32px 20px}section{padding:60px 0}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="logo">Denta<span>Clinic</span></div>
+    <nav>
+      <a href="#services">Услуги</a>
+      <a href="#doctors">Врачи</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a class="nav-btn" href="#booking">Записаться</a>
+    </nav>
+    <button class="hamburger" onclick="document.querySelector('nav').classList.toggle('open')" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1600&q=80" alt="Стоматология DentaClinic" loading="eager"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Здоровая улыбка начинается здесь</div>
+    <h1>Современная <em>стоматология</em> без боли</h1>
+    <p>Полный спектр стоматологических услуг: от профессиональной чистки до имплантации и ортодонтии. 3D-томограф, собственная лаборатория, безболезненное лечение.</p>
+    <div class="hero-btns">
+      <a class="btn btn-blue" href="#booking">Записаться на приём</a>
+      <a class="btn btn-white" href="#services">Услуги и цены</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap" style="padding-top:48px;padding-bottom:48px">
+    <div class="stats-grid">
+      <div><span class="num">С 2015</span><span class="label">года работаем</span></div>
+      <div><span class="num">15 000+</span><span class="label">довольных пациентов</span></div>
+      <div><span class="num">4 врача</span><span class="label">с международными сертификатами</span></div>
+      <div><span class="num">0 боли</span><span class="label">современная анестезия</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-label">Прайс</div>
+    <h2>Услуги и цены</h2>
+    <div class="prices-section">
+      <h3>Терапия</h3>
+      <div class="price-list">
+        <div class="price-row free"><b>Консультация стоматолога</b><span>бесплатно</span></div>
+        <div class="price-row"><b>Профессиональная чистка (ультразвук + Air Flow)</b><span>4 500 &#8381;</span></div>
+        <div class="price-row"><b>Лечение кариеса (пломба)</b><span>от 4 000 &#8381;</span></div>
+        <div class="price-row"><b>Лечение пульпита (1 канал)</b><span>от 7 000 &#8381;</span></div>
+        <div class="price-row"><b>Реставрация зуба</b><span>от 6 500 &#8381;</span></div>
+      </div>
+      <h3>Хирургия и имплантация</h3>
+      <div class="price-list">
+        <div class="price-row"><b>Удаление зуба простое</b><span>от 2 500 &#8381;</span></div>
+        <div class="price-row"><b>Удаление зуба мудрости</b><span>от 6 000 &#8381;</span></div>
+        <div class="price-row"><b>Имплантация Straumann (Швейцария)</b><span>от 45 000 &#8381;</span></div>
+        <div class="price-row"><b>Имплантация Osstem (Корея)</b><span>от 28 000 &#8381;</span></div>
+      </div>
+      <h3>Ортодонтия</h3>
+      <div class="price-list">
+        <div class="price-row"><b>Брекеты металлические (1 челюсть)</b><span>от 35 000 &#8381;</span></div>
+        <div class="price-row"><b>Брекеты керамические (1 челюсть)</b><span>от 50 000 &#8381;</span></div>
+        <div class="price-row"><b>Элайнеры (курс)</b><span>от 180 000 &#8381;</span></div>
+      </div>
+      <h3>Протезирование и отбеливание</h3>
+      <div class="price-list">
+        <div class="price-row"><b>Коронка металлокерамика</b><span>от 12 000 &#8381;</span></div>
+        <div class="price-row"><b>Коронка цирконий</b><span>от 22 000 &#8381;</span></div>
+        <div class="price-row"><b>Винир E-max</b><span>от 25 000 &#8381;</span></div>
+        <div class="price-row"><b>ZOOM 4 (профессиональное отбеливание)</b><span>18 000 &#8381;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="why-bg">
+  <div class="wrap" style="padding-top:80px;padding-bottom:80px">
+    <div class="section-label">Преимущества</div>
+    <h2>Почему выбирают нас</h2>
+    <div class="why-grid">
+      <div class="why-card"><b>3D-томограф и лазер</b><p>Оборудование последнего поколения. Диагностируем точно, лечим без лишних манипуляций.</p></div>
+      <div class="why-card"><b>Своя лаборатория</b><p>Собственная зуботехническая лаборатория &mdash; коронки и протезы изготавливаем быстрее.</p></div>
+      <div class="why-card"><b>Онлайн-запись 24/7</b><p>Записаться можно в любое время. Приём до 20:00, работаем по субботам и воскресеньям.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="doctors">
+  <div class="wrap">
+    <div class="section-label">Команда</div>
+    <h2>Наши врачи</h2>
+    <div class="doctors-grid">
+      <div class="doctor">
+        <div class="doctor-img"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&q=75" alt="Алексеев И.В." loading="lazy"></div>
+        <div class="doctor-body"><b>Алексеев И. В.</b><p>Главный врач, хирург-имплантолог &middot; 18 лет стажа</p></div>
+      </div>
+      <div class="doctor">
+        <div class="doctor-img"><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500&q=75" alt="Петрова М.С." loading="lazy"></div>
+        <div class="doctor-body"><b>Петрова М. С.</b><p>Стоматолог-терапевт &middot; 12 лет стажа</p></div>
+      </div>
+      <div class="doctor">
+        <div class="doctor-img"><img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500&q=70" alt="Козлов А.Н." loading="lazy"></div>
+        <div class="doctor-body"><b>Козлов А. Н.</b><p>Ортодонт &middot; 10 лет стажа</p></div>
+      </div>
+      <div class="doctor">
+        <div class="doctor-img"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964ac31?w=500&q=75" alt="Сидорова Е.А." loading="lazy"></div>
+        <div class="doctor-body"><b>Сидорова Е. А.</b><p>Стоматолог-ортопед &middot; 15 лет стажа</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-label">Пациенты</div>
+    <h2>Отзывы</h2>
+    <div class="reviews-grid">
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Ксения Т.</span>
+        <span class="review-text">&laquo;Боялась стоматолога всю жизнь. DentaClinic изменила моё отношение &mdash; больно не было совсем.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Игорь Л.</span>
+        <span class="review-text">&laquo;Поставили имплант Straumann. Всё быстро, чётко, смета сошлась рубль в рубль.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Светлана М.</span>
+        <span class="review-text">&laquo;Ребёнок теперь сам просит поехать к зубному. Не знаю, как это сделали, но спасибо огромное.&raquo;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-label">Фото</div>
+    <h2>Наша клиника</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1629909615184-74f495363b67?w=500&q=75" alt="Кресло стоматолога" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=500&q=75" alt="Стоматолог с пациентом" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=500&q=75" alt="Ресепшен" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=500&q=75" alt="3D-снимок" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="wrap">
+    <div class="booking-cta">
+      <div class="section-label" style="color:rgba(255,255,255,.7)">Запись</div>
+      <h2>Первичная консультация &mdash; бесплатно</h2>
+      <p>Запишитесь онлайн &mdash; врач осмотрит, сделает снимок и составит план лечения без обязательств.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Выберите направление</option><option>Терапия / чистка</option><option>Имплантация</option><option>Ортодонтия</option><option>Протезирование</option><option>Отбеливание ZOOM 4</option><option>Детская стоматология</option></select>
+        <a class="btn-white-solid full" href="#">Записаться</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <div class="wrap">
+    <div class="section-label">Где нас найти</div>
+    <h2>Контакты</h2>
+    <div class="contacts-grid">
+      <div class="contact-card"><b>Адрес</b><p>Новосибирск<br>Красный проспект, 86</p></div>
+      <div class="contact-card"><b>Часы работы</b><p>Пн&ndash;Сб: 08:00&ndash;20:00<br>Вс: 09:00&ndash;15:00</p></div>
+      <div class="contact-card"><b>Телефон</b><p>+7 (383) 333-55-77</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">DentaClinic &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></div>
+</footer>
+
+</body>
+</html>

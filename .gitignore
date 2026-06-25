@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Build output
+backend/dist/
+frontend/.next/
+frontend/out/
+
+# Environment
+.env
+.env.backup
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Prisma
+backend/prisma/*.db
+backend/prisma/*.db-journal
+
+# Temp
+tmp/
+temp/
+*.tmp
+
+# Next.js standalone
+frontend/.next/standalone/
+
+# PM2
+# ecosystem.config.js is versioned so repo matches the deployed runtime topology.
+
+# Backups
+backups/
+backend/.env.backup*
+
+# Binary artifacts
+backend/public/*.tar.gz
+
+# Audit reports (local only)
+reports/

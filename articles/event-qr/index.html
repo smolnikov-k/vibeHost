@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать сайт для мероприятия с QR-кодом на афише | VibeHosting</title>
+    <meta name="description" content="Пошаговый гайд: создаём сайт для мероприятия (концерт, конференция, вечеринка) с QR-кодом для афиши. Регистрация, программа, карта. Бесплатно на VibeHosting.">
+    <meta name="keywords" content="сайт мероприятия, QR код афиша, лендинг события, сайт конференции, регистрация на мероприятие, VibeHosting">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .table-of-contents { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .table-of-contents ul { list-style: none; padding-left: 0; }
+        .table-of-contents li { margin-bottom: 6px; }
+        .table-of-contents a { color: #059669; text-decoration: none; }
+        .table-of-contents a:hover { text-decoration: underline; }
+        .use-case { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px 24px; margin: 16px 0; }
+        .use-case h4 { color: #059669; margin-bottom: 8px; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <h1>Как сделать сайт для мероприятия с QR-кодом на афише</h1>
+
+        <p><strong>Время чтения:</strong> 18 минут &nbsp;|&nbsp; <strong>Уровень:</strong> начинающий &nbsp;|&nbsp; <strong>Результат:</strong> сайт события + QR-код для печати на афише</p>
+
+        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80" alt="Конференция — зал с аудиторией и сценой">
+
+        <p>Вы организуете мероприятие. Концерт, конференцию, мастер-класс, выставку, корпоратив, день рождения бара. Вы печатаете афишу, рассылаете посты в соцсетях. И тут вопрос: куда вести людей?</p>
+
+        <p>На страницу VK? Там информация тонет в комментариях. В Telegram-канал? Нужно подписаться, чтобы увидеть детали. На Google Форму для регистрации? Выглядит как опрос из школы.</p>
+
+        <p>Правильный ответ — на собственный сайт мероприятия. Одна страница, вся информация, форма регистрации, карта. А на афише — QR-код, который ведёт на этот сайт. Человек сканирует телефоном — и за 10 секунд знает всё: что, где, когда, как попасть.</p>
+
+        <p>В этой статье мы создадим такой сайт с нуля и опубликуем его бесплатно.</p>
+
+        <div class="table-of-contents">
+            <strong>Содержание:</strong>
+            <ul>
+                <li><a href="#why">Зачем мероприятию сайт, а не VK-событие</a></li>
+                <li><a href="#cases">Типы мероприятий и их сайты</a></li>
+                <li><a href="#structure">Что должно быть на сайте события</a></li>
+                <li><a href="#create">Пошаговое создание</a></li>
+                <li><a href="#form">Форма регистрации с уведомлениями в Telegram</a></li>
+                <li><a href="#publish">Публикация и получение QR-кода</a></li>
+                <li><a href="#print">QR-код на афише: как сделать правильно</a></li>
+                <li><a href="#analytics">Аналитика: сколько людей перешли с афиши</a></li>
+                <li><a href="#advanced">Продвинутые сценарии</a></li>
+                <li><a href="#summary">Итоги</a></li>
+            </ul>
+        </div>
+
+        <h2 id="why">Зачем мероприятию сайт, а не событие в VK</h2>
+
+        <p>Событие в VK или пост в Telegram — это хорошо для продвижения. Но как «домашняя страница» мероприятия они проигрывают собственному сайту по всем параметрам:</p>
+
+        <ul>
+            <li><strong>Полный контроль над информацией.</strong> На сайте вы решаете, что показать первым: программу, спикеров, кнопку регистрации. В VK эта информация разбросана по описанию, стене и обсуждениям.</li>
+            <li><strong>QR-код на афише.</strong> QR-код, ведущий на сайт, выглядит профессионально и работает мгновенно. QR-код на VK-событие открывает приложение VK (если установлено) или мобильную версию с кнопкой «Войти». Половина людей закроет страницу, не добравшись до информации.</li>
+            <li><strong>Независимость от платформы.</strong> Не у всех есть VK. Не все в Telegram. А браузер есть у каждого.</li>
+            <li><strong>Индексация в поисковиках.</strong> Сайт мероприятия могут найти через Google и Яндекс. VK-событие — практически нет.</li>
+            <li><strong>Форма регистрации.</strong> Собирайте имена, контакты и пожелания участников. Заявки приходят в Telegram. Без Google Форм, без подключения CRM.</li>
+            <li><strong>Аналитика.</strong> Сколько людей отсканировали QR с афиши? Сколько зарегистрировались? Встроенная аналитика VibeHosting покажет.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Реальный пример:</strong> организатор IT-митапа напечатал 200 афиш с QR-кодом. Аналитика показала 847 сканирований за 2 недели. 312 человек зарегистрировались через форму на сайте. Без сайта он собирал регистрации через Google Форму и получил только 90 заявок с тех же 200 афиш.
+        </div>
+
+        <h2 id="cases">Типы мероприятий и их сайты</h2>
+
+        <p>Разные мероприятия требуют разных акцентов на сайте. Вот несколько сценариев:</p>
+
+        <div class="use-case">
+            <h4>Концерт или вечеринка</h4>
+            <p>Главное: атмосфера, дата, место, как купить билет. Яркий дизайн, крупная фотография или видео. Кнопка «Купить билет» или ссылка на билетный сервис. QR-код на афише ведёт на сайт, а не на кассу — сначала заинтриговать, потом продать.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>Конференция или митап</h4>
+            <p>Главное: программа, спикеры, регистрация. Расписание по времени, фотографии спикеров, темы докладов. Форма регистрации с полями «Имя, компания, должность». QR-код — на бейджах и раздаточных материалах.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>Мастер-класс или воркшоп</h4>
+            <p>Главное: что научитесь делать, кто ведёт, сколько стоит, сколько мест. Таймер обратного отсчёта до события. Форма записи с ограничением по местам.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>Выставка или ярмарка</h4>
+            <p>Главное: даты, участники, карта площадки. Список экспонентов с описаниями. Информация о входе (бесплатно или билет). QR-код на уличных баннерах.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>День рождения бара / открытие</h4>
+            <p>Главное: программа вечера, специальное меню, диджей/группа. Кнопка «Забронировать стол». QR-код на флаерах, которые раздают на улице.</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&q=80" alt="Фестиваль на открытом воздухе с яркими огнями">
+
+        <h2 id="structure">Что должно быть на сайте события</h2>
+
+        <p>Универсальная структура, которая подходит для любого мероприятия:</p>
+
+        <h3>1. Hero: дата, название, место</h3>
+        <p>Самая важная информация — на первом экране. Крупно. Контрастно. Человек открыл сайт — и за 3 секунды понял: что, где, когда.</p>
+
+        <h3>2. О событии</h3>
+        <p>2-3 абзаца: что это за мероприятие, для кого, почему стоит прийти. Конкретика, не вода.</p>
+
+        <h3>3. Программа</h3>
+        <p>Расписание: время → что происходит → кто выступает. Таблица или timeline-формат.</p>
+
+        <h3>4. Спикеры / участники</h3>
+        <p>Фото, имя, должность, тема доклада. Для концертов — артисты с описанием.</p>
+
+        <h3>5. Место и как добраться</h3>
+        <p>Адрес, карта, ориентиры, транспорт. Если парковка — укажите. Если вход с определённой стороны — укажите.</p>
+
+        <h3>6. Регистрация / покупка билета</h3>
+        <p>Форма или кнопка. Если мероприятие бесплатное — форма регистрации. Если платное — ссылка на билетный сервис + краткая информация о ценах.</p>
+
+        <h3>7. FAQ</h3>
+        <p>Ответы на типичные вопросы: дресс-код, можно ли с детьми, будет ли запись, есть ли еда, парковка.</p>
+
+        <h2 id="create">Пошаговое создание сайта мероприятия</h2>
+
+        <p>Создадим сайт для IT-конференции. Легко адаптируется под любой тип события.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте папку и файл</strong></p>
+            <p>Папка <code>event-site</code> → файл <code>index.html</code> внутри.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>CSS-стили для сайта мероприятия</strong></p>
+            <p>Современный дизайн с градиентами и акцентами:</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background: #0f0f0f;
+    color: #e0e0e0;
+    line-height: 1.7;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1a0a2e 50%, #0f0f0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%);
+    top: -100px;
+    right: -100px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.event-date {
+    display: inline-block;
+    background: rgba(16,185,129,0.15);
+    border: 1px solid rgba(16,185,129,0.3);
+    padding: 8px 24px;
+    border-radius: 30px;
+    font-size: 1rem;
+    color: #10b981;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 16px;
+    line-height: 1.1;
+}
+
+.hero h1 span {
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero .subtitle {
+    font-size: 1.2rem;
+    color: #999;
+    max-width: 500px;
+    margin: 0 auto 32px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 16px 40px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16,185,129,0.3);
+}
+
+.btn-secondary {
+    display: inline-block;
+    border: 1px solid #444;
+    color: #ccc;
+    padding: 14px 36px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-left: 12px;
+    transition: border-color 0.3s;
+}
+
+.btn-secondary:hover {
+    border-color: #10b981;
+    color: white;
+}
+
+/* Секции */
+.section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+.section h2 {
+    font-size: 2rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section h2 span {
+    color: #10b981;
+}
+
+/* Обратный отсчёт */
+.countdown {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 40px 0;
+}
+
+.countdown-item {
+    text-align: center;
+}
+
+.countdown-item .number {
+    font-size: 3rem;
+    font-weight: 800;
+    color: white;
+    display: block;
+}
+
+.countdown-item .label {
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Программа */
+.timeline {
+    position: relative;
+    padding-left: 40px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #222;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+    padding: 20px 24px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #222;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 28px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #10b981;
+    border: 2px solid #0f0f0f;
+}
+
+.timeline-time {
+    color: #10b981;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.timeline-title {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.timeline-speaker {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+/* Спикеры */
+.speakers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.speaker-card {
+    text-align: center;
+    padding: 24px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    border: 1px solid #222;
+    transition: border-color 0.3s;
+}
+
+.speaker-card:hover {
+    border-color: #10b981;
+}
+
+.speaker-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 16px;
+    box-shadow: none;
+}
+
+.speaker-card h3 {
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+
+.speaker-card .role {
+    color: #10b981;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+}
+
+.speaker-card .topic {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Место */
+.venue {
+    background: #1a1a1a;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #222;
+}
+
+.venue-info {
+    padding: 32px;
+}
+
+.venue-info h3 {
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.venue-info p {
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.venue-info .address {
+    color: #10b981;
+    font-size: 1.05rem;
+}
+
+.venue iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+}
+
+/* FAQ */
+.faq-item {
+    border-bottom: 1px solid #222;
+    padding: 20px 0;
+}
+
+.faq-item h3 {
+    color: white;
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+.faq-item p {
+    color: #888;
+}
+
+/* Форма */
+.register-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: #1a1a1a;
+    padding: 32px;
+    border-radius: 16px;
+    border: 1px solid #222;
+}
+
+.register-form input,
+.register-form select,
+.register-form textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    background: #0f0f0f;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+.register-form button {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s;
+}
+
+.register-form button:hover {
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #444;
+    border-top: 1px solid #1a1a1a;
+}
+
+footer a {
+    color: #10b981;
+    text-decoration: none;
+}
+
+/* Адаптив */
+@media (max-width: 640px) {
+    .hero h1 { font-size: 2.2rem; }
+    .countdown { gap: 12px; }
+    .countdown-item .number { font-size: 2rem; }
+    .btn-secondary { display: block; margin: 12px 0 0 0; text-align: center; }
+    .speakers-grid { grid-template-columns: repeat(2, 1fr); }
+    .timeline { padding-left: 30px; }
+}</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Hero-секция с датой и названием</strong></p>
+<pre><code>&lt;section class="hero"&gt;
+    &lt;div class="hero-content"&gt;
+        &lt;div class="event-date"&gt;15 апреля 2026, Москва&lt;/div&gt;
+        &lt;h1&gt;DevFest&lt;br&gt;&lt;span&gt;Moscow 2026&lt;/span&gt;&lt;/h1&gt;
+        &lt;p class="subtitle"&gt;
+            Конференция для разработчиков. 12 докладов,
+            нетворкинг, afterparty. Вход свободный.
+        &lt;/p&gt;
+        &lt;a href="#register" class="btn-primary"&gt;
+            Зарегистрироваться
+        &lt;/a&gt;
+        &lt;a href="#program" class="btn-secondary"&gt;
+            Программа
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Обратный отсчёт до события</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;До события осталось&lt;/h2&gt;
+    &lt;div class="countdown" id="countdown"&gt;
+        &lt;div class="countdown-item"&gt;
+            &lt;span class="number" id="days"&gt;--&lt;/span&gt;
+            &lt;span class="label"&gt;дней&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="countdown-item"&gt;
+            &lt;span class="number" id="hours"&gt;--&lt;/span&gt;
+            &lt;span class="label"&gt;часов&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="countdown-item"&gt;
+            &lt;span class="number" id="minutes"&gt;--&lt;/span&gt;
+            &lt;span class="label"&gt;минут&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class="countdown-item"&gt;
+            &lt;span class="number" id="seconds"&gt;--&lt;/span&gt;
+            &lt;span class="label"&gt;секунд&lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+            <p>И JavaScript для отсчёта (добавьте перед <code>&lt;/body&gt;</code>):</p>
+<pre><code>&lt;script&gt;
+function updateCountdown() {
+    // Замените дату на дату вашего мероприятия
+    const eventDate = new Date('2026-04-15T10:00:00');
+    const now = new Date();
+    const diff = eventDate - now;
+
+    if (diff &lt;= 0) {
+        document.getElementById('countdown')
+            .innerHTML = '&lt;p style="color:#10b981;'
+                + 'font-size:1.5rem"&gt;'
+                + 'Мероприятие началось!&lt;/p&gt;';
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+    );
+    const minutes = Math.floor(
+        (diff % (1000 * 60 * 60)) / (1000 * 60)
+    );
+    const seconds = Math.floor(
+        (diff % (1000 * 60)) / 1000
+    );
+
+    document.getElementById('days').textContent = days;
+    document.getElementById('hours').textContent = hours;
+    document.getElementById('minutes').textContent = minutes;
+    document.getElementById('seconds').textContent = seconds;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&q=80" alt="Спикер выступает на сцене конференции">
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Программа мероприятия</strong></p>
+<pre><code>&lt;section class="section" id="program"&gt;
+    &lt;h2&gt;Программа &lt;span&gt;конференции&lt;/span&gt;&lt;/h2&gt;
+    &lt;div class="timeline"&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;09:30 — 10:00&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;Регистрация и кофе&lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;Фойе, 1 этаж&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;10:00 — 10:45&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;
+                Архитектура высоконагруженных систем в 2026
+            &lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Алексей Иванов, CTO MegaApp
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;11:00 — 11:45&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;
+                AI в продакшене: реальные кейсы
+            &lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Мария Петрова, ML Lead, DataCorp
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;12:00 — 13:00&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;Обед и нетворкинг&lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;Ресторан, 2 этаж&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;13:00 — 13:45&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;
+                Как мы мигрировали на микросервисы
+                и не пожалели
+            &lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Дмитрий Козлов, Backend Lead, FinTech
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;14:00 — 14:45&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;
+                Frontend в 2026: что изменилось
+            &lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Анна Сидорова, Frontend Architect
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;15:00 — 16:00&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;
+                Панельная дискуссия: будущее разработки
+            &lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Все спикеры
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="timeline-item"&gt;
+            &lt;div class="timeline-time"&gt;16:30 — 20:00&lt;/div&gt;
+            &lt;div class="timeline-title"&gt;Afterparty&lt;/div&gt;
+            &lt;div class="timeline-speaker"&gt;
+                Бар на крыше, 8 этаж
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Спикеры</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;&lt;span&gt;Спикеры&lt;/span&gt;&lt;/h2&gt;
+    &lt;div class="speakers-grid"&gt;
+        &lt;div class="speaker-card"&gt;
+            &lt;img src="speaker-1.jpg"
+                 alt="Алексей Иванов"&gt;
+            &lt;h3&gt;Алексей Иванов&lt;/h3&gt;
+            &lt;div class="role"&gt;CTO, MegaApp&lt;/div&gt;
+            &lt;div class="topic"&gt;Высоконагруженные системы&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="speaker-card"&gt;
+            &lt;img src="speaker-2.jpg"
+                 alt="Мария Петрова"&gt;
+            &lt;h3&gt;Мария Петрова&lt;/h3&gt;
+            &lt;div class="role"&gt;ML Lead, DataCorp&lt;/div&gt;
+            &lt;div class="topic"&gt;AI в продакшене&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="speaker-card"&gt;
+            &lt;img src="speaker-3.jpg"
+                 alt="Дмитрий Козлов"&gt;
+            &lt;h3&gt;Дмитрий Козлов&lt;/h3&gt;
+            &lt;div class="role"&gt;Backend Lead, FinTech&lt;/div&gt;
+            &lt;div class="topic"&gt;Микросервисная архитектура&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="speaker-card"&gt;
+            &lt;img src="speaker-4.jpg"
+                 alt="Анна Сидорова"&gt;
+            &lt;h3&gt;Анна Сидорова&lt;/h3&gt;
+            &lt;div class="role"&gt;Frontend Architect&lt;/div&gt;
+            &lt;div class="topic"&gt;Frontend в 2026&lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Место проведения</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Место &lt;span&gt;проведения&lt;/span&gt;&lt;/h2&gt;
+    &lt;div class="venue"&gt;
+        &lt;div class="venue-info"&gt;
+            &lt;h3&gt;Технопарк «Сколково»&lt;/h3&gt;
+            &lt;p class="address"&gt;
+                📍 Москва, Инновационный центр Сколково,
+                ул. Нобеля, 7
+            &lt;/p&gt;
+            &lt;p&gt;🚇 Метро «Сколковская», 10 минут пешком&lt;/p&gt;
+            &lt;p&gt;🅿️ Бесплатная парковка&lt;/p&gt;
+            &lt;p&gt;🕐 Двери открываются в 9:30&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;iframe
+            src="https://yandex.ru/map-widget/v1/?ll=37.355,55.695
+            &amp;z=15&amp;pt=37.355,55.695,pm2gnm"&gt;
+        &lt;/iframe&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <h2 id="form">Форма регистрации с уведомлениями в Telegram</h2>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Форма регистрации</strong></p>
+<pre><code>&lt;section class="section" id="register"&gt;
+    &lt;h2&gt;&lt;span&gt;Регистрация&lt;/span&gt;&lt;/h2&gt;
+    &lt;p style="text-align:center; color:#888; margin-bottom:24px"&gt;
+        Вход бесплатный, но мест ограничено.
+        Зарегистрируйтесь, чтобы гарантировать место.
+    &lt;/p&gt;
+
+    &lt;form class="register-form" id="register-form"&gt;
+        &lt;input type="text" name="name"
+            placeholder="Имя и фамилия" required&gt;
+        &lt;input type="email" name="email"
+            placeholder="Email" required&gt;
+        &lt;input type="text" name="company"
+            placeholder="Компания и должность"&gt;
+        &lt;select name="interest"&gt;
+            &lt;option value=""&gt;Какой доклад интересует?&lt;/option&gt;
+            &lt;option&gt;Высоконагруженные системы&lt;/option&gt;
+            &lt;option&gt;AI в продакшене&lt;/option&gt;
+            &lt;option&gt;Микросервисы&lt;/option&gt;
+            &lt;option&gt;Frontend&lt;/option&gt;
+            &lt;option&gt;Все доклады&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;select name="afterparty"&gt;
+            &lt;option value=""&gt;Придёте на afterparty?&lt;/option&gt;
+            &lt;option&gt;Да, обязательно&lt;/option&gt;
+            &lt;option&gt;Скорее всего&lt;/option&gt;
+            &lt;option&gt;Нет&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;button type="submit"&gt;Зарегистрироваться&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <p>При публикации на VibeHosting подключите <code>vibe-forms.js</code>. Каждая регистрация будет приходить в Telegram:</p>
+
+        <div class="highlight">
+            <strong>Новая регистрация на DevFest:</strong><br>
+            Имя: Сергей Волков<br>
+            Email: s.volkov@company.ru<br>
+            Компания: TechCorp, Senior Developer<br>
+            Интерес: AI в продакшене<br>
+            Afterparty: Да, обязательно
+        </div>
+
+        <p>Вы видите каждую заявку в реальном времени. Можете планировать количество бейджей, еды, мест. Никаких Google Таблиц — всё приходит в Telegram.</p>
+
+        <div class="step">
+            <p><span class="step-number">9</span><strong>FAQ</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Частые &lt;span&gt;вопросы&lt;/span&gt;&lt;/h2&gt;
+
+    &lt;div class="faq-item"&gt;
+        &lt;h3&gt;Мероприятие бесплатное?&lt;/h3&gt;
+        &lt;p&gt;Да, вход бесплатный.
+        Нужна только регистрация.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="faq-item"&gt;
+        &lt;h3&gt;Будет ли запись докладов?&lt;/h3&gt;
+        &lt;p&gt;Да, видеозаписи всех докладов будут
+        доступны на YouTube в течение недели
+        после конференции.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="faq-item"&gt;
+        &lt;h3&gt;Есть ли дресс-код?&lt;/h3&gt;
+        &lt;p&gt;Нет. Приходите в чём удобно.
+        Мы за IT-casual.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="faq-item"&gt;
+        &lt;h3&gt;Можно ли прийти без регистрации?&lt;/h3&gt;
+        &lt;p&gt;Мест ограничено. Без регистрации
+        пропустим, если будут свободные места.&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div class="faq-item"&gt;
+        &lt;h3&gt;Что включено в afterparty?&lt;/h3&gt;
+        &lt;p&gt;Бар с напитками, закуски,
+        живая музыка и нетворкинг
+        на крыше с видом на Москву.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+    &lt;p&gt;DevFest Moscow 2026&lt;/p&gt;
+    &lt;p style="margin-top:8px"&gt;Сайт на
+        &lt;a href="https://hostingvibe.ru"&gt;VibeHosting&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+        </div>
+
+        <h2 id="publish">Публикация и получение QR-кода</h2>
+
+        <p>Сайт готов — публикуем и получаем QR-код для афиши:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Запакуйте в ZIP</strong></p>
+            <p><code>index.html</code> + фотографии спикеров → ZIP-архив.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Загрузите на hostingvibe.ru</strong></p>
+            <p>Регистрация → «Загрузить сайт» → перетащите ZIP. Выберите адрес: <code>devfest-msk</code>. Ваш сайт: <strong>devfest-msk.hostingvibe.ru</strong>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Скачайте QR-код</strong></p>
+            <p>В панели управления VibeHosting нажмите «QR-код». Скачается PNG-файл с QR-кодом, который ведёт на ваш сайт. Этот файл вы вставляете в макет афиши.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Подключите формы</strong></p>
+            <p>В настройках проекта включите <code>vibe-forms.js</code> и укажите Telegram для уведомлений. Каждая регистрация — мгновенно в Telegram.</p>
+        </div>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Создайте сайт мероприятия с QR-кодом</p>
+            <p>ZIP → загрузка → свой адрес + QR-код для афиши. Бесплатно.</p>
+            <p style="margin-top:12px"><a href="https://hostingvibe.ru">Попробовать VibeHosting →</a></p>
+        </div>
+
+        <h2 id="print">QR-код на афише: как сделать правильно</h2>
+
+        <p>QR-код на афише — мощный инструмент, но его нужно разместить правильно. Вот рекомендации:</p>
+
+        <h3>Размер</h3>
+        <ul>
+            <li><strong>Минимум 3x3 см</strong> — иначе камера телефона не сможет прочитать</li>
+            <li><strong>Оптимально 4x4 или 5x5 см</strong> — читается с расстояния вытянутой руки</li>
+            <li><strong>Для уличных баннеров</strong> — от 10x10 см, чтобы читалось с 1-2 метров</li>
+        </ul>
+
+        <h3>Контраст</h3>
+        <ul>
+            <li>Тёмный QR на светлом фоне — идеально</li>
+            <li>Белый QR на тёмном фоне — тоже работает</li>
+            <li>Не используйте цветной QR на пёстром фоне — камера не прочитает</li>
+        </ul>
+
+        <h3>Расположение</h3>
+        <ul>
+            <li>Нижняя треть афиши — самое удобное место</li>
+            <li>Рядом с QR поставьте подпись: «Сканируй → Узнай программу → Зарегистрируйся»</li>
+            <li>Не прячьте QR в угол — он должен быть заметным</li>
+        </ul>
+
+        <h3>Тестирование</h3>
+        <ul>
+            <li>Перед печатью тиража распечатайте одну афишу и отсканируйте QR со своего телефона</li>
+            <li>Проверьте на iPhone и Android — оба должны читать</li>
+            <li>Проверьте при разном освещении: на улице, в помещении, при тусклом свете</li>
+        </ul>
+
+        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?w=800&q=80" alt="Мероприятие на открытой площадке с баннерами">
+
+        <h3>Где размещать QR-код</h3>
+        <p>Не ограничивайтесь афишами. QR-код с VibeHosting можно использовать на:</p>
+        <ul>
+            <li><strong>Афишах и постерах</strong> — на стенах, в подъездах, на досках объявлений</li>
+            <li><strong>Флаерах</strong> — раздавайте в местах скопления целевой аудитории</li>
+            <li><strong>Бейджах участников</strong> — QR ведёт на программу (не нужно печатать бумажную)</li>
+            <li><strong>Экране на входе</strong> — посетитель сканирует и отмечает присутствие</li>
+            <li><strong>Визитках организаторов</strong> — QR на сайт мероприятия вместо личного сайта</li>
+            <li><strong>Столах и стаканах</strong> — для мероприятий в барах и ресторанах</li>
+            <li><strong>Презентациях</strong> — спикер показывает QR на последнем слайде: «Все материалы здесь»</li>
+        </ul>
+
+        <h2 id="analytics">Аналитика: сколько людей перешли с афиши</h2>
+
+        <p>После публикации на VibeHosting вам доступна встроенная аналитика. Это особенно полезно для мероприятий:</p>
+
+        <h3>Что вы увидите</h3>
+        <ul>
+            <li><strong>Общее число посещений</strong> — сколько раз открыли сайт</li>
+            <li><strong>Уникальные посетители</strong> — сколько разных людей зашли</li>
+            <li><strong>Динамика по дням</strong> — когда был пик интереса (после развешивания афиш? после поста в соцсетях?)</li>
+            <li><strong>Устройства</strong> — мобильные vs десктоп (QR-сканирования — это 100% мобильные)</li>
+        </ul>
+
+        <h3>Как использовать данные</h3>
+        <ul>
+            <li><strong>Оцените эффективность афиш.</strong> Повесили 50 афиш в понедельник — посмотрите, сколько мобильных посещений было во вторник-среду.</li>
+            <li><strong>Сравните каналы.</strong> Сделали пост в Telegram и развесили афиши — аналитика покажет, что дало больше переходов.</li>
+            <li><strong>Прогнозируйте явку.</strong> Зарегистрировались 200 человек → обычно приходит 60-70%. Готовьте 140 бейджей и порций кофе.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Совет:</strong> проверяйте аналитику каждый день в последнюю неделю перед мероприятием. Если регистрации замедлились — сделайте дополнительный пост в соцсетях или развесьте ещё афиш.
+        </div>
+
+        <h2 id="advanced">Продвинутые сценарии</h2>
+
+        <h3>Парольная защита для VIP-зоны</h3>
+        <p>У вашего мероприятия есть VIP-зона или закрытая часть? Создайте отдельную страницу с расписанием VIP-программы и закройте паролем. Ссылку и пароль отправьте только VIP-гостям.</p>
+
+        <h3>Обновление сайта в реальном времени</h3>
+        <p>Во время мероприятия используйте визуальный редактор VibeHosting для оперативных обновлений:</p>
+        <ul>
+            <li>Спикер задерживается → обновите расписание</li>
+            <li>Зал переполнен → добавьте уведомление «Регистрация закрыта»</li>
+            <li>После мероприятия → добавьте ссылки на записи докладов и фотоотчёт</li>
+        </ul>
+
+        <h3>Сайт как архив мероприятия</h3>
+        <p>После события не удаляйте сайт. Добавьте:</p>
+        <ul>
+            <li>Фотоотчёт</li>
+            <li>Видеозаписи докладов (ссылки на YouTube)</li>
+            <li>Презентации спикеров</li>
+            <li>Отзывы участников</li>
+        </ul>
+        <p>Сайт станет архивом и одновременно рекламой следующего мероприятия. Когда будете организовывать DevFest 2027 — дадите ссылку: «Смотрите, как было в прошлом году».</p>
+
+        <h3>Серия мероприятий</h3>
+        <p>Проводите ежемесячные митапы? На PRO-плане VibeHosting (386 ₽/мес) можно разместить до 3 сайтов. Один — основной (архив всех митапов), два — для текущего и следующего события.</p>
+
+        <h2>Шаблон: как адаптировать под ваше мероприятие</h2>
+
+        <p>Мы создали сайт для IT-конференции. Вот как адаптировать его под другие типы событий:</p>
+
+        <h3>Для концерта</h3>
+        <ul>
+            <li>Замените «Спикеры» → «Артисты»</li>
+            <li>Замените «Программа» → «Сетлист» или «Расписание выступлений»</li>
+            <li>Добавьте блок «Купить билет» с ссылкой на билетный сервис</li>
+            <li>Используйте более яркие цвета — замените зелёный на фиолетовый или красный</li>
+        </ul>
+
+        <h3>Для мастер-класса</h3>
+        <ul>
+            <li>Уберите блок «Спикеры» — у мастер-класса один ведущий</li>
+            <li>Добавьте блок «Что вы получите» — конкретные навыки</li>
+            <li>Добавьте блок «Что взять с собой» — если нужно</li>
+            <li>Ограничьте количество мест: «Осталось 8 из 20 мест»</li>
+        </ul>
+
+        <h3>Для свадьбы / частного мероприятия</h3>
+        <ul>
+            <li>Замените деловой дизайн на элегантный: пастельные тона, serif-шрифты</li>
+            <li>Добавьте историю пары / повод для празднования</li>
+            <li>Форма: «Подтвердите присутствие» вместо «Регистрация»</li>
+            <li>Парольная защита — чтобы сайт видели только приглашённые</li>
+        </ul>
+
+        <h2 id="summary">Итоги</h2>
+
+        <p>Вот что мы сделали:</p>
+
+        <ul>
+            <li>Разобрались, почему мероприятию нужен собственный сайт, а не VK-событие или Google Форма</li>
+            <li>Рассмотрели разные типы мероприятий и что нужно каждому из них</li>
+            <li>Создали сайт конференции с нуля: hero с датой, обратный отсчёт, программа-timeline, карточки спикеров, карта, FAQ</li>
+            <li>Сделали форму регистрации с уведомлениями в Telegram через vibe-forms.js</li>
+            <li>Опубликовали на VibeHosting и получили QR-код для афиши</li>
+            <li>Разобрали правила размещения QR-кода: размер, контраст, расположение</li>
+            <li>Настроили аналитику для отслеживания эффективности афиш</li>
+        </ul>
+
+        <p>Всё бесплатно. Сайт мероприятия на своём адресе, QR-код для печати, формы с регистрациями в Telegram, аналитика. За 10-15 минут работы.</p>
+
+        <p>Ваше мероприятие заслуживает красивого сайта. Не отправляйте людей на Google Форму — отправляйте на страницу, которая вызовет желание прийти.</p>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Готовы создать сайт мероприятия?</p>
+            <p><a href="https://hostingvibe.ru">hostingvibe.ru</a> — загрузите ZIP, получите адрес и QR-код для афиши. Бесплатно.</p>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>Команда VibeHosting</strong></p>
+                <p>Помогаем организаторам мероприятий выходить в интернет. Быстро, бесплатно, без лишнего.</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

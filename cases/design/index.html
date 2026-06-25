@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Анна Смирнова — UX/UI Дизайнер</title>
+<meta name="description" content="Портфолио UX/UI дизайнера Анны Смирновой. Мобильные приложения, веб-интерфейсы, дизайн-системы.">
+<style>
+:root{--dark:#111827;--gray:#6b7280;--light:#f9fafb;--line:#f3f4f6;--white:#fff;--accent:#111827}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{font:16px/1.6 'Segoe UI',system-ui,sans-serif;color:var(--dark);background:var(--white)}a{text-decoration:none;color:inherit}
+.w{max-width:1100px;margin:auto;padding:0 40px}
+
+.nav{display:flex;justify-content:space-between;align-items:center;padding:22px 40px;max-width:1100px;margin:auto}
+.nav-logo{font-weight:800;font-size:20px;color:var(--dark)}
+.nav-links{display:flex;gap:28px}
+.nav-links a{color:var(--gray);font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--dark)}
+
+.hero{padding:72px 0 56px;display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+.hero-text{flex:1;min-width:300px}
+.hero-tag{display:inline-block;background:var(--light);color:var(--dark);padding:5px 14px;border-radius:100px;font-size:13px;font-weight:600;margin-bottom:16px;border:1px solid var(--line)}
+.hero-text h1{font-size:clamp(30px,4vw,42px);font-weight:800;line-height:1.15;margin-bottom:16px}
+.hero-text p{color:var(--gray);font-size:17px;max-width:460px;margin-bottom:24px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-p{display:inline-block;background:var(--dark);color:#fff;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;transition:all .2s}
+.btn-p:hover{background:#374151;transform:translateY(-1px)}
+.btn-s{display:inline-block;background:var(--light);color:var(--dark);padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;border:1px solid var(--line);transition:all .2s}
+.btn-s:hover{border-color:#d1d5db}
+.hero-avatar{width:280px;height:320px;border-radius:24px;overflow:hidden;flex-shrink:0}
+.hero-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+
+.stats{display:flex;gap:40px;padding:40px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:60px;flex-wrap:wrap}
+.stat{text-align:center;flex:1;min-width:100px}
+.stat strong{display:block;font-size:28px;color:var(--dark)}
+.stat span{font-size:13px;color:var(--gray)}
+
+.section-title{font-size:28px;font-weight:800;margin-bottom:8px}
+.section-sub{color:var(--gray);font-size:15px;margin-bottom:40px}
+
+.projects{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:64px}
+.project-card{border-radius:20px;overflow:hidden;border:1px solid var(--line);transition:all .3s}
+.project-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.06);transform:translateY(-4px)}
+.project-thumb{height:220px;overflow:hidden}
+.project-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.project-card:hover .project-thumb img{transform:scale(1.03)}
+.project-info{padding:20px}
+.project-info h3{font-size:17px;margin-bottom:4px}
+.project-info p{font-size:13px;color:var(--gray);margin-bottom:12px}
+.project-tags{display:flex;gap:6px;flex-wrap:wrap}
+.project-tags span{background:var(--light);color:var(--dark);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid var(--line)}
+
+.skills-section{padding:64px 0;background:var(--light)}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.skill-item{background:#fff;padding:20px;border-radius:14px;border:1px solid var(--line)}
+.skill-item h4{font-size:14px;margin-bottom:4px}
+.skill-item p{font-size:12px;color:var(--gray)}
+.skill-bar{margin-top:10px;height:4px;border-radius:2px;background:var(--line);overflow:hidden}
+.skill-bar div{height:100%;border-radius:2px;background:var(--dark)}
+
+.contact{padding:64px 0;text-align:center}
+.contact h2{font-size:28px;margin-bottom:8px}
+.contact p{color:var(--gray);margin-bottom:28px}
+.contact-links{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+.contact-link{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:12px;border:1px solid #e5e7eb;color:var(--dark);font-size:14px;font-weight:500;transition:all .2s}
+.contact-link:hover{border-color:var(--dark)}
+
+.foot{padding:24px 40px;text-align:center;font-size:13px;color:var(--gray);border-top:1px solid var(--line)}
+.foot a{color:var(--dark);font-weight:600}
+
+@media(max-width:768px){.nav{padding:16px 20px}.nav-links{display:none}.w{padding:0 20px}.hero{padding:40px 0}.hero-avatar{display:none}.projects,.skills-grid{grid-template-columns:1fr}.stats{gap:16px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">A.S.</a>
+  <div class="nav-links">
+    <a href="#projects">Проекты</a>
+    <a href="#skills">Навыки</a>
+    <a href="#contact">Контакты</a>
+  </div>
+</nav>
+
+<div class="w">
+  <section class="hero">
+    <div class="hero-text">
+      <span class="hero-tag">Открыта к проектам</span>
+      <h1>Создаю интерфейсы, которыми приятно пользоваться</h1>
+      <p>UX/UI дизайнер с 5-летним опытом. Проектирую мобильные приложения, SaaS-продукты и дизайн-системы.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-p">Написать мне</a>
+        <a href="#projects" class="btn-s">Смотреть работы</a>
+      </div>
+    </div>
+    <div class="hero-avatar">
+      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=560&h=640&fit=crop&q=70" alt="Анна Смирнова, UX/UI дизайнер" width="280" height="320" loading="eager">
+    </div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><strong>50+</strong><span>проектов</span></div>
+    <div class="stat"><strong>5 лет</strong><span>опыта</span></div>
+    <div class="stat"><strong>20+</strong><span>клиентов</span></div>
+    <div class="stat"><strong>4.9</strong><span>рейтинг</span></div>
+  </div>
+
+  <section id="projects">
+    <h2 class="section-title">Избранные проекты</h2>
+    <p class="section-sub">Несколько работ, которыми горжусь</p>
+    <div class="projects">
+      <div class="project-card">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=560&h=440&fit=crop&q=60" alt="FinTrack мобильный банкинг" loading="lazy">
+        </div>
+        <div class="project-info">
+          <h3>FinTrack -- мобильный банкинг</h3>
+          <p>Редизайн мобильного приложения для финтех-стартапа. +40% к retention.</p>
+          <div class="project-tags"><span>iOS</span><span>Figma</span><span>Fintech</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=560&h=440&fit=crop&q=60" alt="TaskFlow SaaS для команд" loading="lazy">
+        </div>
+        <div class="project-info">
+          <h3>TaskFlow -- SaaS для команд</h3>
+          <p>Проектирование с нуля: user flow, wireframes, UI kit, 84 экрана.</p>
+          <div class="project-tags"><span>Web App</span><span>Design System</span><span>SaaS</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=560&h=440&fit=crop&q=60" alt="GreenMarket e-commerce" loading="lazy">
+        </div>
+        <div class="project-info">
+          <h3>GreenMarket -- e-commerce</h3>
+          <p>UX-аудит и редизайн интернет-магазина. Конверсия корзины +25%.</p>
+          <div class="project-tags"><span>E-commerce</span><span>UX Research</span><span>A/B</span></div>
+        </div>
+      </div>
+      <div class="project-card">
+        <div class="project-thumb">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=560&h=440&fit=crop&q=60" alt="MedConnect телемедицина" loading="lazy">
+        </div>
+        <div class="project-info">
+          <h3>MedConnect -- телемедицина</h3>
+          <p>Дизайн платформы для онлайн-консультаций. 15 000 пользователей за первый месяц.</p>
+          <div class="project-tags"><span>HealthTech</span><span>Android</span><span>iOS</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="skills-section" id="skills">
+  <div class="w">
+    <h2 class="section-title">Навыки и инструменты</h2>
+    <p class="section-sub">Чем работаю каждый день</p>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <h4>Figma</h4>
+        <p>Auto layout, components, prototypes</p>
+        <div class="skill-bar"><div style="width:95%"></div></div>
+      </div>
+      <div class="skill-item">
+        <h4>UX Research</h4>
+        <p>CJM, Jobs-to-be-Done, usability testing</p>
+        <div class="skill-bar"><div style="width:90%"></div></div>
+      </div>
+      <div class="skill-item">
+        <h4>Design Systems</h4>
+        <p>Tokens, компоненты, документация</p>
+        <div class="skill-bar"><div style="width:85%"></div></div>
+      </div>
+      <div class="skill-item">
+        <h4>Prototyping</h4>
+        <p>Figma, Principle, ProtoPie</p>
+        <div class="skill-bar"><div style="width:88%"></div></div>
+      </div>
+      <div class="skill-item">
+        <h4>HTML / CSS</h4>
+        <p>Верстка, адаптив, CSS animations</p>
+        <div class="skill-bar"><div style="width:75%"></div></div>
+      </div>
+      <div class="skill-item">
+        <h4>Illustration</h4>
+        <p>Иконки, spot illustrations</p>
+        <div class="skill-bar"><div style="width:70%"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="w">
+    <h2>Давайте работать вместе</h2>
+    <p>Открыта к фриланс-проектам и контрактной работе</p>
+    <div class="contact-links">
+      <a href="mailto:anna@example.com" class="contact-link">anna@example.com</a>
+      <a href="#" class="contact-link">Telegram</a>
+      <a href="#" class="contact-link">Behance</a>
+      <a href="#" class="contact-link">Dribbble</a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <p>Анна Смирнова &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как подключить свой домен к сайту — пошаговая инструкция 2026 | VibeHosting</title>
+    <meta name="description" content="Подробная пошаговая инструкция по подключению своего домена к сайту: DNS-записи, A-записи, CNAME, NS — всё с примерами и скриншотами. Работает для любого хостинга.">
+    <meta name="keywords" content="подключить домен, свой домен, DNS настройка, A запись, CNAME, привязать домен к хостингу, custom domain">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .danger { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px 16px; border: 1px solid #e5e7eb; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        tr:nth-child(even) { background: #f9fafb; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .term { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 12px 0; }
+        .term strong { color: #059669; }
+        .toc { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin-bottom: 6px; }
+        .toc a { color: #059669; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .dns-example { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin: 12px 0; font-family: monospace; font-size: 0.9em; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } table { font-size: 0.85em; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <p style="color: #6b7280; margin-bottom: 8px;">Обновлено: март 2026 &middot; 18 мин чтения</p>
+        <h1>Как подключить свой домен к сайту — пошаговая инструкция</h1>
+
+        <p>Вы купили домен — например, <code>mysite.ru</code> — и хотите, чтобы при переходе по нему открывался ваш сайт. Звучит просто, но на практике многие спотыкаются на настройке DNS: A-записи, CNAME, NS-серверы — всё это звучит пугающе, если сталкиваешься впервые.</p>
+
+        <p>В этой инструкции мы разберём весь процесс от начала до конца. Расскажем, что такое DNS и зачем он нужен, какие записи настраивать и почему, покажем конкретные примеры для популярных регистраторов доменов и хостингов. После прочтения вы сможете подключить свой домен к любому хостингу — будь то VibeHosting, Beget, GitHub Pages или что-то ещё.</p>
+
+        <div class="toc">
+            <strong>Содержание:</strong>
+            <ul>
+                <li><a href="#what">1. Что такое домен и DNS — простыми словами</a></li>
+                <li><a href="#types">2. Типы DNS-записей: A, CNAME, NS, TXT</a></li>
+                <li><a href="#need">3. Что вам понадобится</a></li>
+                <li><a href="#step1">4. Шаг 1: Узнать IP-адрес или CNAME хостинга</a></li>
+                <li><a href="#step2">5. Шаг 2: Настроить DNS у регистратора</a></li>
+                <li><a href="#step3">6. Шаг 3: Добавить домен на хостинге</a></li>
+                <li><a href="#step4">7. Шаг 4: Настроить SSL (HTTPS)</a></li>
+                <li><a href="#step5">8. Шаг 5: Проверить работу</a></li>
+                <li><a href="#registrars">9. Инструкции для популярных регистраторов</a></li>
+                <li><a href="#vibehosting">10. Подключение домена к VibeHosting</a></li>
+                <li><a href="#problems">11. Частые проблемы и решения</a></li>
+                <li><a href="#conclusion">12. Итоги</a></li>
+            </ul>
+        </div>
+
+        <h2 id="what">Что такое домен и DNS — простыми словами</h2>
+
+        <p>Домен — это имя вашего сайта в интернете. Вместо того чтобы запоминать IP-адрес вроде <code>185.92.148.77</code>, люди вводят <code>mysite.ru</code> — и браузер знает, куда обращаться.</p>
+
+        <p>Но как браузер узнаёт, какой IP-адрес скрывается за доменом? Через DNS — систему доменных имён (Domain Name System). Это как телефонная книга интернета: вы говорите «позвони Васе», а телефонная книга подсказывает номер.</p>
+
+        <p>Когда пользователь вводит <code>mysite.ru</code> в браузере, происходит следующее:</p>
+
+        <ol>
+            <li>Браузер спрашивает DNS-сервер: «Какой IP у mysite.ru?»</li>
+            <li>DNS-сервер смотрит записи и отвечает: «185.92.148.77»</li>
+            <li>Браузер подключается к этому IP-адресу</li>
+            <li>Сервер по этому адресу отдаёт файлы вашего сайта</li>
+        </ol>
+
+        <p>Ваша задача при подключении домена — правильно настроить эти DNS-записи, чтобы домен указывал на сервер, где лежит ваш сайт.</p>
+
+        <h2 id="types">Типы DNS-записей: A, CNAME, NS, TXT</h2>
+
+        <p>DNS-записей существует несколько типов. Вот основные, которые вам понадобятся:</p>
+
+        <div class="term">
+            <strong>A-запись (Address Record)</strong>
+            <p>Самая главная запись. Связывает домен с конкретным IP-адресом. Когда кто-то вводит ваш домен — A-запись говорит «иди на этот IP».</p>
+            <div class="dns-example">
+                mysite.ru → A → 185.92.148.77
+            </div>
+        </div>
+
+        <div class="term">
+            <strong>CNAME (Canonical Name)</strong>
+            <p>Создаёт «алиас» — один домен указывает на другой домен. Часто используется для поддоменов или когда хостинг даёт вам не IP-адрес, а доменное имя.</p>
+            <div class="dns-example">
+                www.mysite.ru → CNAME → mysite.ru<br>
+                blog.mysite.ru → CNAME → username.github.io
+            </div>
+        </div>
+
+        <div class="term">
+            <strong>NS-запись (Name Server)</strong>
+            <p>Указывает, какие DNS-серверы обслуживают ваш домен. Обычно NS-записи настраивает регистратор автоматически, и вам не нужно их трогать — если только хостинг не просит сменить NS-серверы на свои.</p>
+            <div class="dns-example">
+                mysite.ru → NS → ns1.registrar.ru<br>
+                mysite.ru → NS → ns2.registrar.ru
+            </div>
+        </div>
+
+        <div class="term">
+            <strong>TXT-запись</strong>
+            <p>Содержит произвольный текст. Используется для верификации домена (подтвердить, что вы владелец), настройки почты (SPF, DKIM, DMARC) и других целей.</p>
+            <div class="dns-example">
+                mysite.ru → TXT → "v=spf1 include:_spf.google.com ~all"
+            </div>
+        </div>
+
+        <div class="term">
+            <strong>AAAA-запись</strong>
+            <p>Аналог A-записи, но для IPv6-адресов. Если ваш хостинг поддерживает IPv6 — стоит добавить.</p>
+            <div class="dns-example">
+                mysite.ru → AAAA → 2606:4700:3030::6815:1234
+            </div>
+        </div>
+
+        <div class="highlight">
+            <strong>На практике</strong> вам в 90% случаев понадобятся только A-запись и CNAME. Остальные — по ситуации.
+        </div>
+
+        <h2 id="need">Что вам понадобится</h2>
+
+        <p>Перед началом настройки убедитесь, что у вас есть:</p>
+
+        <ol>
+            <li><strong>Зарегистрированный домен</strong> — купленный у регистратора (REG.RU, Timeweb, RU-CENTER, Beget, Namecheap и т.д.)</li>
+            <li><strong>Доступ к DNS-панели</strong> — обычно это личный кабинет регистратора, раздел «DNS» или «Управление зоной»</li>
+            <li><strong>IP-адрес или CNAME вашего хостинга</strong> — его даёт хостинг-провайдер</li>
+            <li><strong>Терпение</strong> — DNS-записи распространяются от нескольких минут до 48 часов (обычно 15-30 минут)</li>
+        </ol>
+
+        <h2 id="step1">Шаг 1: Узнать IP-адрес или CNAME хостинга</h2>
+
+        <p>Первым делом нужно узнать, куда направлять домен. Это зависит от вашего хостинга:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Хостинг</th>
+                    <th>Тип записи</th>
+                    <th>Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>VibeHosting</td>
+                    <td>A-запись</td>
+                    <td>IP указан в панели управления сайтом</td>
+                </tr>
+                <tr>
+                    <td>GitHub Pages</td>
+                    <td>A / CNAME</td>
+                    <td>185.199.108.153 (A) или username.github.io (CNAME)</td>
+                </tr>
+                <tr>
+                    <td>Netlify</td>
+                    <td>CNAME</td>
+                    <td>yoursite.netlify.app</td>
+                </tr>
+                <tr>
+                    <td>Vercel</td>
+                    <td>A / CNAME</td>
+                    <td>76.76.21.21 (A) или cname.vercel-dns.com (CNAME)</td>
+                </tr>
+                <tr>
+                    <td>Beget</td>
+                    <td>A-запись / NS</td>
+                    <td>IP указан в панели, или смените NS на ns1.beget.com</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="warning">
+            <strong>Важно:</strong> IP-адреса хостингов могут меняться. Всегда берите актуальный IP из панели управления вашего хостинга, а не из статей в интернете.
+        </div>
+
+        <h2 id="step2">Шаг 2: Настроить DNS у регистратора</h2>
+
+        <p>Теперь нужно зайти в панель управления DNS у вашего регистратора домена и создать нужные записи.</p>
+
+        <h3>Настройка A-записи</h3>
+
+        <p>A-запись направляет ваш домен (например, <code>mysite.ru</code>) на IP-адрес хостинга.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span>Зайдите в личный кабинет регистратора</p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">2</span>Найдите раздел «DNS» или «Управление зоной» для вашего домена</p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">3</span>Создайте новую запись типа <strong>A</strong></p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">4</span>В поле «Имя» (или «Host») укажите <code>@</code> — это означает сам домен (mysite.ru)</p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">5</span>В поле «Значение» (или «Value», «IP Address») укажите IP-адрес хостинга</p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">6</span>TTL оставьте по умолчанию (3600 или Auto)</p>
+        </div>
+        <div class="step">
+            <p><span class="step-number">7</span>Сохраните запись</p>
+        </div>
+
+        <div class="dns-example">
+            Тип: A<br>
+            Имя: @<br>
+            Значение: 185.92.148.77<br>
+            TTL: 3600
+        </div>
+
+        <h3>Настройка CNAME для www</h3>
+
+        <p>Чтобы сайт работал и по адресу <code>www.mysite.ru</code>, создайте CNAME-запись:</p>
+
+        <div class="dns-example">
+            Тип: CNAME<br>
+            Имя: www<br>
+            Значение: mysite.ru<br>
+            TTL: 3600
+        </div>
+
+        <p>Это говорит DNS-системе: «когда кто-то запрашивает www.mysite.ru — направляй его туда же, куда и mysite.ru».</p>
+
+        <h3>Альтернатива: смена NS-серверов</h3>
+
+        <p>Некоторые хостинги (например, Beget) предлагают вместо настройки A-записи сменить NS-серверы на свои. Это значит, что DNS вашего домена будет полностью управляться хостингом — удобно, но вы теряете контроль над DNS-записями у регистратора.</p>
+
+        <div class="warning">
+            <strong>Рекомендация:</strong> Если вы не уверены — используйте A-запись. Она даёт больше контроля и работает с любым регистратором. Смену NS-серверов выбирайте только если хостинг настаивает или вам нужны специфичные функции DNS-хостинга провайдера.
+        </div>
+
+        <h2 id="step3">Шаг 3: Добавить домен на хостинге</h2>
+
+        <p>Мало указать домен на хостинг — нужно ещё сказать хостингу, что он должен обслуживать этот домен. Иначе сервер не поймёт, какой сайт показывать.</p>
+
+        <p>В зависимости от хостинга процесс отличается:</p>
+
+        <h3>VibeHosting</h3>
+        <ol>
+            <li>Откройте панель управления сайтом</li>
+            <li>Перейдите в «Настройки» → «Свой домен» (доступно на тарифе PRO)</li>
+            <li>Введите ваш домен (например, <code>mysite.ru</code>)</li>
+            <li>Система покажет IP-адрес для A-записи</li>
+            <li>Нажмите «Подключить»</li>
+        </ol>
+
+        <h3>GitHub Pages</h3>
+        <ol>
+            <li>В репозитории перейдите в Settings → Pages</li>
+            <li>В разделе «Custom domain» введите ваш домен</li>
+            <li>Нажмите Save</li>
+            <li>Дождитесь проверки DNS (может занять несколько минут)</li>
+            <li>Включите «Enforce HTTPS»</li>
+        </ol>
+
+        <h3>Netlify</h3>
+        <ol>
+            <li>Site settings → Domain management</li>
+            <li>Add custom domain</li>
+            <li>Введите ваш домен</li>
+            <li>Netlify автоматически настроит SSL</li>
+        </ol>
+
+        <h2 id="step4">Шаг 4: Настроить SSL (HTTPS)</h2>
+
+        <p>SSL-сертификат шифрует соединение между пользователем и сервером. Без него браузер показывает предупреждение «Небезопасный сайт», а поисковые системы понижают такие сайты в выдаче.</p>
+
+        <p>Хорошая новость: в 2026 году большинство хостингов предоставляют бесплатный SSL через Let's Encrypt.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Хостинг</th>
+                    <th>SSL-сертификат</th>
+                    <th>Как подключить</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>VibeHosting</td>
+                    <td>Автоматический</td>
+                    <td>Выписывается автоматически после подключения домена</td>
+                </tr>
+                <tr>
+                    <td>GitHub Pages</td>
+                    <td>Автоматический</td>
+                    <td>Включить «Enforce HTTPS» в настройках Pages</td>
+                </tr>
+                <tr>
+                    <td>Netlify</td>
+                    <td>Автоматический</td>
+                    <td>Подключается автоматически через Let's Encrypt</td>
+                </tr>
+                <tr>
+                    <td>Vercel</td>
+                    <td>Автоматический</td>
+                    <td>Подключается автоматически</td>
+                </tr>
+                <tr>
+                    <td>Beget</td>
+                    <td>Бесплатный</td>
+                    <td>Подключить в панели управления → SSL-сертификаты</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight">
+            <strong>Совет:</strong> После подключения SSL убедитесь, что сайт редиректит с http:// на https://. Если нет — настройте редирект на стороне сервера или хостинга.
+        </div>
+
+        <h2 id="step5">Шаг 5: Проверить работу</h2>
+
+        <p>DNS-записи распространяются по интернету не мгновенно. Обычно это занимает от 5 минут до 24 часов (в редких случаях — до 48 часов). Вот как проверить:</p>
+
+        <h3>Способ 1: просто откройте сайт</h3>
+        <p>Введите ваш домен в браузере. Если видите свой сайт — всё работает. Если нет — подождите и попробуйте снова.</p>
+
+        <h3>Способ 2: проверьте DNS через терминал</h3>
+
+        <pre><code># Проверить A-запись
+dig mysite.ru A +short
+
+# Проверить CNAME
+dig www.mysite.ru CNAME +short
+
+# Или через nslookup
+nslookup mysite.ru</code></pre>
+
+        <h3>Способ 3: онлайн-сервисы</h3>
+        <ul>
+            <li><strong>dnschecker.org</strong> — проверяет DNS-записи из разных точек мира</li>
+            <li><strong>whatsmydns.net</strong> — показывает, как домен резолвится в разных странах</li>
+            <li><strong>mxtoolbox.com</strong> — подробный анализ DNS</li>
+        </ul>
+
+        <h2 id="registrars">Инструкции для популярных регистраторов</h2>
+
+        <h3>REG.RU</h3>
+        <ol>
+            <li>Войдите в личный кабинет → «Мои домены»</li>
+            <li>Нажмите на нужный домен</li>
+            <li>Перейдите во вкладку «DNS-серверы и управление зоной»</li>
+            <li>Нажмите «Добавить запись»</li>
+            <li>Выберите тип «A», укажите <code>@</code> в поле «Subdomain» и IP-адрес в поле «IP Address»</li>
+            <li>Добавьте CNAME-запись: «www» → «mysite.ru»</li>
+            <li>Сохраните изменения</li>
+        </ol>
+
+        <h3>Timeweb</h3>
+        <ol>
+            <li>Панель управления → «Домены и поддомены»</li>
+            <li>Нажмите на иконку DNS рядом с доменом</li>
+            <li>Добавьте A-запись: <code>@</code> → IP-адрес хостинга</li>
+            <li>Добавьте CNAME: <code>www</code> → <code>mysite.ru</code></li>
+        </ol>
+
+        <h3>Namecheap</h3>
+        <ol>
+            <li>Dashboard → Domain List → Manage</li>
+            <li>Вкладка «Advanced DNS»</li>
+            <li>Add New Record → A Record: Host = @, Value = IP</li>
+            <li>Add New Record → CNAME: Host = www, Value = mysite.ru</li>
+        </ol>
+
+        <h3>Cloudflare (DNS)</h3>
+        <ol>
+            <li>Добавьте домен в Cloudflare</li>
+            <li>Перейдите в DNS → Records</li>
+            <li>Добавьте A-запись: Name = @, IPv4 = IP хостинга</li>
+            <li>Добавьте CNAME: Name = www, Target = mysite.ru</li>
+            <li>Proxy status: включите оранжевое облако для CDN и защиты, или отключите для прямого соединения</li>
+        </ol>
+
+        <div class="highlight">
+            <strong>Совет от Cloudflare:</strong> Если используете Cloudflare как DNS-провайдер — вы получаете бесплатный CDN и DDoS-защиту. Но при этом SSL-сертификат хостинга может конфликтовать с SSL Cloudflare. Убедитесь, что в настройках SSL стоит «Full» или «Full (Strict)».
+        </div>
+
+        <h2 id="vibehosting">Подключение домена к VibeHosting — пошагово</h2>
+
+        <p>Если вы используете VibeHosting с тарифом PRO, подключить свой домен можно за несколько минут. Вот подробная инструкция:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Откройте панель управления сайтом</strong> — зайдите на hostingvibe.ru, войдите в аккаунт и откройте нужный сайт.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Перейдите в настройки домена</strong> — нажмите «Настройки» → «Свой домен». Система покажет IP-адрес сервера, на который нужно направить домен.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Настройте DNS у регистратора</strong> — у вашего регистратора домена создайте A-запись:</p>
+            <div class="dns-example">
+                Тип: A<br>
+                Имя: @<br>
+                Значение: [IP из панели VibeHosting]<br>
+                TTL: 3600
+            </div>
+            <p>И CNAME для www:</p>
+            <div class="dns-example">
+                Тип: CNAME<br>
+                Имя: www<br>
+                Значение: ваш-домен.ru<br>
+                TTL: 3600
+            </div>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Введите домен в VibeHosting</strong> — в поле ввода напишите ваш домен без http:// и www (например, <code>mysite.ru</code>) и нажмите «Подключить».</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Дождитесь распространения DNS</strong> — обычно 5-30 минут. VibeHosting покажет статус подключения.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>SSL подключится автоматически</strong> — после подтверждения DNS система автоматически выпустит SSL-сертификат для вашего домена.</p>
+        </div>
+
+        <div class="highlight">
+            <strong>Итого:</strong> весь процесс для VibeHosting — это создать 2 DNS-записи у регистратора и нажать «Подключить» в панели. SSL настроится сам. Проще некуда.
+        </div>
+
+        <h2 id="problems">Частые проблемы и решения</h2>
+
+        <h3>Проблема: сайт не открывается после настройки DNS</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> DNS-записи ещё не распространились.</p>
+            <p><strong>Решение:</strong> Подождите 15-30 минут. В редких случаях — до 48 часов. Проверьте через dnschecker.org.</p>
+        </div>
+
+        <h3>Проблема: открывается «парковочная страница» регистратора</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> Старые DNS-записи (обычно A-запись) всё ещё указывают на серверы регистратора.</p>
+            <p><strong>Решение:</strong> Удалите старые A-записи и убедитесь, что осталась только ваша новая запись с IP хостинга.</p>
+        </div>
+
+        <h3>Проблема: сайт работает по mysite.ru, но не по www.mysite.ru</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> Не настроена CNAME-запись для www.</p>
+            <p><strong>Решение:</strong> Добавьте CNAME: <code>www</code> → <code>mysite.ru</code></p>
+        </div>
+
+        <h3>Проблема: «Небезопасное соединение» в браузере</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> SSL-сертификат не выпущен или не установлен.</p>
+            <p><strong>Решение:</strong> Подождите — многие хостинги выпускают сертификат автоматически через 5-10 минут после подключения домена. Если не помогло — проверьте настройки SSL в панели хостинга.</p>
+        </div>
+
+        <h3>Проблема: ERR_TOO_MANY_REDIRECTS</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> Конфликт SSL между Cloudflare и хостингом. Cloudflare шифрует трафик до своих серверов, а хостинг пытается перенаправить на HTTPS — получается бесконечный цикл.</p>
+            <p><strong>Решение:</strong> В Cloudflare установите SSL-режим «Full» или «Full (Strict)» вместо «Flexible».</p>
+        </div>
+
+        <h3>Проблема: DNS-записи не сохраняются</h3>
+
+        <div class="step">
+            <p><strong>Причина:</strong> Возможно, NS-серверы домена указывают на другой DNS-провайдер, а вы редактируете записи не там.</p>
+            <p><strong>Решение:</strong> Проверьте, какие NS-серверы указаны для домена. DNS нужно настраивать именно на тех серверах, которые указаны в NS-записях.</p>
+        </div>
+
+        <div class="danger">
+            <strong>Важно:</strong> Никогда не удаляйте NS-записи, если не знаете, что делаете. Без NS-записей домен перестанет работать полностью — даже email не будет приходить.
+        </div>
+
+        <h2 id="conclusion">Итоги</h2>
+
+        <p>Подключение своего домена — это в сущности два действия:</p>
+
+        <ol>
+            <li><strong>У регистратора:</strong> создать A-запись, направляющую домен на IP хостинга</li>
+            <li><strong>На хостинге:</strong> добавить домен в настройках сайта</li>
+        </ol>
+
+        <p>Всё остальное — нюансы: SSL настраивается автоматически, CNAME для www — одна дополнительная запись, ожидание DNS — несколько минут.</p>
+
+        <p>Если вы используете VibeHosting с тарифом PRO (386 ₽/мес) — процесс максимально упрощён: система сама покажет, какой IP указать, и автоматически выпустит SSL после подключения домена. Вам не нужно разбираться с панелями управления, конфигами Nginx или certbot — всё работает из коробки.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 12px;">Нужен хостинг с поддержкой своего домена?</h3>
+            <p>VibeHosting PRO — 386 ₽/мес. Подключение домена в 2 клика, автоматический SSL, серверы в России.</p>
+            <p style="margin-top: 12px;"><a href="https://hostingvibe.ru">hostingvibe.ru →</a></p>
+        </div>
+
+        <div class="author">
+            <div>
+                <strong>Редакция VibeHosting</strong><br>
+                Март 2026 &middot; Инструкция проверена на актуальность.
+            </div>
+        </div>
+    </article>
+</body>
+</html>

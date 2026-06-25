@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Black Chair — премиум барбершоп в Москве</title>
+<meta name="description" content="The Black Chair — премиум барбершоп в центре Москвы. Тёмная атмосфера, виски и безупречная стрижка.">
+<style>
+:root{--bg:#0a0a0a;--fg:#f2edd8;--acc:#c9a84c;--acc2:#a07830;--line:#1e1c14;--muted:#a09880;--soft:#111008}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.58 Arial,sans-serif}a{text-decoration:none;color:inherit}img{display:block}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 70px}.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:26px 0;border-bottom:1px solid var(--line)}.logo{font-size:18px;font-weight:900;letter-spacing:.28em;text-transform:uppercase}.logo span{color:var(--acc)}nav{justify-self:center;display:flex;gap:28px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.1em}
+.hero-wrap{position:relative;overflow:hidden;margin:0 -20px;min-height:520px}.hero-bg{position:absolute;inset:0}.hero-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35)}.hero-content{position:relative;z-index:1;max-width:1120px;margin:auto;padding:60px 20px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px;min-height:520px}
+.hero-content h1{font-size:clamp(38px,6vw,66px);line-height:.92;margin:0 0 16px;text-transform:uppercase;letter-spacing:.04em}.hero-content h1 em{color:var(--acc);font-style:normal;display:block}.hero-content p{color:var(--muted);max-width:460px}.hero-side{border-radius:20px;overflow:hidden;border:2px solid rgba(201,168,76,.2)}.hero-side img{width:100%;height:380px;object-fit:cover}
+.btn,.ghost{display:inline-block;padding:14px 24px;border-radius:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:13px}.btn{background:var(--acc);color:#080808}.ghost{border:1px solid #3a3420;background:transparent;color:var(--fg)}
+h2{font-size:26px;margin:0 0 18px;text-transform:uppercase;letter-spacing:.1em}
+.panel,.card,.contactbox,.review,.stat{border:1px solid var(--line);border-radius:20px;background:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc);font-weight:900}.stat p{color:var(--muted);margin:4px 0 0;font-size:13px}
+.services-grid{display:grid;gap:1px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.service-row{background:var(--soft);padding:18px 22px;display:grid;grid-template-columns:1fr auto;align-items:center}.service-row:not(:last-child){border-bottom:1px solid var(--line)}.service-row b{font-size:16px}.service-row span{color:var(--acc);font-weight:900}
+.gallery3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.gallery3 .gi{border-radius:16px;overflow:hidden;border:1px solid var(--line)}.gallery3 .gi img{width:100%;height:240px;object-fit:cover}
+.atmosphere{border:1px solid var(--line);border-radius:20px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;min-height:300px}.atm-text{padding:36px;display:flex;flex-direction:column;justify-content:center;background:var(--soft)}.atm-img img{width:100%;height:100%;object-fit:cover;min-height:300px}
+.masters{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:24px}.master-photo{border-radius:16px;overflow:hidden;margin-bottom:14px;border:1px solid var(--line)}.master-photo img{width:100%;height:200px;object-fit:cover}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review .stars{color:var(--acc);font-size:14px;margin-bottom:10px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{padding:22px}
+.cta{padding:46px;border-radius:22px;background:linear-gradient(160deg,#14100a,#201806);border:1px solid #2e2410;text-align:center}.cta h2{color:var(--acc)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:620px;margin:20px auto 0}input,select{width:100%;padding:13px 16px;background:#080808;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px}input::placeholder{color:var(--muted)}
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:13px;letter-spacing:.04em}
+@media(max-width:920px){.hero-content,.stats,.gallery3,.masters,.reviews,.contact,.atmosphere{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}.form-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.hero-content,.stats,.gallery3,.masters,.reviews,.contact,.atmosphere{grid-template-columns:1fr}.hero-content h1{font-size:44px}.hero-side{display:none}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">THE <span>BLACK</span> CHAIR</div>
+    <nav><a href="#services">Услуги</a><a href="#masters">Мастера</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#booking">Записаться</a>
+  </div>
+</div>
+
+<div class="hero-wrap">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1585747860019-024bc0340a85?w=1200&h=600&fit=crop&q=75" alt="Барбершоп интерьер" loading="lazy"></div>
+  <div class="hero-content">
+    <div>
+      <h1>Стиль. Характер. <em>Мастерство.</em></h1>
+      <p>Премиум барбершоп в центре Москвы. Тёмная атмосфера, виски и безупречная стрижка. Только для мужчин, которые ценят своё время.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn" href="#booking">Записаться онлайн</a><a class="ghost" href="#services">Прайс-лист</a></div>
+    </div>
+    <div class="hero-side"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&h=380&fit=crop&q=75" alt="Мастер за работой" loading="lazy"></div>
+  </div>
+</div>
+
+<div class="w">
+  <section style="padding-top:50px">
+    <div class="stats">
+      <div class="stat"><b>2014</b><p>год основания</p></div>
+      <div class="stat"><b>5 звёзд</b><p>средняя оценка по 2000+ отзывам</p></div>
+      <div class="stat"><b>3 мастера</b><p>каждый — с международным опытом</p></div>
+      <div class="stat"><b>по записи</b><p>без ожидания, ваше время — ваше</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="gallery3">
+      <div class="gi"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=400&h=300&fit=crop&q=75" alt="Барбершоп с клетчатым полом" loading="lazy"></div>
+      <div class="gi"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=300&fit=crop&q=75" alt="Процесс стрижки" loading="lazy"></div>
+      <div class="gi"><img src="https://images.unsplash.com/photo-1521490683712-35a1cb235d1c?w=400&h=300&fit=crop&q=75" alt="Мужчина в кресле" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <h2>Прайс-лист</h2>
+    <div class="services-grid">
+      <div class="service-row"><b>Мужская стрижка</b><span>3 500 руб.</span></div>
+      <div class="service-row"><b>Стрижка + борода</b><span>5 000 руб.</span></div>
+      <div class="service-row"><b>Королевское бритьё</b><span>2 500 руб.</span></div>
+      <div class="service-row"><b>Моделирование бороды</b><span>2 000 руб.</span></div>
+      <div class="service-row"><b>Камуфляж седины</b><span>3 000 руб.</span></div>
+      <div class="service-row"><b>Детская стрижка (до 12 лет)</b><span>2 000 руб.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Атмосфера</h2>
+    <div class="atmosphere">
+      <div class="atm-text">
+        <b style="font-size:20px;margin-bottom:10px">Больше, чем барбершоп</b>
+        <p style="color:var(--muted)">Тёмный лофт-интерьер, кожаные кресла, приглушённый свет. На входе — бар с виски и крафтовым пивом. Музыка: jazz, blues, hip-hop. The Black Chair — место, где мужчина чувствует себя на своём месте.</p>
+      </div>
+      <div class="atm-img"><img src="https://images.unsplash.com/photo-1512864084360-7c0835b8b67e?w=600&h=400&fit=crop&q=75" alt="Vintage барбершоп" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="masters">
+    <h2>Мастера</h2>
+    <div class="masters">
+      <div class="card">
+        <div class="master-photo"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=400&h=250&fit=crop&q=75" alt="Артём Волков за работой" loading="lazy"></div>
+        <b>Артём «Black» Волков</b><p style="color:var(--muted)">Основатель и старший мастер. 12 лет опыта. Классические стрижки и опасная бритва.</p>
+      </div>
+      <div class="card">
+        <div class="master-photo"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=400&h=250&fit=crop&q=75" alt="Дмитрий Ковалёв за работой" loading="lazy"></div>
+        <b>Дмитрий Ковалёв</b><p style="color:var(--muted)">Барбер-стилист. 8 лет опыта. Фейды и современные текстуры.</p>
+      </div>
+      <div class="card">
+        <div class="master-photo"><img src="https://images.unsplash.com/photo-1521490683712-35a1cb235d1c?w=400&h=250&fit=crop&q=75" alt="Максим Орлов" loading="lazy"></div>
+        <b>Максим Орлов</b><p style="color:var(--muted)">Мастер по бородам. 6 лет опыта. Моделирование бороды и камуфляж.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review card"><div class="stars">★★★★★</div><b>Антон К.</b><p>«Нашёл The Black Chair два года назад и перестал искать. Это тот уровень, когда понимаешь, что платишь за правильное.»</p></div>
+      <div class="review card"><div class="stars">★★★★★</div><b>Владислав Р.</b><p>«Артём сделал fade, которого я не видел нигде в Москве. Чистота линий — другой уровень. Стал постоянным.»</p></div>
+      <div class="review card"><div class="stars">★★★★★</div><b>Сергей В.</b><p>«Пришёл на королевское бритьё — остался на виски и хорошую беседу. Место с душой, это редкость.»</p></div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="cta">
+      <h2>Записаться онлайн</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto 0">Выберите мастера и удобное время — ответим в течение часа и подтвердим бронирование.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Выбрать мастера</option><option>Артём «Black» Волков</option><option>Дмитрий Ковалёв</option><option>Максим Орлов</option></select>
+        <select><option>Услуга</option><option>Мужская стрижка</option><option>Стрижка + борода</option><option>Королевское бритьё</option><option>Моделирование бороды</option><option>Камуфляж седины</option><option>Детская стрижка</option></select>
+        <a class="btn" href="#" style="grid-column:1/-1;text-align:center">Забронировать</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Адрес и контакты</h2>
+    <div class="contact">
+      <div class="contactbox card"><b>Адрес</b><p>Москва, Тверская ул., 16, вход со двора</p></div>
+      <div class="contactbox card"><b>Часы работы</b><p>Пн–Вс: 11:00–22:00<br>Только по предварительной записи</p></div>
+      <div class="contactbox card"><b>Telegram</b><p>@theblackchair_bkng<br>+7 (495) 888-22-44</p></div>
+    </div>
+  </section>
+
+  <div class="foot">THE BLACK CHAIR © 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

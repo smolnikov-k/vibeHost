@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать резюме-сайт и отправить работодателю ссылку | VibeHosting</title>
+    <meta name="description" content="Пошаговый гайд: как создать сайт-резюме на HTML и CSS, добавить портфолио, контакты и опубликовать на VibeHosting. Получите персональную ссылку slug.hostingvibe.ru.">
+    <meta name="keywords" content="сайт-резюме, резюме HTML, портфолио сайт, создать резюме онлайн, VibeHosting, персональный сайт">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .tag { display: inline-block; background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin-right: 8px; margin-bottom: 8px; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <div style="margin-bottom: 24px;">
+            <span class="tag">Карьера</span>
+            <span class="tag">HTML/CSS</span>
+            <span class="tag">Портфолио</span>
+        </div>
+
+        <h1>Как сделать резюме-сайт и отправить работодателю ссылку</h1>
+
+        <p style="font-size: 1.1em; color: #4b5563;">PDF-резюме — это прошлый век. Сайт-резюме выделяет вас среди сотен кандидатов, показывает ваши навыки в деле и даёт работодателю удобную ссылку. В этом гайде вы создадите профессиональный сайт-визитку и опубликуете его по адресу <strong>ваше-имя.hostingvibe.ru</strong>.</p>
+
+        <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80" alt="Резюме и ноутбук на рабочем столе — поиск работы онлайн">
+
+        <h2>Почему сайт-резюме лучше обычного PDF</h2>
+
+        <p>Вы отправляете PDF, и он тонет в папке «Загрузки» у HR-менеджера среди десятков таких же файлов. А теперь представьте, что вместо файла вы отправляете ссылку на красивый персональный сайт. Вот почему это работает лучше:</p>
+
+        <ul>
+            <li><strong>Запоминается</strong> — из 100 PDF-резюме и одного сайта HR запомнит именно сайт</li>
+            <li><strong>Показывает навыки</strong> — если вы претендуете на позицию, связанную с IT, дизайном или маркетингом, сам сайт — демонстрация ваших умений</li>
+            <li><strong>Всегда актуальный</strong> — обновили навыки? Перезалили сайт. Все, кому вы отправляли ссылку, видят свежую версию</li>
+            <li><strong>Удобно делиться</strong> — одна ссылка в сопроводительном письме, в Telegram, в LinkedIn</li>
+            <li><strong>Портфолио встроено</strong> — можно показать проекты с картинками, ссылками и описаниями</li>
+            <li><strong>Интерактивность</strong> — кнопки связи, анимации, переключатель языков</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Для кого особенно полезно:</strong> дизайнеры, фронтенд-разработчики, маркетологи, фотографы, копирайтеры, студенты IT-специальностей. Но даже бухгалтер с собственным сайтом-резюме выделится из толпы.
+        </div>
+
+        <h2>Какие бывают сайты-резюме</h2>
+
+        <p>Прежде чем писать код, определитесь с форматом. Вот основные типы:</p>
+
+        <table>
+            <tr>
+                <th>Тип</th>
+                <th>Для кого</th>
+                <th>Особенности</th>
+            </tr>
+            <tr>
+                <td><strong>Классическое резюме</strong></td>
+                <td>Все профессии</td>
+                <td>Опыт, навыки, образование — как в PDF, но красивее</td>
+            </tr>
+            <tr>
+                <td><strong>Портфолио + резюме</strong></td>
+                <td>Дизайнеры, разработчики</td>
+                <td>Акцент на проектах с превью и ссылками</td>
+            </tr>
+            <tr>
+                <td><strong>Визитка-лендинг</strong></td>
+                <td>Фрилансеры, консультанты</td>
+                <td>Минимум текста, фото, кнопка «Написать»</td>
+            </tr>
+            <tr>
+                <td><strong>Интерактивное CV</strong></td>
+                <td>Креативные профессии</td>
+                <td>Анимации, нестандартная навигация, wow-эффект</td>
+            </tr>
+        </table>
+
+        <p>В этом гайде мы сделаем <strong>портфолио + резюме</strong> — универсальный вариант, который подойдёт большинству.</p>
+
+        <h2>Что понадобится</h2>
+
+        <ul>
+            <li><strong>Текстовый редактор</strong> — VS Code (рекомендуем), Sublime Text или любой другой</li>
+            <li><strong>Профессиональное фото</strong> — хотя бы телефонное, но в деловом стиле</li>
+            <li><strong>Текст о себе</strong> — опыт работы, навыки, образование, контакты</li>
+            <li><strong>Примеры работ</strong> — скриншоты проектов, ссылки на GitHub/Behance/Dribbble</li>
+            <li><strong>40-60 минут</strong> времени</li>
+        </ul>
+
+        <h2>Шаг 1. Определяем структуру страницы</h2>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Спланируйте секции сайта</strong></p>
+            <p>Хороший сайт-резюме включает следующие блоки:</p>
+        </div>
+
+        <ol>
+            <li><strong>Hero / Шапка</strong> — фото, имя, должность, краткое описание и кнопки связи</li>
+            <li><strong>Обо мне</strong> — 2-3 абзаца о вашем опыте и подходе к работе</li>
+            <li><strong>Навыки</strong> — технологии, инструменты, языки</li>
+            <li><strong>Опыт работы</strong> — хронология мест работы с описанием</li>
+            <li><strong>Портфолио</strong> — 3-6 лучших проектов с картинками</li>
+            <li><strong>Образование</strong> — вуз, курсы, сертификаты</li>
+            <li><strong>Контакты</strong> — email, Telegram, LinkedIn, GitHub</li>
+        </ol>
+
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" alt="Профессиональное фото для резюме — деловой портрет">
+
+        <h2>Шаг 2. Создаём файл и базовую разметку</h2>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создайте папку и файл index.html</strong></p>
+        </div>
+
+        <pre><code>my-resume/
+├── index.html
+├── photo.jpg       &lt;-- ваше фото
+└── images/
+    ├── project-1.jpg
+    ├── project-2.jpg
+    └── project-3.jpg</code></pre>
+
+        <p>Начнём с базовой HTML-структуры. Все стили будут встроенными — так весь сайт поместится в один файл:</p>
+
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport"
+        content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Алексей Петров — Frontend-разработчик&lt;/title&gt;
+    &lt;meta name="description"
+        content="Сайт-резюме фронтенд-разработчика.
+        React, TypeScript, 3 года опыта."&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont,
+                'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #1a1a1a;
+            background: #fafafa;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Секции будут здесь --&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <h2>Шаг 3. Hero-секция — первое впечатление</h2>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Создайте шапку с фото и основной информацией</strong></p>
+            <p>Первые 5 секунд решают всё. HR должен мгновенно понять: кто вы, что умеете, как с вами связаться.</p>
+        </div>
+
+        <pre><code>&lt;section style="background: linear-gradient(135deg,
+    #064e3b, #059669); color: white;
+    padding: 80px 20px; text-align: center;"&gt;
+
+    &lt;img src="photo.jpg" alt="Алексей Петров"
+        style="width: 150px; height: 150px;
+            border-radius: 50%; object-fit: cover;
+            border: 4px solid white;
+            margin-bottom: 24px;"&gt;
+
+    &lt;h1 style="font-size: 2.5rem;
+        margin-bottom: 8px;"&gt;Алексей Петров&lt;/h1&gt;
+
+    &lt;p style="font-size: 1.3rem; opacity: 0.9;
+        margin-bottom: 24px;"&gt;
+        Frontend-разработчик
+    &lt;/p&gt;
+
+    &lt;p style="max-width: 600px; margin: 0 auto 32px;
+        opacity: 0.85; line-height: 1.6;"&gt;
+        3 года опыта в React и TypeScript.
+        Делаю быстрые, доступные и красивые
+        веб-приложения. Ищу позицию Middle/Senior
+        Frontend в продуктовой команде.
+    &lt;/p&gt;
+
+    &lt;div style="display: flex; gap: 12px;
+        justify-content: center; flex-wrap: wrap;"&gt;
+
+        &lt;a href="mailto:alex@example.com"
+            style="background: white; color: #059669;
+                padding: 10px 24px; border-radius: 8px;
+                text-decoration: none;
+                font-weight: 600;"&gt;
+            Написать на email
+        &lt;/a&gt;
+
+        &lt;a href="https://t.me/alexdev"
+            target="_blank" rel="noopener"
+            style="background: rgba(255,255,255,0.2);
+                color: white; padding: 10px 24px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;"&gt;
+            Telegram
+        &lt;/a&gt;
+
+        &lt;a href="https://github.com/alexdev"
+            target="_blank" rel="noopener"
+            style="background: rgba(255,255,255,0.2);
+                color: white; padding: 10px 24px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-weight: 500;"&gt;
+            GitHub
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Совет по фото:</strong> используйте квадратное фото минимум 300x300px. Нейтральный фон, деловой или smart casual стиль одежды. Свойство <code>border-radius: 50%</code> сделает его круглым. Если фото нет — можно использовать аватарку или эмодзи, но реальное фото повышает доверие на порядок.
+        </div>
+
+        <h2>Шаг 4. Блок «Обо мне»</h2>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Расскажите о себе коротко и по делу</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="max-width: 800px; margin: 0 auto;
+    padding: 60px 20px;"&gt;
+
+    &lt;h2 style="font-size: 1.8rem; margin-bottom: 20px;
+        color: #059669;"&gt;Обо мне&lt;/h2&gt;
+
+    &lt;p&gt;Привет! Я фронтенд-разработчик из Москвы.
+    Последние 3 года работаю с React-экосистемой:
+    TypeScript, Next.js, Redux/Zustand, Tailwind CSS.&lt;/p&gt;
+
+    &lt;p&gt;До фронтенда занимался веб-дизайном, поэтому
+    хорошо понимаю UI/UX и умею общаться с дизайнерами
+    на одном языке. Мне важно, чтобы интерфейс был
+    не только красивым, но и быстрым, доступным
+    и удобным.&lt;/p&gt;
+
+    &lt;p&gt;Сейчас ищу позицию в продуктовой команде,
+    где можно расти вместе с продуктом и влиять
+    на технические решения.&lt;/p&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="warning">
+            <strong>Частая ошибка:</strong> не пишите биографию с рождения. HR тратит на резюме 6-10 секунд. Пишите только то, что релевантно позиции: опыт, стек, чего хотите. 2-3 абзаца — максимум.
+        </div>
+
+        <h2>Шаг 5. Навыки с визуальным оформлением</h2>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Покажите навыки в виде тегов или прогресс-баров</strong></p>
+        </div>
+
+        <p>Есть два популярных способа отображения навыков. Первый — теги (рекомендуем, он честнее):</p>
+
+        <pre><code>&lt;section style="background: white; padding: 60px 20px;"&gt;
+    &lt;div style="max-width: 800px; margin: 0 auto;"&gt;
+
+        &lt;h2 style="font-size: 1.8rem; margin-bottom: 20px;
+            color: #059669;"&gt;Навыки&lt;/h2&gt;
+
+        &lt;h3 style="margin-bottom: 12px; color: #374151;"&gt;
+            Основной стек
+        &lt;/h3&gt;
+        &lt;div style="display: flex; flex-wrap: wrap;
+            gap: 8px; margin-bottom: 24px;"&gt;
+            &lt;span style="background: #ecfdf5;
+                color: #059669; padding: 6px 16px;
+                border-radius: 20px;
+                font-weight: 500;"&gt;React&lt;/span&gt;
+            &lt;span style="background: #ecfdf5;
+                color: #059669; padding: 6px 16px;
+                border-radius: 20px;
+                font-weight: 500;"&gt;TypeScript&lt;/span&gt;
+            &lt;span style="background: #ecfdf5;
+                color: #059669; padding: 6px 16px;
+                border-radius: 20px;
+                font-weight: 500;"&gt;Next.js&lt;/span&gt;
+            &lt;span style="background: #ecfdf5;
+                color: #059669; padding: 6px 16px;
+                border-radius: 20px;
+                font-weight: 500;"&gt;Tailwind CSS&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;h3 style="margin-bottom: 12px; color: #374151;"&gt;
+            Также работал с
+        &lt;/h3&gt;
+        &lt;div style="display: flex; flex-wrap: wrap;
+            gap: 8px; margin-bottom: 24px;"&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;Node.js&lt;/span&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;PostgreSQL&lt;/span&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;Docker&lt;/span&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;Git&lt;/span&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;Figma&lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;h3 style="margin-bottom: 12px; color: #374151;"&gt;
+            Языки
+        &lt;/h3&gt;
+        &lt;div style="display: flex; flex-wrap: wrap;
+            gap: 8px;"&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;
+                Русский — родной
+            &lt;/span&gt;
+            &lt;span style="background: #f3f4f6;
+                color: #4b5563; padding: 6px 16px;
+                border-radius: 20px;"&gt;
+                English — B2
+            &lt;/span&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Почему теги лучше прогресс-баров:</strong> прогресс-бар «React — 85%» не значит ничего. 85% от чего? Теги просто показывают, с чем вы работали, без ложной точности. Разделение на «основной стек» и «также работал» даёт HR понять, в чём вы сильнее всего.
+        </div>
+
+        <h2>Шаг 6. Опыт работы</h2>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Добавьте хронологию рабочего опыта</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="max-width: 800px; margin: 0 auto;
+    padding: 60px 20px;"&gt;
+
+    &lt;h2 style="font-size: 1.8rem; margin-bottom: 24px;
+        color: #059669;"&gt;Опыт работы&lt;/h2&gt;
+
+    &lt;!-- Одна позиция --&gt;
+    &lt;div style="border-left: 3px solid #10b981;
+        padding-left: 24px; margin-bottom: 32px;"&gt;
+
+        &lt;div style="display: flex;
+            justify-content: space-between;
+            align-items: baseline; flex-wrap: wrap;
+            gap: 8px; margin-bottom: 4px;"&gt;
+            &lt;h3 style="margin: 0;"&gt;
+                Frontend-разработчик
+            &lt;/h3&gt;
+            &lt;span style="color: #6b7280;
+                font-size: 0.9rem;"&gt;
+                Янв 2023 — настоящее время
+            &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;p style="color: #059669; font-weight: 500;
+            margin-bottom: 8px;"&gt;
+            ООО «ТехноСтарт»
+        &lt;/p&gt;
+
+        &lt;ul style="color: #4b5563;"&gt;
+            &lt;li&gt;Разработал SPA на React + TypeScript
+                для внутренней CRM-системы (50+ экранов)&lt;/li&gt;
+            &lt;li&gt;Снизил время загрузки главной страницы
+                с 4.2с до 1.8с через code splitting
+                и оптимизацию бандла&lt;/li&gt;
+            &lt;li&gt;Внедрил компонентную библиотеку
+                на Storybook — ускорил разработку
+                новых фич на 30%&lt;/li&gt;
+            &lt;li&gt;Код-ревью, менторинг джуниоров,
+                участие в архитектурных решениях&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Следующая позиция --&gt;
+    &lt;div style="border-left: 3px solid #d1d5db;
+        padding-left: 24px; margin-bottom: 32px;"&gt;
+
+        &lt;div style="display: flex;
+            justify-content: space-between;
+            align-items: baseline; flex-wrap: wrap;
+            gap: 8px; margin-bottom: 4px;"&gt;
+            &lt;h3 style="margin: 0;"&gt;
+                Junior Frontend-разработчик
+            &lt;/h3&gt;
+            &lt;span style="color: #6b7280;
+                font-size: 0.9rem;"&gt;
+                Мар 2021 — Дек 2022
+            &lt;/span&gt;
+        &lt;/div&gt;
+
+        &lt;p style="color: #059669; font-weight: 500;
+            margin-bottom: 8px;"&gt;
+            Веб-студия «Пиксель»
+        &lt;/p&gt;
+
+        &lt;ul style="color: #4b5563;"&gt;
+            &lt;li&gt;Разработал 15+ лендингов и корпоративных
+                сайтов на HTML/CSS/JavaScript&lt;/li&gt;
+            &lt;li&gt;Перевёл 3 проекта с jQuery
+                на React — сократил объём кода на 40%&lt;/li&gt;
+            &lt;li&gt;Настроил CI/CD пайплайн
+                на GitHub Actions для автодеплоя&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Совет:</strong> используйте цифры и факты, а не общие слова. «Снизил время загрузки с 4.2с до 1.8с» звучит намного убедительнее, чем «Оптимизировал производительность». Каждый пункт опыта должен отвечать на вопрос: «Что конкретно вы сделали и какой результат это дало?»
+        </div>
+
+        <h2>Шаг 7. Портфолио — покажите свои работы</h2>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Добавьте карточки проектов</strong></p>
+            <p>Это самый визуальный и впечатляющий блок. Даже 3 хороших проекта — лучше, чем 10 сырых.</p>
+        </div>
+
+        <pre><code>&lt;section style="background: #f9fafb;
+    padding: 60px 20px;"&gt;
+    &lt;div style="max-width: 1000px; margin: 0 auto;"&gt;
+
+        &lt;h2 style="font-size: 1.8rem; margin-bottom: 32px;
+            text-align: center;
+            color: #059669;"&gt;Проекты&lt;/h2&gt;
+
+        &lt;div style="display: grid;
+            grid-template-columns:
+                repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;"&gt;
+
+            &lt;div style="background: white;
+                border-radius: 12px; overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);"&gt;
+
+                &lt;img src="images/project-1.jpg"
+                    alt="CRM Dashboard"
+                    style="width: 100%; height: 200px;
+                        object-fit: cover;"&gt;
+
+                &lt;div style="padding: 20px;"&gt;
+                    &lt;h3 style="margin-bottom: 8px;"&gt;
+                        CRM Dashboard
+                    &lt;/h3&gt;
+                    &lt;p style="color: #6b7280;
+                        font-size: 0.9rem;
+                        margin-bottom: 12px;"&gt;
+                        Панель управления для отдела продаж.
+                        React, TypeScript, Recharts,
+                        REST API.
+                    &lt;/p&gt;
+                    &lt;div style="display: flex; gap: 8px;"&gt;
+                        &lt;a href="#"
+                            style="color: #059669;
+                                font-weight: 500;"&gt;
+                            Демо →
+                        &lt;/a&gt;
+                        &lt;a href="#"
+                            style="color: #6b7280;"&gt;
+                            GitHub
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;!-- Повторите для 2-3 проектов --&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80" alt="Разработчик за ноутбуком — создание портфолио проектов">
+
+        <h3>Что показывать в портфолио, если нет коммерческих проектов?</h3>
+
+        <p>Это частый вопрос студентов и начинающих разработчиков. Вот что можно добавить:</p>
+
+        <ul>
+            <li><strong>Учебные проекты</strong> — калькулятор, todo-list, погодное приложение. Да, они простые, но показывают, что вы умеете писать код</li>
+            <li><strong>Клоны известных сервисов</strong> — упрощённый клон Trello, Twitter, Spotify. Показывает амбиции и навыки</li>
+            <li><strong>Pet-проекты</strong> — то, что вы делаете для себя. Бот для Telegram, генератор мемов, трекер привычек</li>
+            <li><strong>Open Source</strong> — даже маленький PR в чужой проект — это плюс</li>
+            <li><strong>Этот самый сайт-резюме</strong> — мета, но работает: «Посмотрите на сайт, который я сделал, чтобы показать вам свои навыки»</li>
+        </ul>
+
+        <h2>Шаг 8. Образование и сертификаты</h2>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Добавьте блок образования</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="max-width: 800px; margin: 0 auto;
+    padding: 60px 20px;"&gt;
+
+    &lt;h2 style="font-size: 1.8rem; margin-bottom: 24px;
+        color: #059669;"&gt;Образование&lt;/h2&gt;
+
+    &lt;div style="margin-bottom: 20px;"&gt;
+        &lt;h3&gt;МГУ, Факультет ВМК&lt;/h3&gt;
+        &lt;p style="color: #6b7280;"&gt;
+            Бакалавр, Прикладная математика
+            и информатика | 2017–2021
+        &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div style="margin-bottom: 20px;"&gt;
+        &lt;h3&gt;Яндекс.Практикум&lt;/h3&gt;
+        &lt;p style="color: #6b7280;"&gt;
+            Веб-разработчик | 2021
+        &lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div&gt;
+        &lt;h3&gt;Сертификаты&lt;/h3&gt;
+        &lt;ul style="color: #4b5563;"&gt;
+            &lt;li&gt;Meta Frontend Developer Certificate
+                (Coursera)&lt;/li&gt;
+            &lt;li&gt;TypeScript Deep Dive
+                (Udemy, 2023)&lt;/li&gt;
+        &lt;/ul&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 9. Контактная секция</h2>
+
+        <div class="step">
+            <p><span class="step-number">9</span><strong>Сделайте финальный блок с призывом к действию</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="background: linear-gradient(135deg,
+    #064e3b, #059669); color: white;
+    padding: 60px 20px; text-align: center;"&gt;
+
+    &lt;h2 style="font-size: 2rem;
+        margin-bottom: 12px;"&gt;Давайте работать вместе&lt;/h2&gt;
+
+    &lt;p style="opacity: 0.9; margin-bottom: 32px;
+        max-width: 500px; margin-left: auto;
+        margin-right: auto;"&gt;
+        Открыт к предложениям о работе и фриланс-проектам.
+        Предпочитаю удалёнку, но готов к гибридному
+        формату в Москве.
+    &lt;/p&gt;
+
+    &lt;div style="display: flex; gap: 16px;
+        justify-content: center; flex-wrap: wrap;"&gt;
+        &lt;a href="mailto:alex@example.com"
+            style="background: white; color: #059669;
+                padding: 14px 32px; border-radius: 10px;
+                text-decoration: none; font-weight: 600;
+                font-size: 1.1rem;"&gt;
+            📧 Написать на email
+        &lt;/a&gt;
+        &lt;a href="https://t.me/alexdev"
+            target="_blank" rel="noopener"
+            style="border: 2px solid white;
+                color: white; padding: 14px 32px;
+                border-radius: 10px;
+                text-decoration: none;
+                font-weight: 500;"&gt;
+            Telegram
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 10. Адаптивность и финальные штрихи</h2>
+
+        <div class="step">
+            <p><span class="step-number">10</span><strong>Проверьте мобильную версию</strong></p>
+        </div>
+
+        <p>Наш сайт уже адаптивен благодаря CSS Grid и <code>flex-wrap</code>. Но добавим несколько штрихов:</p>
+
+        <pre><code>&lt;style&gt;
+/* Плавный скролл по якорям */
+html { scroll-behavior: smooth; }
+
+/* Мобильные исправления */
+@media (max-width: 640px) {
+    h1 { font-size: 1.8rem !important; }
+    section { padding: 40px 16px !important; }
+    img { border-radius: 8px; }
+}
+
+/* Анимация появления при наведении */
+a { transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+&lt;/style&gt;</code></pre>
+
+        <h3>Open Graph — красивое превью при отправке ссылки</h3>
+
+        <p>Когда вы скидываете ссылку в Telegram или LinkedIn, мессенджер показывает превью. Чтобы оно было красивым, добавьте в <code>&lt;head&gt;</code>:</p>
+
+        <pre><code>&lt;meta property="og:title"
+    content="Алексей Петров — Frontend-разработчик"&gt;
+&lt;meta property="og:description"
+    content="3 года опыта в React и TypeScript.
+    Портфолио и контакты."&gt;
+&lt;meta property="og:image"
+    content="https://alex-dev.hostingvibe.ru/og.jpg"&gt;
+&lt;meta property="og:url"
+    content="https://alex-dev.hostingvibe.ru"&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Совет:</strong> создайте отдельную картинку <code>og.jpg</code> размером 1200x630px. Это может быть простая плашка с вашим именем и должностью на цветном фоне. Такую картинку легко сделать в Canva (бесплатно).
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80" alt="Работа за компьютером — отправка резюме работодателю">
+
+        <h2>Шаг 11. Публикация на VibeHosting</h2>
+
+        <div class="step">
+            <p><span class="step-number">11</span><strong>Загрузите сайт и получите персональную ссылку</strong></p>
+        </div>
+
+        <p>Самый простой способ опубликовать сайт-резюме — загрузить его на VibeHosting. Вот пошаговая инструкция:</p>
+
+        <ol>
+            <li><strong>Упакуйте файлы в ZIP</strong> — <code>index.html</code>, <code>photo.jpg</code> и папку <code>images</code></li>
+            <li><strong>Откройте <a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru</a></strong> и зарегистрируйтесь</li>
+            <li><strong>Загрузите ZIP-архив</strong></li>
+            <li><strong>Выберите slug</strong> — используйте своё имя: <code>alex-petrov</code>, <code>ivanova-cv</code> или <code>frontend-alex</code></li>
+            <li><strong>Готово!</strong> Ваше резюме доступно по адресу <code>alex-petrov.hostingvibe.ru</code></li>
+        </ol>
+
+        <p>Теперь в сопроводительном письме или сообщении в Telegram вы можете написать:</p>
+
+        <div class="highlight">
+            <p>«Добрый день! Меня зовут Алексей, я frontend-разработчик с 3 годами опыта. Моё резюме и портфолио: <strong>alex-petrov.hostingvibe.ru</strong>. Буду рад обсудить вакансию.»</p>
+        </div>
+
+        <p>Это выглядит намного профессиональнее, чем прикреплённый PDF.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Бесплатный хостинг для вашего резюме</h3>
+            <p style="margin-bottom: 16px;">Загрузите ZIP-архив на VibeHosting и получите персональную ссылку <strong>ваше-имя.hostingvibe.ru</strong>. Бесплатный план — 1 сайт, 50 МБ.</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Опубликовать резюме на VibeHosting →</a>
+        </div>
+
+        <h2>Как использовать сайт-резюме максимально эффективно</h2>
+
+        <h3>Где разместить ссылку</h3>
+
+        <ul>
+            <li><strong>LinkedIn</strong> — в поле «Website» профиля</li>
+            <li><strong>Сопроводительное письмо</strong> — в первом или последнем абзаце</li>
+            <li><strong>Telegram-био</strong> — вместо или рядом с основной ссылкой</li>
+            <li><strong>Email-подпись</strong> — автоматически добавляется к каждому письму</li>
+            <li><strong>HeadHunter</strong> — в поле «О себе» или в начале резюме</li>
+            <li><strong>Визитка</strong> — QR-код, ведущий на сайт (VibeHosting генерирует QR автоматически)</li>
+        </ul>
+
+        <h3>Что обновлять и когда</h3>
+
+        <ul>
+            <li>Новый проект в портфолио — сразу после завершения</li>
+            <li>Смена должности или компании — в первую неделю</li>
+            <li>Новый навык — когда чувствуете уверенность (не после одного туториала)</li>
+            <li>Фото — раз в 1-2 года или при смене имиджа</li>
+        </ul>
+
+        <p>На VibeHosting обновление — это просто повторная загрузка ZIP. Ссылка остаётся той же.</p>
+
+        <h2>Частые ошибки в сайтах-резюме</h2>
+
+        <ol>
+            <li><strong>Слишком много текста</strong> — HR не будет читать 10 экранов. Будьте лаконичны</li>
+            <li><strong>Нет призыва к действию</strong> — должна быть очевидная кнопка «Написать мне»</li>
+            <li><strong>Плохое фото или его отсутствие</strong> — вызывает недоверие</li>
+            <li><strong>Неадаптивная вёрстка</strong> — HR может смотреть с телефона</li>
+            <li><strong>Прогресс-бары навыков</strong> — «JavaScript 78%» не значит ничего. Используйте теги</li>
+            <li><strong>Тёмная тема без светлой</strong> — не все любят тёмные сайты, светлая тема безопаснее</li>
+            <li><strong>Нет ссылок на проекты</strong> — показать код/демо важнее, чем описать его</li>
+        </ol>
+
+        <h2>Итоги</h2>
+
+        <p>Сайт-резюме — это ваша персональная витрина в интернете. Создать его можно за час, а пользу он будет приносить годами. Вот что мы сделали:</p>
+
+        <ul>
+            <li>Создали структуру сайта-резюме: hero, навыки, опыт, портфолио, контакты</li>
+            <li>Написали чистый HTML+CSS код, адаптивный и читаемый</li>
+            <li>Добавили Open Graph теги для красивого превью в мессенджерах</li>
+            <li>Опубликовали на VibeHosting и получили персональную ссылку</li>
+        </ul>
+
+        <p>Теперь у вас есть профессиональный сайт-визитка по адресу <code>ваше-имя.hostingvibe.ru</code>, которую можно отправить любому работодателю. Удачи в поиске работы!</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Создайте своё резюме-сайт прямо сейчас</h3>
+            <p style="margin-bottom: 16px;">ZIP-архив → ваше-имя.hostingvibe.ru за 1 минуту. Бесплатно для студентов!</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить резюме на VibeHosting →</a>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>VibeHosting</strong> — хостинг для тех, кто делает. Загрузил ZIP — сайт онлайн.</p>
+                <p>Опубликовано: март 2026</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать интернет-магазин на одной странице — пошаговый гайд | VibeHosting</title>
+    <meta name="description" content="Подробная инструкция: как создать одностраничный интернет-магазин на HTML и CSS. Каталог товаров, форма заказа, Telegram-уведомления. Публикация за 1 минуту на VibeHosting.">
+    <meta name="keywords" content="интернет-магазин на одной странице, одностраничный магазин, landing page магазин, HTML магазин, создать магазин бесплатно, VibeHosting">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .tag { display: inline-block; background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin-right: 8px; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .comparison > div { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } .comparison { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <div style="margin-bottom: 24px;">
+            <span class="tag">Для начинающих</span>
+            <span class="tag">HTML/CSS</span>
+            <span class="tag">Интернет-магазин</span>
+        </div>
+
+        <h1>Как сделать интернет-магазин на одной странице: полный пошаговый гайд</h1>
+
+        <p style="font-size: 1.1em; color: #4b5563;">Хотите продавать товары в интернете, но не хотите разбираться со сложными CMS? Одностраничный магазин — идеальное решение. В этом гайде вы создадите полноценный лендинг-магазин с каталогом, корзиной и формой заказа. А потом опубликуете его за минуту.</p>
+
+        <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80" alt="Онлайн-шопинг с ноутбука — концепт интернет-магазина">
+
+        <h2>Зачем нужен одностраничный магазин</h2>
+
+        <p>Интернет-магазин на одной странице (one-page shop) — это не урезанный вариант «нормального» магазина. Это осознанный формат, который отлично подходит для множества сценариев:</p>
+
+        <ul>
+            <li><strong>Вы продаёте 3-15 товаров</strong> — авторские украшения, выпечку на заказ, handmade-свечи, мерч группы или курса</li>
+            <li><strong>Вы тестируете нишу</strong> — хотите проверить, будут ли покупать, прежде чем вкладывать в полноценный магазин</li>
+            <li><strong>Вам нужен лендинг под акцию</strong> — распродажа, сезонное предложение, предзаказ</li>
+            <li><strong>Вы фрилансер</strong> и делаете магазин клиенту быстро и недорого</li>
+            <li><strong>Учебный проект</strong> — для портфолио или курса веб-разработки</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Факт:</strong> по данным исследований, конверсия одностраничных лендингов в среднем на 25-30% выше, чем у многостраничных сайтов. Пользователь не отвлекается на навигацию и быстрее доходит до кнопки «Заказать».
+        </div>
+
+        <h3>Одностраничный магазин vs. полноценный e-commerce</h3>
+
+        <div class="comparison">
+            <div>
+                <h3 style="color: #10b981; margin-top: 0;">One-page shop</h3>
+                <ul>
+                    <li>Создаётся за 1-2 дня</li>
+                    <li>Не нужен сервер с БД</li>
+                    <li>Бесплатный хостинг</li>
+                    <li>Лёгкий и быстрый</li>
+                    <li>Заказы через форму/Telegram</li>
+                    <li>До 20-30 товаров</li>
+                </ul>
+            </div>
+            <div>
+                <h3 style="color: #6b7280; margin-top: 0;">Полноценный магазин</h3>
+                <ul>
+                    <li>Разработка от 2 недель</li>
+                    <li>Нужна база данных</li>
+                    <li>Платный хостинг от 500₽/мес</li>
+                    <li>Онлайн-оплата, корзина</li>
+                    <li>Личный кабинет, трекинг</li>
+                    <li>Сотни и тысячи товаров</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Что понадобится для создания магазина</h2>
+
+        <p>Для создания одностраничного магазина вам потребуется минимальный набор инструментов:</p>
+
+        <ol>
+            <li><strong>Текстовый редактор</strong> — VS Code (бесплатный, самый популярный), Sublime Text или даже обычный Блокнот</li>
+            <li><strong>Браузер</strong> — Chrome или Firefox для предпросмотра</li>
+            <li><strong>Фотографии товаров</strong> — реальные фото ваших товаров (или стоковые для прототипа)</li>
+            <li><strong>Тексты</strong> — описания товаров, цены, контакты</li>
+            <li><strong>30-60 минут</strong> свободного времени</li>
+        </ol>
+
+        <div class="highlight">
+            <strong>Не нужны:</strong> знания PHP, баз данных, JavaScript-фреймворков. Достаточно базового понимания HTML и CSS. Если вы знаете, что такое <code>&lt;div&gt;</code> и <code>color: red</code> — вы справитесь.
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80" alt="Редактор кода — рабочее место веб-разработчика">
+
+        <h2>Структура одностраничного магазина</h2>
+
+        <p>Прежде чем писать код, давайте определим структуру. Хороший одностраничный магазин состоит из следующих блоков:</p>
+
+        <ol>
+            <li><strong>Шапка (Header)</strong> — логотип, название, навигация-якоря</li>
+            <li><strong>Герой-секция (Hero)</strong> — яркий баннер с главным оффером</li>
+            <li><strong>Каталог товаров</strong> — карточки с фото, названием, ценой и кнопкой</li>
+            <li><strong>О нас / Преимущества</strong> — почему стоит покупать именно у вас</li>
+            <li><strong>Отзывы</strong> — социальное доказательство</li>
+            <li><strong>Форма заказа</strong> — имя, телефон, выбранный товар</li>
+            <li><strong>Подвал (Footer)</strong> — контакты, соцсети, юридическая информация</li>
+        </ol>
+
+        <h2>Шаг 1. Создаём структуру проекта</h2>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте папку проекта</strong></p>
+            <p>Создайте на компьютере папку, например <code>my-shop</code>. Внутри создайте файл <code>index.html</code> и папку <code>images</code> для фотографий товаров.</p>
+        </div>
+
+        <pre><code>my-shop/
+├── index.html
+├── images/
+│   ├── product-1.jpg
+│   ├── product-2.jpg
+│   ├── product-3.jpg
+│   └── hero-banner.jpg
+└── style.css (необязательно, можно встроить)</code></pre>
+
+        <p>Для простоты мы будем писать стили прямо в HTML-файле через тег <code>&lt;style&gt;</code>. Это удобно для одностраничника: один файл — весь магазин.</p>
+
+        <h2>Шаг 2. Базовая HTML-разметка</h2>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Напишите скелет страницы</strong></p>
+            <p>Откройте <code>index.html</code> в редакторе и начните с базовой структуры:</p>
+        </div>
+
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Магазин свечей ручной работы | CandleShop&lt;/title&gt;
+    &lt;meta name="description" content="Ароматические свечи ручной работы
+        из натурального воска. Доставка по всей России."&gt;
+    &lt;style&gt;
+        /* Стили будут здесь */
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header id="top"&gt;...&lt;/header&gt;
+    &lt;section id="catalog"&gt;...&lt;/section&gt;
+    &lt;section id="about"&gt;...&lt;/section&gt;
+    &lt;section id="order"&gt;...&lt;/section&gt;
+    &lt;footer&gt;...&lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <p>Обратите внимание на атрибуты <code>id</code> у секций. Они нужны для якорной навигации: клик по ссылке <code>#catalog</code> прокрутит страницу к каталогу.</p>
+
+        <h2>Шаг 3. Шапка с навигацией</h2>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Создайте header с логотипом и меню</strong></p>
+        </div>
+
+        <pre><code>&lt;header style="background: white; padding: 16px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: sticky; top: 0; z-index: 100;"&gt;
+    &lt;div style="max-width: 1200px; margin: 0 auto;
+        padding: 0 20px; display: flex;
+        justify-content: space-between; align-items: center;"&gt;
+
+        &lt;a href="#top" style="font-size: 1.5rem;
+            font-weight: 800; color: #059669;
+            text-decoration: none;"&gt;
+            🕯️ CandleShop
+        &lt;/a&gt;
+
+        &lt;nav style="display: flex; gap: 24px;"&gt;
+            &lt;a href="#catalog" style="color: #374151;
+                text-decoration: none;"&gt;Каталог&lt;/a&gt;
+            &lt;a href="#about" style="color: #374151;
+                text-decoration: none;"&gt;О нас&lt;/a&gt;
+            &lt;a href="#order" style="color: #059669;
+                font-weight: 600;
+                text-decoration: none;"&gt;Заказать&lt;/a&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+
+        <p>Свойство <code>position: sticky</code> делает шапку «прилипающей» — она остаётся наверху при прокрутке. Это важно для удобства навигации на длинной странице.</p>
+
+        <h2>Шаг 4. Hero-секция с главным оффером</h2>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Добавьте яркий баннер</strong></p>
+            <p>Hero-секция — первое, что видит посетитель. Она должна за 3 секунды объяснить, что вы продаёте и почему это стоит внимания.</p>
+        </div>
+
+        <pre><code>&lt;section style="background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    padding: 80px 20px; text-align: center;"&gt;
+
+    &lt;h1 style="font-size: 2.8rem; margin-bottom: 16px;
+        color: #064e3b;"&gt;
+        Ароматические свечи&lt;br&gt;ручной работы
+    &lt;/h1&gt;
+
+    &lt;p style="font-size: 1.2rem; color: #374151;
+        max-width: 600px; margin: 0 auto 32px;"&gt;
+        Натуральный соевый воск, эфирные масла,
+        хлопковый фитиль. Каждая свеча —
+        маленькое произведение искусства.
+    &lt;/p&gt;
+
+    &lt;a href="#catalog" style="display: inline-block;
+        background: #059669; color: white;
+        padding: 16px 40px; border-radius: 50px;
+        font-size: 1.1rem; font-weight: 600;
+        text-decoration: none;"&gt;
+        Смотреть каталог →
+    &lt;/a&gt;
+
+    &lt;p style="margin-top: 16px; color: #6b7280;
+        font-size: 0.9rem;"&gt;
+        🚚 Бесплатная доставка от 2000₽
+    &lt;/p&gt;
+&lt;/section&gt;</code></pre>
+
+        <img src="https://images.unsplash.com/photo-1602607616993-a498fc834e54?w=800&q=80" alt="Ароматические свечи — пример товара для одностраничного магазина">
+
+        <h2>Шаг 5. Каталог товаров — сердце магазина</h2>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Создайте сетку карточек товаров</strong></p>
+            <p>Это самая важная часть. Каждая карточка содержит: фото, название, описание, цену и кнопку заказа.</p>
+        </div>
+
+        <pre><code>&lt;section id="catalog" style="padding: 60px 20px;
+    max-width: 1200px; margin: 0 auto;"&gt;
+
+    &lt;h2 style="text-align: center; font-size: 2rem;
+        margin-bottom: 40px;"&gt;Наши свечи&lt;/h2&gt;
+
+    &lt;div style="display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;"&gt;
+
+        &lt;!-- Карточка товара --&gt;
+        &lt;div style="background: white; border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: transform 0.2s;"&gt;
+
+            &lt;img src="images/product-1.jpg"
+                alt="Свеча Лаванда"
+                style="width: 100%; height: 280px;
+                    object-fit: cover;"&gt;
+
+            &lt;div style="padding: 20px;"&gt;
+                &lt;h3 style="margin-bottom: 8px;"&gt;
+                    Лавандовый вечер
+                &lt;/h3&gt;
+                &lt;p style="color: #6b7280; font-size: 0.9rem;
+                    margin-bottom: 12px;"&gt;
+                    Соевый воск, эфирное масло лаванды.
+                    Время горения: 40 часов.
+                &lt;/p&gt;
+                &lt;div style="display: flex;
+                    justify-content: space-between;
+                    align-items: center;"&gt;
+                    &lt;span style="font-size: 1.4rem;
+                        font-weight: 700;
+                        color: #059669;"&gt;890 ₽&lt;/span&gt;
+                    &lt;a href="#order" style="background: #059669;
+                        color: white; padding: 8px 20px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        font-weight: 500;"&gt;
+                        Заказать
+                    &lt;/a&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Повторите для остальных товаров --&gt;
+
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <p>Мы используем CSS Grid с <code>auto-fill</code> и <code>minmax</code>. Это значит, что карточки автоматически выстроятся в 1, 2 или 3 колонки в зависимости от ширины экрана. Никакой дополнительной адаптивности писать не нужно!</p>
+
+        <div class="highlight">
+            <strong>Совет по фото:</strong> используйте квадратные или вертикальные фотографии товаров на однотонном фоне. Свойство <code>object-fit: cover</code> обрежет фото под нужный размер, но исходник должен быть качественным. Сжимайте фото через <a href="https://squoosh.app" target="_blank" rel="noopener">squoosh.app</a> — файлы до 100-200 КБ загружаются мгновенно.
+        </div>
+
+        <h2>Шаг 6. Блок преимуществ</h2>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Расскажите, почему покупать у вас</strong></p>
+        </div>
+
+        <pre><code>&lt;section id="about" style="background: white;
+    padding: 60px 20px;"&gt;
+    &lt;div style="max-width: 1200px; margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 32px; text-align: center;"&gt;
+
+        &lt;div&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 12px;"&gt;🌿&lt;/div&gt;
+            &lt;h3&gt;100% натуральный состав&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Соевый воск, эфирные масла,
+                деревянные и хлопковые фитили.
+                Никакого парафина.
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 12px;"&gt;🎨&lt;/div&gt;
+            &lt;h3&gt;Ручная работа&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Каждая свеча создаётся вручную
+                в нашей мастерской. Мы контролируем
+                каждый этап.
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 12px;"&gt;🚚&lt;/div&gt;
+            &lt;h3&gt;Доставка по всей России&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                СДЭК, Почта России, курьер
+                по Москве. Бесплатно от 2000₽.
+            &lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 7. Блок отзывов</h2>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Добавьте социальное доказательство</strong></p>
+            <p>Отзывы реальных покупателей увеличивают конверсию на 20-30%. Даже 2-3 отзыва — лучше, чем ничего.</p>
+        </div>
+
+        <pre><code>&lt;section style="padding: 60px 20px; background: #f9fafb;"&gt;
+    &lt;h2 style="text-align: center; font-size: 2rem;
+        margin-bottom: 40px;"&gt;Отзывы покупателей&lt;/h2&gt;
+
+    &lt;div style="max-width: 1200px; margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;"&gt;
+
+        &lt;div style="background: white; padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;"&gt;
+            &lt;div style="color: #f59e0b;
+                margin-bottom: 8px;"&gt;★★★★★&lt;/div&gt;
+            &lt;p style="margin-bottom: 12px;"&gt;
+                «Заказывала набор свечей в подарок маме.
+                Пришли в красивой упаковке,
+                пахнут невероятно! Горят ровно,
+                без копоти.»
+            &lt;/p&gt;
+            &lt;p style="color: #6b7280; font-weight: 500;"&gt;
+                — Анна, Москва
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Ещё 1-2 отзыва по аналогии --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 8. Форма заказа — самая важная часть</h2>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Создайте форму для приёма заказов</strong></p>
+            <p>Это то, ради чего всё затевалось. Форма должна быть простой: имя, телефон, что хотите заказать. Без регистрации, без корзины.</p>
+        </div>
+
+        <p>Для обработки формы без бэкенда есть несколько бесплатных сервисов:</p>
+
+        <table>
+            <tr>
+                <th>Сервис</th>
+                <th>Бесплатный план</th>
+                <th>Плюсы</th>
+            </tr>
+            <tr>
+                <td><strong>Formspree</strong></td>
+                <td>50 отправок/мес</td>
+                <td>Простая интеграция, уведомления на email</td>
+            </tr>
+            <tr>
+                <td><strong>Telegram Bot API</strong></td>
+                <td>Безлимит</td>
+                <td>Мгновенные уведомления в Telegram</td>
+            </tr>
+            <tr>
+                <td><strong>Google Forms</strong></td>
+                <td>Безлимит</td>
+                <td>Ответы в Google Таблицы</td>
+            </tr>
+            <tr>
+                <td><strong>Web3Forms</strong></td>
+                <td>250 отправок/мес</td>
+                <td>Без регистрации, AJAX</td>
+            </tr>
+        </table>
+
+        <p>Покажем вариант с Formspree — самый простой:</p>
+
+        <pre><code>&lt;section id="order" style="padding: 60px 20px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);"&gt;
+    &lt;div style="max-width: 500px; margin: 0 auto;"&gt;
+
+        &lt;h2 style="text-align: center; font-size: 2rem;
+            margin-bottom: 8px;"&gt;Оформить заказ&lt;/h2&gt;
+        &lt;p style="text-align: center; color: #6b7280;
+            margin-bottom: 32px;"&gt;
+            Заполните форму, и мы свяжемся с вами
+            в течение 30 минут
+        &lt;/p&gt;
+
+        &lt;form action="https://formspree.io/f/ВАШ_ID"
+            method="POST"
+            style="display: flex; flex-direction: column;
+                gap: 16px;"&gt;
+
+            &lt;input type="text" name="name"
+                placeholder="Ваше имя" required
+                style="padding: 14px 18px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 10px; font-size: 1rem;
+                    outline: none;"&gt;
+
+            &lt;input type="tel" name="phone"
+                placeholder="Телефон" required
+                style="padding: 14px 18px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 10px; font-size: 1rem;
+                    outline: none;"&gt;
+
+            &lt;select name="product" required
+                style="padding: 14px 18px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 10px; font-size: 1rem;
+                    background: white;"&gt;
+                &lt;option value=""&gt;Выберите товар&lt;/option&gt;
+                &lt;option&gt;Лавандовый вечер — 890₽&lt;/option&gt;
+                &lt;option&gt;Цитрусовый рай — 990₽&lt;/option&gt;
+                &lt;option&gt;Ванильное облако — 790₽&lt;/option&gt;
+                &lt;option&gt;Набор 3 свечи — 2290₽&lt;/option&gt;
+            &lt;/select&gt;
+
+            &lt;textarea name="comment"
+                placeholder="Комментарий (необязательно)"
+                rows="3"
+                style="padding: 14px 18px;
+                    border: 2px solid #d1d5db;
+                    border-radius: 10px; font-size: 1rem;
+                    resize: vertical; outline: none;"&gt;
+            &lt;/textarea&gt;
+
+            &lt;button type="submit"
+                style="background: #059669; color: white;
+                    padding: 16px; border: none;
+                    border-radius: 10px; font-size: 1.1rem;
+                    font-weight: 600; cursor: pointer;"&gt;
+                Отправить заказ
+            &lt;/button&gt;
+        &lt;/form&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Как получить Formspree ID:</strong> зайдите на <a href="https://formspree.io" target="_blank" rel="noopener">formspree.io</a>, зарегистрируйтесь, создайте новую форму — получите ID вида <code>f/xyzabcde</code>. Вставьте его в <code>action</code>. Заявки будут приходить вам на email.
+        </div>
+
+        <h2>Шаг 9. Отправка заказов в Telegram</h2>
+
+        <div class="step">
+            <p><span class="step-number">9</span><strong>Настройте уведомления в Telegram (продвинутый вариант)</strong></p>
+            <p>Если хотите получать заказы мгновенно в Telegram — используйте Telegram Bot API. Это бесплатно и без лимитов.</p>
+        </div>
+
+        <p>Что нужно сделать:</p>
+
+        <ol>
+            <li>Откройте <strong>@BotFather</strong> в Telegram, создайте бота командой <code>/newbot</code></li>
+            <li>Скопируйте <strong>токен бота</strong> (длинная строка вида <code>123456:ABC-DEF</code>)</li>
+            <li>Напишите боту что угодно, затем откройте <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code> и найдите свой <code>chat_id</code></li>
+            <li>Добавьте JavaScript для отправки формы:</li>
+        </ol>
+
+        <pre><code>&lt;script&gt;
+document.querySelector('form').addEventListener('submit',
+    async function(e) {
+    e.preventDefault();
+
+    const form = new FormData(this);
+    const name = form.get('name');
+    const phone = form.get('phone');
+    const product = form.get('product');
+    const comment = form.get('comment');
+
+    const text = `🛒 Новый заказ!\n\n`
+        + `👤 ${name}\n📱 ${phone}\n`
+        + `📦 ${product}\n💬 ${comment || '—'}`;
+
+    const TOKEN = 'ВАШ_ТОКЕН_БОТА';
+    const CHAT_ID = 'ВАШ_CHAT_ID';
+
+    await fetch(
+        `https://api.telegram.org/bot${TOKEN}/sendMessage`,
+        {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: text,
+                parse_mode: 'HTML'
+            })
+        }
+    );
+
+    alert('Спасибо! Ваш заказ принят. '
+        + 'Мы свяжемся с вами в ближайшее время.');
+    this.reset();
+});
+&lt;/script&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Важно:</strong> токен бота будет виден в исходном коде страницы. Для небольшого магазина это допустимо, но для серьёзного проекта лучше использовать серверный обработчик. На VibeHosting вы можете подключить бота через встроенную интеграцию.
+        </div>
+
+        <h2>Шаг 10. Футер и юридическая информация</h2>
+
+        <div class="step">
+            <p><span class="step-number">10</span><strong>Добавьте подвал страницы</strong></p>
+        </div>
+
+        <pre><code>&lt;footer style="background: #111827; color: #9ca3af;
+    padding: 40px 20px; text-align: center;"&gt;
+
+    &lt;div style="max-width: 800px; margin: 0 auto;"&gt;
+        &lt;p style="font-size: 1.2rem; color: white;
+            margin-bottom: 16px;"&gt;🕯️ CandleShop&lt;/p&gt;
+
+        &lt;p&gt;📧 hello@candleshop.ru &amp;nbsp;|&amp;nbsp;
+            📱 +7 (999) 123-45-67&lt;/p&gt;
+
+        &lt;p style="margin-top: 8px;"&gt;
+            &lt;a href="https://t.me/candleshop"
+                style="color: #10b981;"&gt;Telegram&lt;/a&gt;
+            &amp;nbsp;|&amp;nbsp;
+            &lt;a href="https://instagram.com/candleshop"
+                style="color: #10b981;"&gt;Instagram&lt;/a&gt;
+        &lt;/p&gt;
+
+        &lt;p style="margin-top: 24px; font-size: 0.85rem;"&gt;
+            ИП Иванова А.А. | ИНН 1234567890 |
+            ОГРНИП 3211234567890
+        &lt;/p&gt;
+        &lt;p style="font-size: 0.85rem;"&gt;
+            &amp;copy; 2024 CandleShop.
+            Все права защищены.
+        &lt;/p&gt;
+    &lt;/div&gt;
+&lt;/footer&gt;</code></pre>
+
+        <h2>Шаг 11. Финальные штрихи и оптимизация</h2>
+
+        <h3>Адаптивность</h3>
+        <p>Благодаря CSS Grid с <code>auto-fill</code> наш магазин уже адаптивен. Но добавим пару медиа-запросов для идеальной мобильной версии:</p>
+
+        <pre><code>&lt;style&gt;
+@media (max-width: 640px) {
+    h1 { font-size: 1.8rem !important; }
+    nav { gap: 12px !important; font-size: 0.9rem; }
+    section { padding: 40px 16px !important; }
+}
+&lt;/style&gt;</code></pre>
+
+        <h3>Оптимизация изображений</h3>
+
+        <p>Тяжёлые фотографии — главный враг скорости загрузки. Вот правила:</p>
+
+        <ul>
+            <li>Ширина фото товара — максимум <strong>800px</strong></li>
+            <li>Формат — <strong>WebP</strong> или сжатый JPEG (качество 80%)</li>
+            <li>Размер файла — до <strong>100-200 КБ</strong></li>
+            <li>Используйте <code>loading="lazy"</code> для отложенной загрузки</li>
+        </ul>
+
+        <pre><code>&lt;img src="images/product-1.webp"
+    alt="Свеча Лавандовый вечер"
+    loading="lazy"
+    width="400" height="400"&gt;</code></pre>
+
+        <h3>Мета-теги для соцсетей (Open Graph)</h3>
+
+        <pre><code>&lt;!-- В &lt;head&gt; --&gt;
+&lt;meta property="og:title"
+    content="CandleShop — свечи ручной работы"&gt;
+&lt;meta property="og:description"
+    content="Ароматические свечи из натурального воска"&gt;
+&lt;meta property="og:image"
+    content="https://ваш-сайт/images/og-image.jpg"&gt;
+&lt;meta property="og:type" content="website"&gt;</code></pre>
+
+        <p>Благодаря этим тегам при отправке ссылки в мессенджер или соцсеть будет красивое превью с картинкой.</p>
+
+        <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80" alt="Ноутбук с открытым веб-проектом — финальный результат">
+
+        <h2>Шаг 12. Публикация на VibeHosting</h2>
+
+        <div class="step">
+            <p><span class="step-number">12</span><strong>Загрузите магазин в интернет за 1 минуту</strong></p>
+            <p>Ваш магазин готов — осталось его опубликовать. Для этого не нужен собственный сервер, домен или знание DevOps.</p>
+        </div>
+
+        <p>Вот что нужно сделать:</p>
+
+        <ol>
+            <li><strong>Соберите файлы в ZIP</strong> — выделите <code>index.html</code> и папку <code>images</code>, нажмите «Сжать» (на Mac) или «Отправить в > Сжатая ZIP-папка» (на Windows)</li>
+            <li><strong>Зайдите на <a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru</a></strong></li>
+            <li><strong>Зарегистрируйтесь</strong> — email и пароль, подтверждение не нужно</li>
+            <li><strong>Загрузите ZIP</strong> — перетащите файл в область загрузки</li>
+            <li><strong>Выберите slug</strong> — например, <code>candleshop</code></li>
+            <li><strong>Готово!</strong> Ваш магазин доступен по адресу <code>candleshop.hostingvibe.ru</code></li>
+        </ol>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Бесплатный план на VibeHosting</h3>
+            <p style="margin-bottom: 16px;">1 сайт, 50 МБ, 30 дней хостинга — этого достаточно для старта. Загрузите свой магазин прямо сейчас!</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить магазин на VibeHosting →</a>
+        </div>
+
+        <h2>Полезные дополнения для вашего магазина</h2>
+
+        <h3>Счётчик Яндекс.Метрики</h3>
+        <p>Чтобы видеть, сколько людей заходят на ваш магазин и какие товары смотрят, подключите бесплатную Яндекс.Метрику. Зарегистрируйтесь на <code>metrika.yandex.ru</code>, создайте счётчик и вставьте код перед закрывающим <code>&lt;/body&gt;</code>.</p>
+
+        <h3>Виджет WhatsApp / Telegram</h3>
+        <p>Добавьте плавающую кнопку мессенджера в угол экрана. Клиентам проще написать в мессенджер, чем заполнять форму:</p>
+
+        <pre><code>&lt;a href="https://wa.me/79991234567"
+    target="_blank"
+    style="position: fixed; bottom: 24px; right: 24px;
+        background: #25d366; color: white;
+        width: 60px; height: 60px; border-radius: 50%;
+        display: flex; align-items: center;
+        justify-content: center; font-size: 1.8rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        text-decoration: none; z-index: 1000;"&gt;
+    💬
+&lt;/a&gt;</code></pre>
+
+        <h3>Favicon</h3>
+        <p>Иконка во вкладке браузера — мелочь, но добавляет профессионализма. Создайте иконку на <code>favicon.io</code> и добавьте в <code>&lt;head&gt;</code>:</p>
+
+        <pre><code>&lt;link rel="icon" href="favicon.ico"
+    type="image/x-icon"&gt;</code></pre>
+
+        <h2>Примеры одностраничных магазинов для вдохновения</h2>
+
+        <p>Вот несколько типов одностраничных магазинов, которые отлично работают:</p>
+
+        <ul>
+            <li><strong>Кондитерская</strong> — торты и десерты на заказ, фото-каталог, форма заказа с выбором даты</li>
+            <li><strong>Мерч</strong> — футболки, худи, стикеры; минималистичный дизайн, крупные фото</li>
+            <li><strong>Фермерские продукты</strong> — наборы овощей/фруктов, подписка на еженедельную доставку</li>
+            <li><strong>Цветочная мастерская</strong> — букеты с ценами, форма для предзаказа</li>
+            <li><strong>Курс/вебинар</strong> — одностраничник с описанием, программой и кнопкой оплаты</li>
+        </ul>
+
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="Аналитика и конверсия интернет-магазина на экране ноутбука">
+
+        <h2>Чек-лист перед запуском</h2>
+
+        <p>Прежде чем отправлять ссылку клиентам, проверьте:</p>
+
+        <ul>
+            <li>☐ Все фото загружаются (нет «сломанных» картинок)</li>
+            <li>☐ Форма отправляет заказы (проверьте тестовой заявкой)</li>
+            <li>☐ Сайт выглядит хорошо на телефоне (откройте через DevTools или реальный телефон)</li>
+            <li>☐ Указаны правильные цены</li>
+            <li>☐ Есть контактная информация (телефон, мессенджеры)</li>
+            <li>☐ Ссылки на соцсети работают</li>
+            <li>☐ Мета-теги заполнены (title, description, og:image)</li>
+            <li>☐ Нет орфографических ошибок</li>
+        </ul>
+
+        <h2>Итоги</h2>
+
+        <p>Вы только что научились создавать полноценный одностраничный интернет-магазин с нуля. Давайте подведём итоги:</p>
+
+        <ul>
+            <li>Одностраничный магазин — отличный формат для малого бизнеса, тестирования ниши и старта продаж</li>
+            <li>Для создания достаточно HTML и CSS — никаких фреймворков и баз данных</li>
+            <li>Заказы можно получать через Formspree (email), Telegram Bot или Google Forms</li>
+            <li>CSS Grid автоматически делает магазин адаптивным</li>
+            <li>Публикация на VibeHosting — ZIP-архив → сайт за 1 минуту</li>
+        </ul>
+
+        <p>Не ждите, пока «всё будет идеально». Начните с простого варианта, покажите его первым клиентам, соберите обратную связь — и улучшайте. Лучший магазин — тот, который уже работает.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Готовы запустить свой магазин?</h3>
+            <p style="margin-bottom: 16px;">Загрузите ZIP с вашим магазином на VibeHosting и получите ссылку вида <strong>ваш-магазин.hostingvibe.ru</strong> за минуту. Бесплатно!</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Запустить магазин на VibeHosting →</a>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>VibeHosting</strong> — хостинг для тех, кто делает. Загрузил ZIP — сайт онлайн.</p>
+                <p>Опубликовано: март 2026</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Флорика — цветочная мастерская в Екатеринбурге</title>
+<meta name="description" content="Флорика — авторские букеты, цветочные композиции и оформление мероприятий в Екатеринбурге. Доставка за 2 часа.">
+<style>
+:root{--bg:#fff5f7;--fg:#2a0a14;--acc:#c0346a;--line:#f0c4d2;--muted:#9b6070;--soft:#fff;--rose:#fde8ef}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--fg);font:16px/1.6 'Segoe UI',Arial,sans-serif}img{display:block;width:100%;height:100%;object-fit:cover}a{text-decoration:none;color:inherit}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 62px}
+
+.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:20px 0}.logo{font-size:26px;font-weight:900;color:var(--acc);font-style:italic}nav{display:flex;gap:20px;color:var(--muted);font-size:14px;justify-self:end;margin-right:20px}nav a:hover{color:var(--acc)}.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:14px;font-weight:700;transition:transform .2s}.btn{background:linear-gradient(135deg,#c0346a,#e05a8a);color:#fff;box-shadow:0 8px 20px rgba(192,52,106,.25)}.btn:hover{transform:translateY(-2px)}.ghost{border:1px solid var(--line);background:var(--soft)}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:36px 0 70px}.panel{padding:36px;min-height:360px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line);border-radius:22px;background:var(--soft);box-shadow:0 8px 40px rgba(192,52,106,.07)}.hero h1{font-size:clamp(36px,6vw,66px);line-height:.95;margin:0 0 14px}.hero p{color:var(--muted);margin:0 0 22px}.hero-img{height:420px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc)}.stat p{color:var(--muted);margin:4px 0 0;font-size:14px}
+
+h2{font-size:28px;margin:0 0 18px}.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.cat{border:1px solid var(--line);border-radius:18px;background:var(--soft);overflow:hidden;transition:transform .2s}.cat:hover{transform:translateY(-4px)}.cat-img{height:180px;overflow:hidden}.cat-body{padding:16px}.cat-body b{display:block;font-size:16px;margin-bottom:4px}.cat-body p{color:var(--muted);font-size:14px;margin:0 0 6px}.price{color:var(--acc);font-weight:700}
+
+.delivery{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}.del-info{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:28px}.del-info ul{list-style:none;padding:0;margin:12px 0 0}.del-info li{padding:8px 0;border-bottom:1px solid var(--line);color:var(--muted);font-size:15px}.del-info li:last-child{border:none}.del-info li b{color:var(--fg)}.del-img{border-radius:22px;overflow:hidden;height:320px;border:1px solid var(--line)}
+
+.wedding{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.wed-card{border:1px solid var(--line);border-radius:18px;background:var(--soft);overflow:hidden;display:grid;grid-template-columns:140px 1fr}.wed-img{height:100%;min-height:120px;overflow:hidden}.wed-body{padding:18px;display:flex;flex-direction:column;justify-content:center}.wed-body b{display:block;margin-bottom:4px}.wed-body .price{margin-top:4px}
+
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.card b{display:block;margin-bottom:8px;font-size:17px}.card p{color:var(--muted);margin:0}
+
+.about-block{display:grid;grid-template-columns:1fr 1.4fr;gap:24px;align-items:center}.about-img{border-radius:22px;overflow:hidden;height:320px;border:1px solid var(--line)}.about-text p{color:var(--muted);line-height:1.7;margin:0 0 14px}
+
+.gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.gallery-item{border-radius:18px;overflow:hidden;border:1px solid var(--line);height:220px}.gallery-item.tall{grid-row:span 2;height:auto}.gallery-item img{transition:transform .4s}.gallery-item:hover img{transform:scale(1.05)}
+
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.review .stars{color:#f59e0b;font-size:14px;margin-bottom:10px}.review b{display:block;margin-bottom:6px}.review p{color:var(--muted);margin:0}
+
+.cta{padding:40px;border-radius:24px;background:linear-gradient(135deg,#fde8ef,#fff5f7);border:1px solid var(--line);text-align:center}.form-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;max-width:800px;margin:20px auto 0;align-items:end}input,select{width:100%;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px}input::placeholder{color:var(--muted)}
+
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.contactbox b{display:block;margin-bottom:6px}.contactbox p{color:var(--muted);margin:0}
+
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:14px}
+
+@media(max-width:920px){.hero,.stats,.cats,.why,.reviews,.contact,.gallery,.delivery,.wedding,.about-block{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}.form-row{grid-template-columns:1fr 1fr}.wed-card{grid-template-columns:1fr}}
+@media(max-width:620px){.hero,.stats,.cats,.why,.reviews,.contact,.gallery,.delivery,.wedding,.about-block{grid-template-columns:1fr}.hero h1{font-size:40px}.form-row{grid-template-columns:1fr}.hero-img{height:260px}.del-img{height:220px}.about-img{height:220px}.gallery-item,.gallery-item.tall{height:200px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">Флорика</div>
+    <nav><a href="#catalog">Каталог</a><a href="#wedding">Свадьба</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#order">Заказать букет</a>
+  </div>
+
+  <div class="hero">
+    <div class="panel">
+      <h1>Цветы с душой — доставка букетов по Екатеринбургу</h1>
+      <p>Свежие букеты, авторская флористика и свадебное оформление. Доставка за 2 часа.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#order">Заказать букет</a><a class="ghost" href="#catalog">Смотреть каталог</a></div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1490750967868-88aa4f44baee?w=600&h=800&fit=crop&q=75" alt="Розовый букет роз в вазе" loading="eager">
+    </div>
+  </div>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>2 часа</b><p>доставка по Екатеринбургу</p></div>
+      <div class="stat"><b>500+</b><p>свадеб и мероприятий</p></div>
+      <div class="stat"><b>7 дней</b><p>работаем без выходных</p></div>
+      <div class="stat"><b>С 2018</b><p>года создаём букеты</p></div>
+    </div>
+  </section>
+
+  <section id="catalog">
+    <h2>Каталог букетов</h2>
+    <div class="cats">
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=260&fit=crop&q=70" alt="Букет Нежность" loading="lazy"></div><div class="cat-body"><b>«Нежность»</b><p>Розы, пионы, эвкалипт</p><span class="price">3 500 ₽</span></div></div>
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=400&h=260&fit=crop&q=70" alt="Букет Яркий день" loading="lazy"></div><div class="cat-body"><b>«Яркий день»</b><p>Герберы, хризантемы, альстромерии</p><span class="price">2 800 ₽</span></div></div>
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=400&h=260&fit=crop&q=70" alt="25 красных роз" loading="lazy"></div><div class="cat-body"><b>«Классика»</b><p>25 красных роз</p><span class="price">4 200 ₽</span></div></div>
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?w=400&h=260&fit=crop&q=70" alt="Лавандовый букет" loading="lazy"></div><div class="cat-body"><b>«Лавандовый сон»</b><p>Лаванда, эустома, гортензия</p><span class="price">4 800 ₽</span></div></div>
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?w=400&h=260&fit=crop&q=70" alt="Полевой букет" loading="lazy"></div><div class="cat-body"><b>«Полевой»</b><p>Ромашки, васильки, колоски</p><span class="price">2 200 ₽</span></div></div>
+      <div class="cat"><div class="cat-img"><img src="https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?w=400&h=260&fit=crop&q=70" alt="Корзина цветов премиум" loading="lazy"></div><div class="cat-body"><b>Корзина цветов</b><p>Премиум-композиция в корзине</p><span class="price">от 6 000 ₽</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Доставка</h2>
+    <div class="delivery">
+      <div class="del-info">
+        <ul>
+          <li><b>Бесплатная доставка</b> при заказе от 3 000 ₽</li>
+          <li><b>Доставка 1–2 часа</b> по Екатеринбургу — 350 ₽</li>
+          <li><b>Самовывоз</b> из магазина: ул. Ленина, 42</li>
+          <li><b>Открытка с посланием</b> — бесплатно</li>
+        </ul>
+      </div>
+      <div class="del-img">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&h=400&fit=crop&q=70" alt="Цветочный магазин — витрина с цветами" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="wedding">
+    <h2>Свадебное оформление</h2>
+    <div class="wedding">
+      <div class="wed-card"><div class="wed-img"><img src="https://images.unsplash.com/photo-1522057306606-8d84b4cd7e74?w=200&h=200&fit=crop&q=70" alt="Букет невесты" loading="lazy"></div><div class="wed-body"><b>Букет невесты</b><span class="price">от 5 000 ₽</span></div></div>
+      <div class="wed-card"><div class="wed-img"><img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=200&h=200&fit=crop&q=70" alt="Бутоньерка жениха" loading="lazy"></div><div class="wed-body"><b>Бутоньерка жениха</b><span class="price">от 800 ₽</span></div></div>
+      <div class="wed-card"><div class="wed-img"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=200&h=200&fit=crop&q=70" alt="Оформление арки" loading="lazy"></div><div class="wed-body"><b>Оформление арки</b><span class="price">от 12 000 ₽</span></div></div>
+      <div class="wed-card"><div class="wed-img"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=200&h=200&fit=crop&q=70" alt="Декор столов" loading="lazy"></div><div class="wed-body"><b>Декор столов</b><p style="color:var(--muted);font-size:14px;margin:4px 0">Бесплатная консультация с флористом</p><span class="price">от 2 500 ₽/стол</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>О нас</h2>
+    <div class="about-block">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?w=500&h=500&fit=crop&q=70" alt="Флорист за работой" loading="lazy">
+      </div>
+      <div class="about-text">
+        <p>Флористическая мастерская «Флорика» работает в Екатеринбурге с 2018 года. Мы создаём букеты из свежих цветов голландской и эквадорской селекции. Каждый букет собирается вручную нашими флористами с любовью.</p>
+        <p style="color:var(--muted)">Поставки 3 раза в неделю из Эквадора, Нидерландов и местных теплиц. Срок жизни букета — до 14 дней. Фото готового букета отправляем до доставки.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Наша мастерская</h2>
+    <div class="gallery">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=400&h=300&fit=crop&q=70" alt="Розово-белые розы" loading="lazy"></div>
+      <div class="gallery-item tall"><img src="https://images.unsplash.com/photo-1468327768560-75b778cbb551?w=400&h=620&fit=crop&q=70" alt="Пионы в вазе" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=300&fit=crop&q=70" alt="Витрина цветочного магазина" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><b>Вика Р.</b><p>«Заказывала букет "Нежность" к 8 марта — простоял 12 дней, невероятно свежие цветы. Очень довольна!»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Антон М.</b><p>«Отличная связь с флористом, быстрая доставка за 1.5 часа, красивая упаковка. Жена была в восторге.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Ольга Д.</b><p>«Оформляли свадьбу — арка, столы, букет невесты. Всё точно в задумке, без накладок. Рекомендую всем.»</p></div>
+    </div>
+  </section>
+
+  <section id="order">
+    <div class="cta">
+      <h2 style="margin:0 0 8px">Закажите букет с доставкой за 2 часа</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto">Оставьте заявку — флорист свяжется, уточнит пожелания и соберёт букет специально для вас.</p>
+      <div class="form-row">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Повод</option><option>День рождения</option><option>Свадьба</option><option>Просто так</option><option>8 марта</option><option>Юбилей</option></select>
+        <a class="btn" href="#" style="white-space:nowrap;padding:12px 20px">Заказать</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="contact">
+      <div class="contactbox"><b>Адрес мастерской</b><p>Екатеринбург, ул. Ленина, 42</p></div>
+      <div class="contactbox"><b>Часы работы</b><p>Ежедневно: 8:00–21:00<br>Без выходных</p></div>
+      <div class="contactbox"><b>Телефон / WhatsApp</b><p>+7 (343) 555-12-34</p></div>
+    </div>
+  </section>
+
+  <div class="foot">Флорика &copy; 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

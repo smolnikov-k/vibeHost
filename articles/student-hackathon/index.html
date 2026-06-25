@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать сайт для студенческого проекта или хакатона | VibeHosting</title>
+    <meta name="description" content="Пошаговый гайд: как быстро создать сайт для хакатона, курсового проекта или студенческого стартапа. HTML, CSS, JavaScript — и публикация на VibeHosting за 1 минуту.">
+    <meta name="keywords" content="сайт для хакатона, студенческий проект сайт, хакатон лендинг, создать сайт для проекта, VibeHosting студентам">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .tag { display: inline-block; background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin-right: 8px; margin-bottom: 8px; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        .timeline { position: relative; padding-left: 32px; }
+        .timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 3px; background: #10b981; border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 24px; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 14px; height: 14px; background: #10b981; border-radius: 50%; border: 3px solid #fafafa; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <div style="margin-bottom: 24px;">
+            <span class="tag">Студентам</span>
+            <span class="tag">Хакатон</span>
+            <span class="tag">HTML/CSS/JS</span>
+        </div>
+
+        <h1>Как сделать сайт для студенческого проекта или хакатона</h1>
+
+        <p style="font-size: 1.1em; color: #4b5563;">На хакатоне у вас 24-48 часов. Оценивают не только код, но и презентацию. Сайт проекта — это ваш главный аргумент перед жюри. В этом гайде вы научитесь создавать лендинг для хакатонного проекта быстро, красиво и эффективно.</p>
+
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80" alt="Хакатон — команда студентов работает над проектом">
+
+        <h2>Зачем проекту нужен сайт</h2>
+
+        <p>Вы написали крутой бэкенд, обучили ML-модель или сделали мобильное приложение. Но как показать это жюри за 5 минут питча? Как отправить результат преподавателю? Как добавить проект в портфолио?</p>
+
+        <p>Сайт проекта решает все эти задачи:</p>
+
+        <ul>
+            <li><strong>На хакатоне</strong> — жюри открывает ссылку и видит, что вы сделали, без установки чего-либо</li>
+            <li><strong>В учёбе</strong> — преподаватель оценивает проект по ссылке, а не копается в ZIP-архивах</li>
+            <li><strong>В портфолио</strong> — работодателю можно показать живой проект, а не скриншот</li>
+            <li><strong>В презентации</strong> — QR-код на слайде → зрители открывают сайт прямо с телефона</li>
+            <li><strong>Для команды</strong> — единая точка, где собрана вся информация: описание, демо, GitHub, участники</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Реальный пример:</strong> на хакатоне HackMoscow 2024 команда-победитель показала жюри не просто репозиторий на GitHub, а лендинг с демо-видео, описанием архитектуры и ссылкой на рабочий прототип. Это произвело впечатление и выделило их среди 40 других команд.
+        </div>
+
+        <h2>Когда делать сайт на хакатоне: таймлайн</h2>
+
+        <p>Главная ошибка — откладывать сайт «на потом» и лепить его за 20 минут до дедлайна. Вот оптимальный план:</p>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <strong>Первые 2 часа</strong>
+                <p style="color: #6b7280; margin-bottom: 0;">Создайте заготовку сайта: шаблон с названием проекта и описанием идеи. Даже если идея изменится — основа будет готова.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>Середина хакатона</strong>
+                <p style="color: #6b7280; margin-bottom: 0;">Обновите сайт реальными скриншотами и описанием того, что уже работает. Добавьте ссылку на демо, если оно есть.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>За 2-3 часа до конца</strong>
+                <p style="color: #6b7280; margin-bottom: 0;">Финальная версия: отполированные тексты, реальные скриншоты, рабочие ссылки. Залейте на хостинг.</p>
+            </div>
+            <div class="timeline-item">
+                <strong>Питч / защита</strong>
+                <p style="color: #6b7280; margin-bottom: 0;">Покажите QR-код с ссылкой на сайт на первом слайде. Жюри откроет его с телефона прямо во время питча.</p>
+            </div>
+        </div>
+
+        <h2>Что понадобится</h2>
+
+        <ul>
+            <li><strong>Текстовый редактор</strong> — VS Code (бесплатный, скачайте заранее)</li>
+            <li><strong>Базовые знания HTML/CSS</strong> — если знаете, что такое <code>&lt;div&gt;</code> и <code>display: flex</code>, этого хватит</li>
+            <li><strong>Скриншоты проекта</strong> — делайте их по ходу работы, не в последний момент</li>
+            <li><strong>20-40 минут</strong> — на весь сайт, если использовать наш шаблон</li>
+        </ul>
+
+        <h2>Структура сайта для проекта</h2>
+
+        <p>Идеальный лендинг для хакатонного проекта состоит из 7 блоков:</p>
+
+        <ol>
+            <li><strong>Hero</strong> — название, слоган, кнопки «Демо» и «GitHub»</li>
+            <li><strong>Проблема</strong> — какую проблему решает ваш проект</li>
+            <li><strong>Решение</strong> — как именно вы её решаете (с картинками)</li>
+            <li><strong>Как это работает</strong> — 3-4 шага использования</li>
+            <li><strong>Технологии</strong> — стек проекта</li>
+            <li><strong>Команда</strong> — участники с ролями</li>
+            <li><strong>Ссылки</strong> — GitHub, демо, презентация</li>
+        </ol>
+
+        <img src="https://images.unsplash.com/photo-1531498860502-7c67cf02f657?w=800&q=80" alt="Студенческая команда на хакатоне обсуждает проект">
+
+        <h2>Шаг 1. Создаём проект</h2>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте папку и файл</strong></p>
+        </div>
+
+        <pre><code>hackathon-site/
+├── index.html
+└── images/
+    ├── screenshot-1.png
+    ├── screenshot-2.png
+    └── team/
+        ├── alex.jpg
+        ├── maria.jpg
+        └── ivan.jpg</code></pre>
+
+        <h2>Шаг 2. Hero-секция — первое впечатление</h2>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создайте яркую шапку с названием проекта</strong></p>
+            <p>Жюри на хакатоне просматривает десятки проектов. У вас есть 5 секунд, чтобы зацепить внимание.</p>
+        </div>
+
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport"
+        content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;EcoTrack — трекер углеродного следа&lt;/title&gt;
+    &lt;style&gt;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont,
+                'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7; color: #1a1a1a;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;section style="min-height: 100vh;
+    background: linear-gradient(135deg,
+        #064e3b 0%, #059669 50%, #34d399 100%);
+    color: white; display: flex; align-items: center;
+    justify-content: center; text-align: center;
+    padding: 40px 20px;"&gt;
+
+    &lt;div&gt;
+        &lt;p style="font-size: 1rem; opacity: 0.8;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;"&gt;
+            HackMoscow 2024
+        &lt;/p&gt;
+
+        &lt;h1 style="font-size: 3.5rem;
+            margin-bottom: 16px;
+            font-weight: 800;"&gt;
+            EcoTrack
+        &lt;/h1&gt;
+
+        &lt;p style="font-size: 1.4rem; opacity: 0.9;
+            margin-bottom: 40px;
+            max-width: 600px;"&gt;
+            Считаем углеродный след ваших
+            ежедневных привычек и помогаем
+            его сократить
+        &lt;/p&gt;
+
+        &lt;div style="display: flex; gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;"&gt;
+
+            &lt;a href="#demo"
+                style="background: white;
+                    color: #059669;
+                    padding: 14px 36px;
+                    border-radius: 50px;
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                    text-decoration: none;"&gt;
+                Попробовать демо
+            &lt;/a&gt;
+
+            &lt;a href="https://github.com/team/ecotrack"
+                target="_blank" rel="noopener"
+                style="border: 2px solid white;
+                    color: white;
+                    padding: 14px 36px;
+                    border-radius: 50px;
+                    font-weight: 500;
+                    text-decoration: none;"&gt;
+                GitHub
+            &lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Совет:</strong> название хакатона в шапке сразу даёт контекст жюри и показывает, что сайт сделан специально для этого мероприятия. Если это курсовой проект — укажите название курса или предмета.
+        </div>
+
+        <h2>Шаг 3. Блок «Проблема»</h2>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Объясните, какую проблему решает проект</strong></p>
+            <p>Каждый хороший проект начинается с проблемы. Жюри хочет понять: почему это важно?</p>
+        </div>
+
+        <pre><code>&lt;section style="padding: 80px 20px;
+    max-width: 800px; margin: 0 auto;"&gt;
+
+    &lt;h2 style="font-size: 2rem; color: #059669;
+        margin-bottom: 24px;
+        text-align: center;"&gt;Проблема&lt;/h2&gt;
+
+    &lt;div style="display: grid;
+        grid-template-columns: repeat(auto-fit,
+            minmax(220px, 1fr));
+        gap: 24px; text-align: center;"&gt;
+
+        &lt;div style="background: #fef2f2;
+            padding: 24px; border-radius: 12px;"&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 8px;"&gt;🏭&lt;/div&gt;
+            &lt;p&gt;&lt;strong&gt;36,8 Гт CO₂&lt;/strong&gt; — мировые
+                выбросы в 2023 году&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div style="background: #fef2f2;
+            padding: 24px; border-radius: 12px;"&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 8px;"&gt;🤷&lt;/div&gt;
+            &lt;p&gt;&lt;strong&gt;73%&lt;/strong&gt; людей не знают
+                свой углеродный след&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div style="background: #fef2f2;
+            padding: 24px; border-radius: 12px;"&gt;
+            &lt;div style="font-size: 2.5rem;
+                margin-bottom: 8px;"&gt;📊&lt;/div&gt;
+            &lt;p&gt;Существующие калькуляторы
+                &lt;strong&gt;сложные&lt;/strong&gt;
+                и неудобные&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 4. Блок «Решение» со скриншотами</h2>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Покажите, как работает ваш проект</strong></p>
+            <p>Скриншоты — самое убедительное доказательство того, что проект реально работает.</p>
+        </div>
+
+        <pre><code>&lt;section style="background: #f9fafb;
+    padding: 80px 20px;"&gt;
+    &lt;div style="max-width: 1000px; margin: 0 auto;"&gt;
+
+        &lt;h2 style="font-size: 2rem; color: #059669;
+            margin-bottom: 12px;
+            text-align: center;"&gt;Наше решение&lt;/h2&gt;
+
+        &lt;p style="text-align: center; color: #6b7280;
+            margin-bottom: 40px; max-width: 600px;
+            margin-left: auto; margin-right: auto;"&gt;
+            Простое мобильное приложение,
+            которое считает углеродный след
+            по ежедневным действиям
+        &lt;/p&gt;
+
+        &lt;div style="display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px; align-items: center;"&gt;
+
+            &lt;div&gt;
+                &lt;img src="images/screenshot-1.png"
+                    alt="Главный экран EcoTrack"
+                    style="width: 100%;
+                        border-radius: 12px;
+                        box-shadow: 0 8px 24px
+                            rgba(0,0,0,0.12);"&gt;
+            &lt;/div&gt;
+
+            &lt;div&gt;
+                &lt;h3 style="margin-bottom: 16px;
+                    font-size: 1.4rem;"&gt;
+                    Отслеживайте свой след
+                &lt;/h3&gt;
+                &lt;ul style="list-style: none;
+                    padding: 0;"&gt;
+                    &lt;li style="padding: 8px 0;
+                        border-bottom:
+                            1px solid #e5e7eb;"&gt;
+                        ✅ Ввод ежедневных привычек
+                        за 30 секунд
+                    &lt;/li&gt;
+                    &lt;li style="padding: 8px 0;
+                        border-bottom:
+                            1px solid #e5e7eb;"&gt;
+                        ✅ Автоматический расчёт CO₂
+                        по базе коэффициентов
+                    &lt;/li&gt;
+                    &lt;li style="padding: 8px 0;
+                        border-bottom:
+                            1px solid #e5e7eb;"&gt;
+                        ✅ Персональные рекомендации
+                        по снижению
+                    &lt;/li&gt;
+                    &lt;li style="padding: 8px 0;"&gt;
+                        ✅ Сравнение со средним
+                        показателем по стране
+                    &lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80" alt="Команда разработчиков обсуждает проект на хакатоне">
+
+        <h2>Шаг 5. Блок «Как это работает»</h2>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Опишите пользовательский путь в 3-4 шагах</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="padding: 80px 20px;
+    max-width: 900px; margin: 0 auto;"&gt;
+
+    &lt;h2 style="font-size: 2rem; color: #059669;
+        margin-bottom: 40px;
+        text-align: center;"&gt;Как это работает&lt;/h2&gt;
+
+    &lt;div style="display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px; text-align: center;"&gt;
+
+        &lt;div&gt;
+            &lt;div style="width: 60px; height: 60px;
+                background: #ecfdf5; border-radius: 50%;
+                display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 16px;
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #059669;"&gt;1&lt;/div&gt;
+            &lt;h3&gt;Заполните анкету&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Ответьте на 10 вопросов о ваших
+                ежедневных привычках
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;div style="width: 60px; height: 60px;
+                background: #ecfdf5; border-radius: 50%;
+                display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 16px;
+                font-size: 1.5rem; font-weight: 700;
+                color: #059669;"&gt;2&lt;/div&gt;
+            &lt;h3&gt;Получите расчёт&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Алгоритм рассчитает ваш
+                углеродный след в кг CO₂/год
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;div style="width: 60px; height: 60px;
+                background: #ecfdf5; border-radius: 50%;
+                display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 16px;
+                font-size: 1.5rem; font-weight: 700;
+                color: #059669;"&gt;3&lt;/div&gt;
+            &lt;h3&gt;Следуйте советам&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Персональные рекомендации,
+                как снизить след на 20-40%
+            &lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+            &lt;div style="width: 60px; height: 60px;
+                background: #ecfdf5; border-radius: 50%;
+                display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 16px;
+                font-size: 1.5rem; font-weight: 700;
+                color: #059669;"&gt;4&lt;/div&gt;
+            &lt;h3&gt;Отслеживайте прогресс&lt;/h3&gt;
+            &lt;p style="color: #6b7280;"&gt;
+                Графики и статистика за неделю,
+                месяц и год
+            &lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 6. Технологический стек</h2>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Покажите, на чём построен проект</strong></p>
+            <p>Жюри на хакатоне оценивает не только идею, но и техническую реализацию. Покажите стек красиво.</p>
+        </div>
+
+        <pre><code>&lt;section style="background: #111827; color: white;
+    padding: 80px 20px;"&gt;
+    &lt;div style="max-width: 900px; margin: 0 auto;"&gt;
+
+        &lt;h2 style="font-size: 2rem;
+            margin-bottom: 40px;
+            text-align: center;"&gt;Технологии&lt;/h2&gt;
+
+        &lt;div style="display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;"&gt;
+
+            &lt;div style="background: rgba(255,255,255,0.05);
+                padding: 24px; border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.1);"&gt;
+                &lt;h3 style="color: #34d399;
+                    margin-bottom: 8px;"&gt;Frontend&lt;/h3&gt;
+                &lt;p style="opacity: 0.8;"&gt;
+                    React, TypeScript, Tailwind CSS,
+                    Recharts
+                &lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div style="background: rgba(255,255,255,0.05);
+                padding: 24px; border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.1);"&gt;
+                &lt;h3 style="color: #34d399;
+                    margin-bottom: 8px;"&gt;Backend&lt;/h3&gt;
+                &lt;p style="opacity: 0.8;"&gt;
+                    Python, FastAPI, PostgreSQL
+                &lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div style="background: rgba(255,255,255,0.05);
+                padding: 24px; border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.1);"&gt;
+                &lt;h3 style="color: #34d399;
+                    margin-bottom: 8px;"&gt;ML&lt;/h3&gt;
+                &lt;p style="opacity: 0.8;"&gt;
+                    scikit-learn, pandas,
+                    собственная модель
+                    коэффициентов
+                &lt;/p&gt;
+            &lt;/div&gt;
+
+            &lt;div style="background: rgba(255,255,255,0.05);
+                padding: 24px; border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.1);"&gt;
+                &lt;h3 style="color: #34d399;
+                    margin-bottom: 8px;"&gt;Deploy&lt;/h3&gt;
+                &lt;p style="opacity: 0.8;"&gt;
+                    VibeHosting (лендинг),
+                    Railway (API)
+                &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 7. Команда</h2>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Покажите участников команды</strong></p>
+            <p>Жюри и преподаватели хотят знать, кто стоит за проектом. Укажите роли каждого участника.</p>
+        </div>
+
+        <pre><code>&lt;section style="padding: 80px 20px;
+    max-width: 900px; margin: 0 auto;"&gt;
+
+    &lt;h2 style="font-size: 2rem; color: #059669;
+        margin-bottom: 40px;
+        text-align: center;"&gt;Команда&lt;/h2&gt;
+
+    &lt;div style="display: grid;
+        grid-template-columns:
+            repeat(auto-fit, minmax(200px, 1fr));
+        gap: 24px; text-align: center;"&gt;
+
+        &lt;div&gt;
+            &lt;img src="images/team/alex.jpg"
+                alt="Алексей"
+                style="width: 100px; height: 100px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    margin-bottom: 12px;"&gt;
+            &lt;h3 style="margin-bottom: 4px;"&gt;
+                Алексей Петров
+            &lt;/h3&gt;
+            &lt;p style="color: #059669;
+                font-weight: 500;
+                margin-bottom: 4px;"&gt;
+                Frontend
+            &lt;/p&gt;
+            &lt;p style="color: #6b7280;
+                font-size: 0.9rem;"&gt;
+                React, TypeScript, UI/UX
+            &lt;/p&gt;
+            &lt;a href="https://github.com/alex"
+                target="_blank" rel="noopener"
+                style="color: #059669;
+                    font-size: 0.9rem;"&gt;
+                GitHub
+            &lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Повторите для остальных участников --&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Совет:</strong> если нет профессиональных фото — используйте аватарки из GitHub или сделайте фото на хакатоне. Даже фото на телефон лучше, чем стоковые заглушки. Если совсем нет фото — используйте эмодзи или инициалы на цветном фоне.
+        </div>
+
+        <h2>Шаг 8. Финальный блок со ссылками</h2>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Добавьте все ссылки на проект</strong></p>
+        </div>
+
+        <pre><code>&lt;section style="background:
+    linear-gradient(135deg, #064e3b, #059669);
+    color: white; padding: 60px 20px;
+    text-align: center;"&gt;
+
+    &lt;h2 style="font-size: 2rem;
+        margin-bottom: 12px;"&gt;Попробуйте EcoTrack&lt;/h2&gt;
+
+    &lt;p style="opacity: 0.9; margin-bottom: 32px;
+        max-width: 500px; margin-left: auto;
+        margin-right: auto;"&gt;
+        Проект создан на хакатоне HackMoscow 2024
+        за 48 часов. Исходный код открыт.
+    &lt;/p&gt;
+
+    &lt;div style="display: flex; gap: 16px;
+        justify-content: center; flex-wrap: wrap;"&gt;
+
+        &lt;a href="#" style="background: white;
+            color: #059669; padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;"&gt;
+            Демо-версия
+        &lt;/a&gt;
+
+        &lt;a href="#" style="border: 2px solid white;
+            color: white; padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;"&gt;
+            GitHub
+        &lt;/a&gt;
+
+        &lt;a href="#" style="border: 2px solid white;
+            color: white; padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 500;"&gt;
+            Презентация (PDF)
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+
+        <h2>Шаг 9. Публикация на VibeHosting</h2>
+
+        <div class="step">
+            <p><span class="step-number">9</span><strong>Залейте сайт за 1 минуту</strong></p>
+            <p>На хакатоне каждая минута на счету. VibeHosting — самый быстрый способ опубликовать лендинг.</p>
+        </div>
+
+        <ol>
+            <li><strong>Сжмите папку в ZIP</strong> — <code>index.html</code> + папка <code>images</code></li>
+            <li><strong>Откройте <a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru</a></strong></li>
+            <li><strong>Зарегистрируйтесь</strong> (2 клика)</li>
+            <li><strong>Загрузите ZIP</strong></li>
+            <li><strong>Выберите slug</strong> — например, <code>ecotrack</code></li>
+            <li><strong>Готово!</strong> Сайт доступен по адресу <code>ecotrack.hostingvibe.ru</code></li>
+        </ol>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Бесплатный хостинг для студенческих проектов</h3>
+            <p style="margin-bottom: 16px;">VibeHosting — бесплатный план для студентов. ZIP → сайт за 1 минуту. Идеально для хакатонов, курсовых и портфолио.</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить проект на VibeHosting →</a>
+        </div>
+
+        <h2>QR-код для презентации</h2>
+
+        <p>На VibeHosting для каждого сайта автоматически генерируется QR-код. Вставьте его на первый слайд презентации — жюри откроет ваш сайт прямо с телефона.</p>
+
+        <p>Если QR нужен раньше — сгенерируйте его бесплатно на любом QR-генераторе, указав URL вашего сайта.</p>
+
+        <div class="highlight">
+            <strong>Лайфхак для питча:</strong> покажите QR-код на экране и скажите: «Отсканируйте QR и следите за демо на своих устройствах». Это вовлекает жюри и создаёт вау-эффект, которого нет у команд с обычными слайдами.
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&q=80" alt="Презентация проекта на хакатоне — выступление перед жюри">
+
+        <h2>Шаблоны для разных типов проектов</h2>
+
+        <p>В зависимости от типа проекта, акценты на сайте будут разными:</p>
+
+        <table>
+            <tr>
+                <th>Тип проекта</th>
+                <th>На что делать акцент</th>
+                <th>Обязательные блоки</th>
+            </tr>
+            <tr>
+                <td><strong>ML / Data Science</strong></td>
+                <td>Данные, модель, метрики точности</td>
+                <td>Датасет, архитектура модели, графики результатов</td>
+            </tr>
+            <tr>
+                <td><strong>Веб-приложение</strong></td>
+                <td>UX, скорость, функциональность</td>
+                <td>Скриншоты, демо-ссылка, стек</td>
+            </tr>
+            <tr>
+                <td><strong>Мобильное приложение</strong></td>
+                <td>Удобство, дизайн экранов</td>
+                <td>Мокапы телефонов, видео-демо</td>
+            </tr>
+            <tr>
+                <td><strong>IoT / Hardware</strong></td>
+                <td>Как работает устройство</td>
+                <td>Фото прототипа, схема, видео работы</td>
+            </tr>
+            <tr>
+                <td><strong>Курсовая / диплом</strong></td>
+                <td>Научная новизна, методология</td>
+                <td>Постановка задачи, результаты, список литературы</td>
+            </tr>
+        </table>
+
+        <h2>Как сделать сайт ещё круче (если есть время)</h2>
+
+        <h3>Добавьте видео-демо</h3>
+        <p>Запишите 1-2 минутное видео работы вашего проекта (OBS Studio — бесплатный инструмент для записи экрана). Загрузите на YouTube (можно как unlisted) и вставьте iframe:</p>
+
+        <pre><code>&lt;iframe width="100%" height="400"
+    src="https://www.youtube.com/embed/VIDEO_ID"
+    frameborder="0" allowfullscreen
+    style="border-radius: 12px; margin: 20px 0;"&gt;
+&lt;/iframe&gt;</code></pre>
+
+        <h3>Добавьте анимации</h3>
+        <p>Простая CSS-анимация появления элементов при загрузке страницы:</p>
+
+        <pre><code>&lt;style&gt;
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+section {
+    animation: fadeInUp 0.6s ease-out;
+}
+&lt;/style&gt;</code></pre>
+
+        <h3>Добавьте метрики проекта</h3>
+        <p>Числа впечатляют. Если за время хакатона вы собрали данные — покажите их:</p>
+
+        <pre><code>&lt;div style="display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px; text-align: center;
+    padding: 40px 0;"&gt;
+
+    &lt;div&gt;
+        &lt;div style="font-size: 3rem; font-weight: 800;
+            color: #059669;"&gt;48ч&lt;/div&gt;
+        &lt;p style="color: #6b7280;"&gt;Время разработки&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;div style="font-size: 3rem; font-weight: 800;
+            color: #059669;"&gt;3.2K&lt;/div&gt;
+        &lt;p style="color: #6b7280;"&gt;Строк кода&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+        &lt;div style="font-size: 3rem; font-weight: 800;
+            color: #059669;"&gt;94%&lt;/div&gt;
+        &lt;p style="color: #6b7280;"&gt;Точность модели&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <h2>Частые ошибки на хакатонах</h2>
+
+        <ol>
+            <li><strong>Нет сайта</strong> — «у нас всё в репо на GitHub» не работает. Жюри хочет увидеть результат одним кликом</li>
+            <li><strong>Сайт без скриншотов</strong> — стена текста не убеждает. Покажите, как выглядит ваш продукт</li>
+            <li><strong>Нерабочие ссылки</strong> — проверяйте все ссылки перед питчем. Мёртвая ссылка на демо — провал</li>
+            <li><strong>Слишком много текста</strong> — жюри сканирует, а не читает. Заголовки, списки, картинки — ваши друзья</li>
+            <li><strong>Нет информации о команде</strong> — проект делают люди, покажите их</li>
+            <li><strong>Забыли про мобильную версию</strong> — жюри часто смотрит с телефона, используйте адаптивный дизайн</li>
+            <li><strong>Нет призыва к действию</strong> — кнопка «Попробовать демо» должна быть заметной</li>
+        </ol>
+
+        <h2>Чек-лист перед защитой</h2>
+
+        <ul>
+            <li>☐ Сайт открывается по ссылке (не только на вашем компьютере!)</li>
+            <li>☐ Все скриншоты загружаются</li>
+            <li>☐ Ссылка на GitHub работает</li>
+            <li>☐ Демо-версия работает (если есть)</li>
+            <li>☐ Сайт адаптивен — проверьте на телефоне</li>
+            <li>☐ QR-код работает</li>
+            <li>☐ Все участники команды указаны</li>
+            <li>☐ Нет орфографических ошибок</li>
+            <li>☐ Сайт загружается быстро (сжали картинки)</li>
+        </ul>
+
+        <h2>Итоги</h2>
+
+        <p>Сайт проекта — это ваш MVP для коммуникации. Он рассказывает историю проекта тем, кто не может запустить ваш код локально: жюри, преподавателям, потенциальным работодателям.</p>
+
+        <p>Создать его можно за 20-40 минут, используя наш шаблон. А опубликовать на VibeHosting — за 1 минуту. Не забудьте QR-код для презентации!</p>
+
+        <p>Удачи на хакатоне! Сделайте проект, которым будете гордиться, — и покажите его миру.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">VibeHosting для студентов — бесплатно</h3>
+            <p style="margin-bottom: 16px;">Загрузите ZIP → получите ссылку <strong>ваш-проект.hostingvibe.ru</strong> за 1 минуту. Хакатоны, курсовые, портфолио — всё в одном месте.</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить проект на VibeHosting →</a>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>VibeHosting</strong> — хостинг для тех, кто делает. Загрузил ZIP — сайт онлайн.</p>
+                <p>Опубликовано: март 2026</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

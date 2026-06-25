@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Радуга — детский центр в Краснодаре</title>
+<meta name="description" content="Радуга — детский развивающий центр в Краснодаре. Танцы, гимнастика, рисование, английский для детей 3–12 лет. Группы до 10 человек.">
+<style>
+:root{--bg:#fff8f0;--fg:#1a1a2e;--acc:#ff6b35;--acc2:#7c3aed;--line:#ffd4b8;--muted:#7a6552;--soft:#fff;--peach:#fff0e6}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--fg);font:16px/1.6 'Segoe UI',Arial,sans-serif}img{display:block;width:100%;height:100%;object-fit:cover}a{text-decoration:none;color:inherit}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 62px}
+
+.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:20px 0}.logo{font-size:28px;font-weight:900;color:var(--acc)}.logo span{color:var(--acc2)}nav{display:flex;gap:20px;color:var(--muted);font-size:14px;justify-self:end;margin-right:20px}nav a:hover{color:var(--acc)}.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:14px;font-weight:700;transition:transform .2s}.btn{background:linear-gradient(135deg,var(--acc),#ff9a5c);color:#fff;box-shadow:0 8px 20px rgba(255,107,53,.25)}.btn:hover{transform:translateY(-2px)}.ghost{border:1px solid var(--line);background:var(--soft)}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:36px 0 70px}.panel{padding:36px;min-height:370px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line);border-radius:22px;background:var(--soft);box-shadow:0 8px 40px rgba(255,107,53,.07)}.hero h1{font-size:clamp(36px,5.5vw,64px);line-height:.95;margin:0 0 14px}.hero p{color:var(--muted);margin:0 0 22px}.hero-img{height:420px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc)}.stat p{color:var(--muted);margin:4px 0 0;font-size:14px}
+
+h2{font-size:28px;margin:0 0 18px}.programs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.program{border:1px solid var(--line);border-radius:18px;background:var(--soft);overflow:hidden;transition:transform .2s}.program:hover{transform:translateY(-4px)}.prog-head{height:160px;overflow:hidden}.prog-body{padding:18px}.prog-body b{font-size:17px;display:block;margin-bottom:6px}.age{display:inline-block;background:var(--acc);color:#fff;font-size:12px;padding:2px 10px;border-radius:20px;margin-bottom:10px}.sched{display:inline-block;background:var(--peach);color:var(--muted);font-size:12px;padding:2px 10px;border-radius:20px;margin-bottom:10px;margin-left:6px}.prog-body p{color:var(--muted);font-size:14px;margin:0 0 8px}.prog-price{color:var(--acc);font-weight:700}
+
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.card b{display:block;margin-bottom:8px;font-size:17px}.card p{color:var(--muted);margin:0}
+
+.about-block{display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center}.about-text p{color:var(--muted);line-height:1.7;margin:0 0 14px}.about-img{border-radius:22px;overflow:hidden;height:300px;border:1px solid var(--line)}
+
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.ava{width:72px;height:72px;border-radius:50%;overflow:hidden;margin-bottom:12px}
+
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.review .stars{color:#f59e0b;font-size:14px;margin-bottom:10px}.review b{display:block;margin-bottom:6px}.review p{color:var(--muted);margin:0}
+
+.process{padding:40px;border-radius:24px;background:var(--peach);border:1px solid var(--line)}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:24px}.step{text-align:center;padding:16px}.step-num{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#ff9a5c);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;margin-bottom:12px}.step b{display:block;margin-bottom:6px;font-size:16px}.step p{color:var(--muted);font-size:14px;margin:0}
+
+.cta{padding:40px;border-radius:24px;background:linear-gradient(135deg,#fff5f0,var(--peach));border:1px solid var(--line);text-align:center}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:640px;margin:20px auto 0}input,select{width:100%;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px}input::placeholder{color:var(--muted)}
+
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.contactbox b{display:block;margin-bottom:6px}.contactbox p{color:var(--muted);margin:0}
+
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:14px}
+
+@media(max-width:920px){.hero,.stats,.programs,.why,.team,.reviews,.contact,.about-block{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}.form-grid{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.hero,.stats,.programs,.why,.team,.reviews,.contact,.about-block{grid-template-columns:1fr}.hero h1{font-size:40px}.hero-img{height:260px}.about-img{height:220px}.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">Ра<span>дуга</span></div>
+    <nav><a href="#programs">Секции</a><a href="#about">О центре</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#trial">Записать ребёнка</a>
+  </div>
+
+  <div class="hero">
+    <div class="panel">
+      <h1>Детский центр «Радуга» — развитие через игру и творчество</h1>
+      <p>Занятия для детей 3–12 лет: танцы, гимнастика, рисование, английский. Группы до 10 человек.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#trial">Записать ребёнка</a><a class="ghost" href="#programs">Секции и расписание</a></div>
+      <div style="margin-top:12px;color:var(--muted);font-size:14px">Пробное занятие — бесплатно</div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=600&h=800&fit=crop&q=75" alt="Дети играют в классе с педагогом" loading="eager">
+    </div>
+  </div>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>С 2019</b><p>года работаем для детей</p></div>
+      <div class="stat"><b>500+</b><p>юных выпускников</p></div>
+      <div class="stat"><b>до 10 детей</b><p>в каждой группе</p></div>
+      <div class="stat"><b>15 педагогов</b><p>с профильным образованием</p></div>
+    </div>
+  </section>
+
+  <section id="programs">
+    <h2>Секции и направления</h2>
+    <div class="programs">
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1508807526345-15e9b5f4eaff?w=400&h=240&fit=crop&q=70" alt="Детская хореография" loading="lazy"></div><div class="prog-body"><span class="age">3–7 лет</span><span class="sched">Пн, Ср, Пт 16:00</span><b>Танцы (хореография)</b><p>Ритмика, пластика, чувство музыки и первые выступления на сцене.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1535572290543-960a8046f5af?w=400&h=240&fit=crop&q=70" alt="Спортивная гимнастика" loading="lazy"></div><div class="prog-body"><span class="age">5–10 лет</span><span class="sched">Вт, Чт 17:00</span><b>Спортивная гимнастика</b><p>Координация, растяжка, сила и дисциплина в игровой форме.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400&h=240&fit=crop&q=70" alt="Изостудия рисование" loading="lazy"></div><div class="prog-body"><span class="age">4–12 лет</span><span class="sched">Сб 10:00</span><b>Изостудия (рисование)</b><p>Акварель, гуашь, пастель. Раскрытие творческого потенциала через искусство.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=240&fit=crop&q=70" alt="Английский язык для детей" loading="lazy"></div><div class="prog-body"><span class="age">6–12 лет</span><span class="sched">Пн, Ср 18:00</span><b>Английский язык</b><p>Игровая методика, разговорная практика, подготовка к школьной программе.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=240&fit=crop&q=70" alt="Подготовка к школе" loading="lazy"></div><div class="prog-body"><span class="age">5–7 лет</span><span class="sched">Вт, Чт, Сб 10:00</span><b>Подготовка к школе</b><p>Чтение, письмо, математика, логика. Ребёнок идёт в первый класс уверенно.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+      <div class="program"><div class="prog-head"><img src="https://images.unsplash.com/photo-1587654780291-39c9404d7dd0?w=400&h=240&fit=crop&q=70" alt="Развивающие занятия для малышей" loading="lazy"></div><div class="prog-body"><span class="age">3–4 года</span><span class="sched">Пн, Пт 10:00</span><b>Развивающие занятия</b><p>Сенсорика, мелкая моторика, речь и первая социализация вместе с мамой.</p><span class="prog-price">4 000 ₽/мес</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Почему мы</h2>
+    <div class="why">
+      <div class="card"><b>Опытные педагоги</b><p>Все педагоги с профильным образованием. Находим подход к каждому ребёнку.</p></div>
+      <div class="card"><b>Маленькие группы</b><p>До 10 детей в группе. Педагог видит каждого и работает в его темпе.</p></div>
+      <div class="card"><b>Современные залы</b><p>Просторные помещения с современным оборудованием для комфортных занятий.</p></div>
+      <div class="card"><b>Пробное бесплатно</b><p>Первое занятие — бесплатно. Ребёнок попробует и решит сам.</p></div>
+      <div class="card"><b>Скидки семьям</b><p>10% на второго ребёнка, 15% на третьего. Поддерживаем большие семьи.</p></div>
+      <div class="card"><b>Прогресс-отчёты</b><p>Ежемесячно рассказываем родителям об успехах ребёнка с рекомендациями.</p></div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>О центре</h2>
+    <div class="about-block">
+      <div class="about-text">
+        <p>Детский центр «Радуга» в Краснодаре — это место, где дети раскрывают свои таланты. Мы работаем с 2019 года и уже выпустили более 500 юных учеников.</p>
+        <p style="color:var(--muted)">Наши педагоги находят подход к каждому ребёнку. Занятия проходят в светлых, просторных залах с безопасным оборудованием. Видеонаблюдение в каждом зале — родители всегда спокойны.</p>
+      </div>
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1544776193-352d25ca82cd?w=500&h=400&fit=crop&q=70" alt="Дети играют вместе" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы родителей</h2>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><b>Наталья К.</b><p>«Дочь ходит на рисование и английский. Говорит "не хочу пропускать занятие" — для нас это главная оценка.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Владимир П.</b><p>«Сын пошёл в первый класс — учитель сразу сказала, что ребёнок хорошо подготовлен. Спасибо Радуге!»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Юлия В.</b><p>«Педагоги внимательные, группы маленькие. Ребёнок раскрылся за два месяца — заметно даже дома.»</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="process">
+      <h2 style="text-align:center">Как записаться</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><b>Заявка</b><p>Оставьте заявку на сайте или позвоните — мы подберём группу и расписание.</p></div>
+        <div class="step"><div class="step-num">2</div><b>Пробное занятие</b><p>Ребёнок бесплатно посещает занятие, знакомится с педагогом и группой.</p></div>
+        <div class="step"><div class="step-num">3</div><b>Договор</b><p>Подписываете договор, выбираете абонемент — помесячно или со скидкой.</p></div>
+        <div class="step"><div class="step-num">4</div><b>Занятия</b><p>Ребёнок начинает регулярные занятия. Вы получаете отчёты о прогрессе.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="trial">
+    <div class="cta">
+      <h2 style="margin:0 0 8px">Запишите ребёнка на бесплатное занятие</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto">Ребёнок познакомится с педагогом, попробует занятие и решит сам — нравится или нет.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Имя родителя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Секция</option><option>Танцы</option><option>Гимнастика</option><option>Изостудия</option><option>Английский</option><option>Подготовка к школе</option><option>Развивающие</option></select>
+        <input type="text" placeholder="Возраст ребёнка">
+        <a class="btn" href="#" style="grid-column:1/-1;text-align:center">Записать на пробное занятие</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="contact">
+      <div class="contactbox"><b>Адрес</b><p>Краснодар, ул. Красная, 118</p></div>
+      <div class="contactbox"><b>Часы работы</b><p>Пн–Сб: 9:00–20:00</p></div>
+      <div class="contactbox"><b>Телефон / WhatsApp</b><p>+7 (861) 222-45-67</p></div>
+    </div>
+  </section>
+
+  <div class="foot">Радуга &copy; 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

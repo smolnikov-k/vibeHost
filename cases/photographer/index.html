@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Алина Морозова — фотограф в Москве</title>
+<meta name="description" content="Алина Морозова — профессиональный фотограф в Москве. Свадьбы, портреты, семейные съёмки и лав-стори.">
+<style>
+:root{--bg:#0e0e0e;--fg:#f0ece6;--acc:#d4a55a;--line:#2a2620;--muted:#9e9488;--soft:#161410}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--fg);font:16px/1.6 'Segoe UI',Arial,sans-serif}img{display:block;width:100%;height:100%;object-fit:cover}a{text-decoration:none;color:inherit}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 62px}
+
+.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:24px 0}.logo{font-size:20px;font-weight:900;letter-spacing:.15em;color:var(--fg)}.logo span{color:var(--acc)}nav{display:flex;gap:22px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.06em;justify-self:end;margin-right:20px}nav a:hover{color:var(--acc)}.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px;transition:transform .2s}.btn{background:var(--acc);color:#0e0e0e}.btn:hover{transform:translateY(-2px)}.ghost{border:1px solid var(--line);background:var(--soft)}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:36px 0 70px}.panel{padding:38px;min-height:400px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line);border-radius:22px;background:var(--soft)}.hero h1{font-size:clamp(36px,5.5vw,64px);line-height:.95;margin:0 0 14px}.hero h1 em{color:var(--acc);font-style:normal}.hero p{color:var(--muted);margin:0 0 22px}.hero-img{height:460px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc)}.stat p{color:var(--muted);margin:4px 0 0;font-size:14px}
+
+h2{font-size:28px;margin:0 0 18px;letter-spacing:.04em}.portfolio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.shot{height:240px;border-radius:18px;border:1px solid var(--line);overflow:hidden;position:relative;transition:transform .2s}.shot:hover{transform:scale(1.02)}.shot-label{position:absolute;bottom:14px;left:14px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+
+.formats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:24px}.card b{display:block;font-size:17px;margin-bottom:8px}.card p{color:var(--muted);margin:0 0 10px}.price-tag{display:inline-block;background:var(--line);color:var(--acc);font-weight:700;font-size:14px;padding:4px 12px;border-radius:20px}
+
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.review .stars{color:var(--acc);font-size:14px;margin-bottom:10px}.review b{display:block;margin-bottom:6px}.review p{color:var(--muted);margin:0}
+
+.cta{padding:42px;border-radius:24px;background:linear-gradient(135deg,#1a1208,#2a1e0c);border:1px solid var(--line);text-align:center}form{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:620px;margin:20px auto 0}input,select,textarea{width:100%;padding:12px 16px;background:#0e0e0e;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px}input::placeholder,textarea::placeholder{color:var(--muted)}
+
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px}.contactbox b{display:block;margin-bottom:6px}.contactbox p{color:var(--muted);margin:0}
+
+.about{display:grid;grid-template-columns:1fr 1.5fr;gap:28px;align-items:center}.about-img{border-radius:22px;overflow:hidden;border:1px solid var(--line);height:380px}.about-text p{color:var(--muted);margin:0 0 14px;line-height:1.7}.about-stat{text-align:center}.about-stat b{display:block;font-size:24px;color:var(--acc)}.about-stat span{font-size:13px;color:var(--muted)}
+
+.process{padding:40px;border-radius:24px;background:linear-gradient(135deg,#1a1208,#221a0e);border:1px solid var(--line)}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.step{text-align:center;padding:16px}.step-num{font-size:28px;font-weight:900;color:var(--acc);margin-bottom:8px;font-family:'Courier New',monospace}.step b{display:block;margin-bottom:6px;font-size:15px}.step p{color:var(--muted);font-size:14px;margin:0}
+
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:14px}
+
+@media(max-width:920px){.hero,.stats,.portfolio,.formats,.reviews,.contact,.about{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}form{grid-template-columns:1fr}.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.hero,.stats,.portfolio,.formats,.reviews,.contact,.about{grid-template-columns:1fr}.hero h1{font-size:40px}.hero-img{height:300px}.about-img{height:260px}.steps{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">ALINA <span>MOROZOVA</span></div>
+    <nav><a href="#portfolio">Портфолио</a><a href="#formats">Форматы</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#booking">Обсудить съёмку</a>
+  </div>
+
+  <div class="hero">
+    <div class="panel">
+      <h1>Фотограф, который видит <em>тебя</em></h1>
+      <p>Свадебная и портретная фотография в Москве. Снимаю истории, а не открытки. Каждая съёмка — это честный разговор через кадр, без постановки ради постановки.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#booking">Обсудить съёмку</a><a class="ghost" href="#portfolio">Смотреть работы</a></div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?w=600&h=900&fit=crop&q=75" alt="Портретная фотография" loading="eager">
+    </div>
+  </div>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>9 лет</b><p>профессиональной фотографии</p></div>
+      <div class="stat"><b>320+</b><p>свадеб и съёмок</p></div>
+      <div class="stat"><b>48 часов</b><p>срок обработки фото</p></div>
+      <div class="stat"><b>3 страны</b><p>международный опыт съёмки</p></div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <h2>Портфолио</h2>
+    <div class="portfolio">
+      <div class="shot"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=350&fit=crop&q=70" alt="Свадебная фотография" loading="lazy"><span class="shot-label">Свадьба в Подмосковье</span></div>
+      <div class="shot"><img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&h=350&fit=crop&q=70" alt="Городской портрет" loading="lazy"><span class="shot-label">Городской портрет</span></div>
+      <div class="shot"><img src="https://images.unsplash.com/photo-1529634597503-139d3726fed5?w=400&h=350&fit=crop&q=70" alt="Лав-стори на закате" loading="lazy"><span class="shot-label">Лав-стори в закат</span></div>
+      <div class="shot"><img src="https://images.unsplash.com/photo-1581952976147-5a2d15560349?w=400&h=350&fit=crop&q=70" alt="Семейная фотосъёмка" loading="lazy"><span class="shot-label">Семейная съёмка</span></div>
+      <div class="shot"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=350&fit=crop&q=70" alt="Студийный портрет" loading="lazy"><span class="shot-label">Студийный портрет</span></div>
+      <div class="shot"><img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=400&h=350&fit=crop&q=70" alt="Детская фотосъёмка" loading="lazy"><span class="shot-label">Детская съёмка</span></div>
+    </div>
+  </section>
+
+  <section id="formats">
+    <h2>Форматы</h2>
+    <div class="formats">
+      <div class="card"><b>Свадьба</b><p>Полный съёмочный день — подготовка, церемония, банкет. Репортажный подход, минимум постановки.</p><div class="price-tag">от 45 000 руб</div></div>
+      <div class="card"><b>Лав-стори</b><p>2–3 часа на ваших улицах, в парке или в студии. Живые эмоции, настоящие моменты.</p><div class="price-tag">от 12 000 руб</div></div>
+      <div class="card"><b>Портрет</b><p>Для резюме, социальных сетей, личного архива. 1 час, несколько образов и локаций.</p><div class="price-tag">от 7 000 руб</div></div>
+      <div class="card"><b>Семейная съёмка</b><p>Детские портреты, семья в сборе, праздничные поводы. До 5 человек, 1.5 часа.</p><div class="price-tag">от 10 000 руб</div></div>
+      <div class="card"><b>Коммерческая</b><p>Для брендов, блогеров и малого бизнеса. Контент для соцсетей, сайта, рекламных кампаний.</p><div class="price-tag">от 18 000 руб</div></div>
+      <div class="card"><b>Беременность и newborn</b><p>Нежная репортажная съёмка в ожидании и в первые дни жизни малыша.</p><div class="price-tag">от 9 000 руб</div></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><b>Катя и Женя</b><p>«Алина поймала такие моменты на свадьбе, о которых мы сами не знали. Смотрим фото и каждый раз — мурашки.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Николай В.</b><p>«Снимали лав-стори для предложения. Алина сделала всё незаметно, а результат — лучшее, что я видел в жанре.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Семья Орловых</b><p>«Дети слушались и даже улыбались сами — это чудо. Получили 120 живых семейных кадров за вечер.»</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Обо мне</h2>
+    <div class="about">
+      <div class="about-img"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=500&fit=crop&q=70" alt="Алина Морозова фотограф" loading="lazy"></div>
+      <div class="about-text">
+        <p>Привет, я Алина. Снимаю с 2017 года. Начинала с плёнки, потом перешла на цифру, но сохранила подход: не торопиться, наблюдать, ловить настоящее.</p>
+        <p>Мне важно, чтобы на фотографиях были вы — такие, какие есть. Без натянутых улыбок и неестественных поз. Я создаю расслабленную атмосферу, где человек забывает о камере.</p>
+        <p>Работала с парами из России, Италии и Грузии. Публиковалась в Wedding Magazine и The Knot. Но лучшая рецензия — когда вы смотрите фото через год и снова чувствуете тот день.</p>
+        <div style="display:flex;gap:16px;margin-top:20px;flex-wrap:wrap">
+          <div class="about-stat"><b>320+</b><span>съёмок</span></div>
+          <div class="about-stat"><b>9</b><span>лет опыта</span></div>
+          <div class="about-stat"><b>3</b><span>страны</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="process">
+      <h2 style="text-align:center;margin-bottom:24px">Как проходит съёмка</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">01</div><b>Знакомство</b><p>Созваниваемся или переписываемся. Обсуждаем идею, место, время и настроение.</p></div>
+        <div class="step"><div class="step-num">02</div><b>Съёмка</b><p>Встречаемся в назначенный день. Я помогу расслабиться — без позирования по шаблону.</p></div>
+        <div class="step"><div class="step-num">03</div><b>Обработка</b><p>В течение 48 часов вы получаете галерею с отобранными и обработанными фото.</p></div>
+        <div class="step"><div class="step-num">04</div><b>Доставка</b><p>Фото в высоком разрешении — облачная ссылка и опционально печать.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="cta">
+      <h2 style="margin:0 0 8px">Обсудим вашу съёмку</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto">Расскажите про идею — я отвечу в течение нескольких часов и предложу подходящий формат и дату.</p>
+      <form>
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Формат съёмки</option><option>Свадьба</option><option>Лав-стори</option><option>Портрет</option><option>Семейная</option><option>Коммерческая</option></select>
+        <input type="text" placeholder="Примерная дата">
+        <textarea placeholder="Расскажите о вашей идее" style="grid-column:1/-1;resize:vertical;min-height:80px"></textarea>
+        <a class="btn" href="#" style="grid-column:1/-1;text-align:center">Отправить заявку</a>
+      </form>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="contact">
+      <div class="contactbox"><b>Локация</b><p>Москва и Подмосковье<br>Выезд в другие города по договорённости</p></div>
+      <div class="contactbox"><b>Telegram / WhatsApp</b><p>@alina_photo_msk<br>+7 (926) 344-88-55</p></div>
+      <div class="contactbox"><b>Instagram</b><p>@alinamorozova.photo<br>Работы и актуальные даты</p></div>
+    </div>
+  </section>
+
+  <div class="foot">Алина Морозова &copy; 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

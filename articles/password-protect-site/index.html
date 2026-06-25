@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как защитить сайт паролем — когда и зачем это нужно | VibeHosting</title>
+    <meta name="description" content="Полное руководство по защите сайта паролем: .htaccess, JavaScript, серверные решения и встроенная защита VibeHosting. Когда нужна парольная защита и как её настроить.">
+    <meta name="keywords" content="защита сайта паролем, пароль на сайт, htaccess пароль, закрыть сайт паролем, парольная страница, VibeHosting">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .danger { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px 16px; border: 1px solid #e5e7eb; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        tr:nth-child(even) { background: #f9fafb; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
+        .pros, .cons { padding: 16px; border-radius: 12px; }
+        .pros { background: #ecfdf5; }
+        .cons { background: #fef2f2; }
+        .toc { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .toc ul { list-style: none; padding-left: 0; }
+        .toc li { margin-bottom: 6px; }
+        .toc a { color: #059669; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        .use-case { background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 20px; margin: 16px 0; }
+        .use-case h4 { color: #059669; margin-bottom: 8px; }
+        .badge { display: inline-block; background: #10b981; color: white; padding: 2px 10px; border-radius: 20px; font-size: 0.85em; margin-left: 8px; }
+        .security-level { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+        .level-bar { height: 8px; border-radius: 4px; }
+        .level-low { background: #fbbf24; width: 33%; }
+        .level-mid { background: #34d399; width: 66%; }
+        .level-high { background: #10b981; width: 100%; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } .pros-cons { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <p style="color: #6b7280; margin-bottom: 8px;">22 марта 2026 &middot; 20 мин чтения</p>
+        <h1>Как защитить сайт паролем — когда и зачем это нужно</h1>
+        <p style="font-size: 1.15rem; color: #4b5563;">Иногда сайт нужно скрыть от посторонних глаз: на этапе разработки, для закрытого клуба, корпоративного портала или приватного портфолио. Разбираем все способы — от .htaccess до решения в один клик.</p>
+
+        <div class="toc">
+            <strong>Содержание</strong>
+            <ul>
+                <li><a href="#why">1. Зачем закрывать сайт паролем</a></li>
+                <li><a href="#when">2. 8 сценариев, когда парольная защита необходима</a></li>
+                <li><a href="#types">3. Виды парольной защиты: от простой до серьёзной</a></li>
+                <li><a href="#htaccess">4. .htaccess + .htpasswd — классика Apache</a></li>
+                <li><a href="#nginx">5. Защита через Nginx</a></li>
+                <li><a href="#javascript">6. JavaScript-защита: быстро, но ненадёжно</a></li>
+                <li><a href="#serverside">7. Серверная защита (Node.js, PHP)</a></li>
+                <li><a href="#vibehosting">8. VibeHosting — защита паролем в один клик</a></li>
+                <li><a href="#compare">9. Сравнение всех способов</a></li>
+                <li><a href="#ux">10. UX парольной страницы</a></li>
+                <li><a href="#mistakes">11. Типичные ошибки при защите паролем</a></li>
+                <li><a href="#advanced">12. Продвинутые сценарии</a></li>
+                <li><a href="#faq">13. FAQ</a></li>
+                <li><a href="#conclusion">14. Итоги</a></li>
+            </ul>
+        </div>
+
+        <h2 id="why">1. Зачем закрывать сайт паролем</h2>
+
+        <p>Парольная защита сайта — один из старейших и самых простых механизмов контроля доступа. Несмотря на существование сложных систем авторизации (OAuth, SSO, двухфакторная аутентификация), простой пароль на сайт остаётся самым востребованным решением для малого бизнеса и частных проектов.</p>
+
+        <p>По данным исследования W3Techs, более 12% сайтов в интернете используют ту или иную форму парольной защиты — от HTTP Basic Auth до кастомных решений. И спрос растёт: в 2025 году количество запросов о парольной защите сайтов выросло на 23% по сравнению с 2024 годом.</p>
+
+        <p>Причины понятны. Не каждый контент предназначен для всех. Есть информация, которая должна быть доступна только определённому кругу людей — и пароль остаётся самым простым способом это обеспечить.</p>
+
+        <h2 id="when">2. 8 сценариев, когда парольная защита необходима</h2>
+
+        <div class="use-case">
+            <h4>1. Сайт в разработке (staging)</h4>
+            <p>Вы показываете клиенту промежуточную версию сайта, но не хотите, чтобы Google проиндексировал незавершённую работу. Пароль — простейший способ скрыть staging от поисковиков и случайных посетителей.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>2. Корпоративный портал</h4>
+            <p>Внутренние документы, инструкции, регламенты — всё это не должно быть доступно извне. Парольная защита обеспечивает базовый уровень безопасности для небольших команд.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>3. Закрытый клуб или сообщество</h4>
+            <p>Платный контент, закрытое сообщество, VIP-раздел с бонусами для подписчиков. Пароль — простейший paywall без сложной системы подписок.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>4. Портфолио под NDA</h4>
+            <p>Дизайнеры и разработчики часто работают над проектами под NDA (соглашение о неразглашении). Показать работу потенциальному клиенту можно, но публиковать в открытом доступе — нет. Пароль решает эту проблему.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>5. Семейный или личный сайт</h4>
+            <p>Фотогалерея с семейного отпуска, дневник путешествий, детские фото. Контент для близких, не для всего интернета.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>6. Предзапуск продукта</h4>
+            <p>Лендинг нового продукта готов, но запуск через две недели. Вы хотите показать его инвесторам и партнёрам, но не конкурентам. Пароль — временное решение до публичного запуска.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>7. Тестирование A/B-вариантов</h4>
+            <p>Несколько версий лендинга на тестовом домене. Пароль защищает от случайного попадания тестовых страниц в поисковую выдачу.</p>
+        </div>
+
+        <div class="use-case">
+            <h4>8. Учебные материалы</h4>
+            <p>Курсы, вебинары, методические пособия — контент для студентов и слушателей. Пароль выдаётся при оплате или регистрации.</p>
+        </div>
+
+        <h2 id="types">3. Виды парольной защиты: от простой до серьёзной</h2>
+
+        <p>Не вся парольная защита одинакова. Существует несколько уровней, и каждый подходит для своих задач:</p>
+
+        <h3>Уровень 1: Клиентская защита (JavaScript)</h3>
+        <div class="security-level">
+            <div class="level-bar level-low"></div>
+            <span>Низкий уровень безопасности</span>
+        </div>
+        <p>Пароль проверяется в браузере. Контент уже загружен, JavaScript просто скрывает его до ввода пароля. Любой, кто посмотрит исходный код, увидит пароль или обойдёт проверку.</p>
+        <p><strong>Подходит для:</strong> личных проектов, прототипов, ситуаций когда нужно «просто закрыть от случайных людей».</p>
+
+        <h3>Уровень 2: Серверная защита (HTTP Basic Auth)</h3>
+        <div class="security-level">
+            <div class="level-bar level-mid"></div>
+            <span>Средний уровень безопасности</span>
+        </div>
+        <p>Пароль проверяется на сервере до отправки контента. Без правильного пароля сервер возвращает 401 Unauthorized. Контент не попадает к пользователю. Реализуется через .htaccess (Apache) или конфиг Nginx.</p>
+        <p><strong>Подходит для:</strong> staging-сайтов, корпоративных порталов, защиты от индексации.</p>
+
+        <h3>Уровень 3: Полноценная аутентификация</h3>
+        <div class="security-level">
+            <div class="level-bar level-high"></div>
+            <span>Высокий уровень безопасности</span>
+        </div>
+        <p>Система логинов, сессий, токенов. Каждый пользователь имеет свой аккаунт, можно управлять правами доступа, видеть историю входов, блокировать пользователей.</p>
+        <p><strong>Подходит для:</strong> платных сервисов, SaaS, проектов с конфиденциальными данными.</p>
+
+        <div class="highlight">
+            <strong>Важно понимать:</strong> парольная защита — это не шифрование. Она контролирует <em>доступ</em>, но не защищает данные при перехвате. Для настоящей безопасности нужен HTTPS (SSL-сертификат), который шифрует трафик между браузером и сервером.
+        </div>
+
+        <h2 id="htaccess">4. .htaccess + .htpasswd — классика Apache</h2>
+
+        <p>Если ваш сайт работает на Apache (а это около 30% всех серверов в мире), самый проверенный способ — HTTP Basic Authentication через <code>.htaccess</code>.</p>
+
+        <h3>Как настроить</h3>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте файл <code>.htpasswd</code></strong> с логином и хешированным паролем. Для генерации хеша используйте команду:</p>
+        </div>
+
+        <pre><code># Генерация хеша пароля (Linux/Mac)
+htpasswd -c /путь/до/.htpasswd username
+
+# Или онлайн-генератором, результат будет примерно таким:
+# username:$apr1$xyz$HashedPasswordString</code></pre>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создайте файл <code>.htaccess</code></strong> в корне сайта (или в конкретной папке):</p>
+        </div>
+
+        <pre><code># .htaccess — защита паролем
+AuthType Basic
+AuthName "Restricted Area"
+AuthUserFile /полный/путь/до/.htpasswd
+Require valid-user</code></pre>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Загрузите оба файла</strong> на сервер. Файл <code>.htpasswd</code> лучше разместить выше корня сайта (не в public_html), чтобы он не был доступен через браузер.</p>
+        </div>
+
+        <h3>Защита отдельной папки</h3>
+
+        <p>Если нужно закрыть не весь сайт, а только определённый раздел — поместите <code>.htaccess</code> в нужную папку:</p>
+
+        <pre><code>site/
+├── index.html          ← открыт для всех
+├── about.html          ← открыт для всех
+├── secret/
+│   ├── .htaccess       ← защита паролем
+│   ├── index.html      ← закрыто
+│   └── documents/      ← закрыто
+└── .htpasswd           ← файл с паролями</code></pre>
+
+        <h3>Несколько пользователей</h3>
+
+        <pre><code># Добавить нового пользователя (без -c, чтобы не перезаписать файл)
+htpasswd /путь/.htpasswd newuser
+
+# Файл .htpasswd будет содержать:
+admin:$apr1$abc$HashedPassword1
+manager:$apr1$def$HashedPassword2
+client:$apr1$ghi$HashedPassword3</code></pre>
+
+        <div class="pros-cons">
+            <div class="pros">
+                <strong>Плюсы:</strong>
+                <ul>
+                    <li>Серверная защита — контент не отдаётся без пароля</li>
+                    <li>Работает на любом Apache-хостинге</li>
+                    <li>Не требует программирования</li>
+                    <li>Поддержка нескольких пользователей</li>
+                    <li>Можно закрыть отдельные папки</li>
+                </ul>
+            </div>
+            <div class="cons">
+                <strong>Минусы:</strong>
+                <ul>
+                    <li>Некрасивое нативное окно браузера</li>
+                    <li>Нельзя кастомизировать дизайн формы входа</li>
+                    <li>Только для Apache-серверов</li>
+                    <li>Нет «выхода» (logout) — нужно закрыть браузер</li>
+                    <li>Пароль передаётся в Base64 (нужен HTTPS!)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>Внимание:</strong> HTTP Basic Auth передаёт логин и пароль в формате Base64, который легко декодировать. Без HTTPS это всё равно что отправлять пароль открытым текстом. Всегда используйте SSL-сертификат.
+        </div>
+
+        <h2 id="nginx">5. Защита через Nginx</h2>
+
+        <p>Если ваш сервер работает на Nginx (более 35% серверов в мире), настройка аналогична Apache, но через конфиг Nginx:</p>
+
+        <h3>Создание файла паролей</h3>
+
+        <pre><code># Установите утилиту htpasswd (если ещё не установлена)
+sudo apt install apache2-utils
+
+# Создайте файл с паролем
+sudo htpasswd -c /etc/nginx/.htpasswd username</code></pre>
+
+        <h3>Настройка Nginx</h3>
+
+        <pre><code># /etc/nginx/sites-available/mysite.conf
+
+server {
+    listen 80;
+    server_name mysite.ru;
+
+    # Защита всего сайта
+    auth_basic "Restricted";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+
+    location / {
+        root /var/www/mysite;
+        index index.html;
+    }
+}
+
+# Или защита только определённой директории:
+server {
+    listen 80;
+    server_name mysite.ru;
+
+    location / {
+        root /var/www/mysite;
+    }
+
+    location /admin/ {
+        auth_basic "Admin Area";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        root /var/www/mysite;
+    }
+}</code></pre>
+
+        <div class="step">
+            <p>После изменения конфига перезагрузите Nginx:</p>
+        </div>
+
+        <pre><code>sudo nginx -t          # Проверка синтаксиса
+sudo systemctl reload nginx  # Перезагрузка</code></pre>
+
+        <h3>Исключение для определённых IP</h3>
+
+        <p>Полезно для разработки — ваш офисный IP не спрашивает пароль:</p>
+
+        <pre><code>location / {
+    satisfy any;
+
+    # Доверенные IP — без пароля
+    allow 192.168.1.0/24;   # Локальная сеть
+    allow 85.140.10.55;     # Офисный IP
+    deny all;
+
+    # Все остальные — пароль
+    auth_basic "Restricted";
+    auth_basic_user_file /etc/nginx/.htpasswd;
+}</code></pre>
+
+        <h2 id="javascript">6. JavaScript-защита: быстро, но ненадёжно</h2>
+
+        <p>Если у вас нет доступа к конфигурации сервера (например, на GitHub Pages или простом статическом хостинге), можно реализовать защиту на JavaScript. Но помните: это не настоящая безопасность.</p>
+
+        <h3>Простейший вариант</h3>
+
+        <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ru"&gt;
+&lt;head&gt;
+  &lt;title&gt;Закрытый раздел&lt;/title&gt;
+  &lt;style&gt;
+    .password-overlay {
+      position: fixed;
+      inset: 0;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .password-form {
+      text-align: center;
+      max-width: 400px;
+      padding: 40px;
+    }
+    .password-form input {
+      padding: 12px 16px;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 16px;
+      width: 100%;
+      margin: 12px 0;
+    }
+    .password-form button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .error { color: #ef4444; font-size: 14px; }
+    .content { display: none; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div class="password-overlay" id="overlay"&gt;
+  &lt;div class="password-form"&gt;
+    &lt;h2&gt;Закрытый раздел&lt;/h2&gt;
+    &lt;p&gt;Введите пароль для доступа&lt;/p&gt;
+    &lt;input type="password" id="pwd" placeholder="Пароль"
+      onkeydown="if(event.key==='Enter') checkPwd()"&gt;
+    &lt;button onclick="checkPwd()"&gt;Войти&lt;/button&gt;
+    &lt;p class="error" id="error"&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="content" id="content"&gt;
+  &lt;h1&gt;Секретный контент&lt;/h1&gt;
+  &lt;p&gt;Здесь находится закрытая информация.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// ВНИМАНИЕ: пароль виден в исходном коде!
+const PASSWORD_HASH = '5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8'; // sha256('password')
+
+async function sha256(message) {
+  const msgBuffer = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b =&gt; b.toString(16).padStart(2, '0')).join('');
+}
+
+async function checkPwd() {
+  const input = document.getElementById('pwd').value;
+  const hash = await sha256(input);
+  if (hash === PASSWORD_HASH) {
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+    sessionStorage.setItem('authenticated', 'true');
+  } else {
+    document.getElementById('error').textContent = 'Неверный пароль';
+    document.getElementById('pwd').value = '';
+  }
+}
+
+// Проверяем, был ли пользователь уже авторизован
+if (sessionStorage.getItem('authenticated') === 'true') {
+  document.getElementById('overlay').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+        <div class="danger">
+            <strong>Почему это небезопасно:</strong>
+            <ul>
+                <li>Контент загружается в HTML — его можно увидеть в «Просмотреть код»</li>
+                <li>Хеш пароля виден в JS-файле — его можно подобрать</li>
+                <li>JavaScript можно отключить в браузере — защита исчезнет</li>
+                <li>sessionStorage легко подделать через DevTools</li>
+            </ul>
+            <p style="margin-top: 12px;"><strong>Используйте только когда:</strong> нужно «отпугнуть» случайных посетителей, а не защитить конфиденциальные данные.</p>
+        </div>
+
+        <h3>Улучшенный вариант: загрузка контента после авторизации</h3>
+
+        <p>Можно хранить контент в отдельном файле и загружать его только после ввода пароля. Это чуть безопаснее — контент не виден в исходном коде страницы:</p>
+
+        <pre><code>async function checkPwd() {
+  const input = document.getElementById('pwd').value;
+  const hash = await sha256(input);
+
+  if (hash === PASSWORD_HASH) {
+    // Загружаем контент только после авторизации
+    const response = await fetch('/secret/content.html');
+    const html = await response.text();
+    document.getElementById('content').innerHTML = html;
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('overlay').style.display = 'none';
+  }
+}</code></pre>
+
+        <p>Но и здесь файл <code>/secret/content.html</code> всё равно доступен напрямую по URL. Для настоящей защиты нужен серверный контроль доступа.</p>
+
+        <h2 id="serverside">7. Серверная защита (Node.js, PHP)</h2>
+
+        <p>Если у вас есть серверный код, можно реализовать полноценную парольную защиту с красивой формой входа.</p>
+
+        <h3>Node.js + Express</h3>
+
+        <pre><code>const express = require('express');
+const session = require('express-session');
+const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+
+const SITE_PASSWORD = process.env.SITE_PASSWORD || 'mysecret';
+
+// Middleware проверки пароля
+function requirePassword(req, res, next) {
+  if (req.session.authenticated) return next();
+  if (req.method === 'POST' && req.body.password === SITE_PASSWORD) {
+    req.session.authenticated = true;
+    return res.redirect(req.originalUrl);
+  }
+  res.send(`
+    &lt;form method="POST" style="max-width:400px;margin:100px auto;text-align:center"&gt;
+      &lt;h2&gt;Введите пароль&lt;/h2&gt;
+      &lt;input type="password" name="password" placeholder="Пароль"
+        style="padding:12px;width:100%;margin:12px 0;border:2px solid #e5e7eb;border-radius:8px"&gt;
+      &lt;button type="submit"
+        style="padding:12px 32px;background:#10b981;color:white;border:none;border-radius:8px;cursor:pointer"&gt;
+        Войти
+      &lt;/button&gt;
+    &lt;/form&gt;
+  `);
+}
+
+// Защищённые маршруты
+app.use('/secret', requirePassword, express.static('secret'));
+
+// Открытые маршруты
+app.use(express.static('public'));
+
+app.listen(3000);</code></pre>
+
+        <h3>PHP</h3>
+
+        <pre><code>&lt;?php
+session_start();
+$PASSWORD = 'mysecret'; // Лучше хранить в .env
+
+if (isset($_POST['password'])) {
+    if ($_POST['password'] === $PASSWORD) {
+        $_SESSION['authenticated'] = true;
+        header('Location: ' . $_SERVER['REQUEST_URI']);
+        exit;
+    }
+    $error = 'Неверный пароль';
+}
+
+if (!isset($_SESSION['authenticated']) || !$_SESSION['authenticated']) {
+    ?&gt;
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;body style="display:flex;justify-content:center;align-items:center;height:100vh;font-family:sans-serif"&gt;
+      &lt;form method="POST" style="text-align:center"&gt;
+        &lt;h2&gt;Введите пароль&lt;/h2&gt;
+        &lt;?php if (isset($error)): ?&gt;
+          &lt;p style="color:red"&gt;&lt;?= $error ?&gt;&lt;/p&gt;
+        &lt;?php endif; ?&gt;
+        &lt;input type="password" name="password" placeholder="Пароль"
+          style="padding:12px;width:100%;margin:12px 0;border:2px solid #e5e7eb;border-radius:8px"&gt;
+        &lt;button type="submit"
+          style="padding:12px 32px;background:#10b981;color:white;border:none;border-radius:8px"&gt;
+          Войти
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    &lt;?php
+    exit;
+}
+// Далее — защищённый контент
+?&gt;</code></pre>
+
+        <h2 id="vibehosting">8. VibeHosting — защита паролем в один клик</h2>
+
+        <p>Все предыдущие способы требуют технических навыков: редактирования конфигов, написания кода или работы с командной строкой. На VibeHosting всё гораздо проще.</p>
+
+        <h3>Как включить защиту паролем</h3>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Откройте панель управления</strong> вашим проектом на hostingvibe.ru</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Найдите раздел «Безопасность»</strong> в настройках проекта</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Включите «Защита паролем»</strong> и введите пароль</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Готово!</strong> При входе на сайт посетители увидят красивую форму ввода пароля</p>
+        </div>
+
+        <h3>Что делает защита VibeHosting</h3>
+
+        <ul>
+            <li><strong>Серверная проверка</strong> — контент не отдаётся без пароля (в отличие от JS-решений)</li>
+            <li><strong>Красивая форма входа</strong> — стильная страница с вашим логотипом, а не убогое окно браузера (в отличие от .htaccess)</li>
+            <li><strong>Сессии</strong> — после ввода пароля не нужно вводить его снова на каждой странице</li>
+            <li><strong>HTTPS</strong> — пароль передаётся по зашифрованному каналу</li>
+            <li><strong>Защита от перебора</strong> — rate limiting блокирует попытки подбора пароля</li>
+            <li><strong>Мгновенное включение/выключение</strong> — один тумблер в панели управления</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Идеально для:</strong> staging-версий сайтов (показать клиенту), закрытых портфолио, лендингов до запуска, корпоративных страниц и любых ситуаций, когда нужно быстро закрыть доступ без возни с конфигами.
+        </div>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 12px;">Защита сайта паролем — в один клик</h3>
+            <p>На VibeHosting парольная защита работает из коробки. Серверная проверка, красивая форма, HTTPS — и никакой настройки.</p>
+            <p style="margin-top: 12px;"><a href="https://hostingvibe.ru">Попробовать VibeHosting &rarr;</a></p>
+        </div>
+
+        <h2 id="compare">9. Сравнение всех способов</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Критерий</th>
+                    <th>.htaccess</th>
+                    <th>Nginx</th>
+                    <th>JavaScript</th>
+                    <th>Серверный код</th>
+                    <th>VibeHosting <span class="badge">Рек.</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Безопасность</td>
+                    <td>Средняя</td>
+                    <td>Средняя</td>
+                    <td>Низкая</td>
+                    <td>Высокая</td>
+                    <td>Высокая</td>
+                </tr>
+                <tr>
+                    <td>Кастомная форма входа</td>
+                    <td>Нет</td>
+                    <td>Нет</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                </tr>
+                <tr>
+                    <td>Нужен доступ к серверу</td>
+                    <td>Да (.htaccess)</td>
+                    <td>Да (root)</td>
+                    <td>Нет</td>
+                    <td>Да</td>
+                    <td>Нет</td>
+                </tr>
+                <tr>
+                    <td>Сложность настройки</td>
+                    <td>Средняя</td>
+                    <td>Средняя</td>
+                    <td>Низкая</td>
+                    <td>Высокая</td>
+                    <td>Нулевая</td>
+                </tr>
+                <tr>
+                    <td>Контент скрыт от ботов</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                    <td>Нет</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                </tr>
+                <tr>
+                    <td>Защита от перебора</td>
+                    <td>Нет*</td>
+                    <td>Да (limit_req)</td>
+                    <td>Нет</td>
+                    <td>Вручную</td>
+                    <td>Да</td>
+                </tr>
+                <tr>
+                    <td>Logout</td>
+                    <td>Нет</td>
+                    <td>Нет</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                    <td>Да</td>
+                </tr>
+                <tr>
+                    <td>Время настройки</td>
+                    <td>10-15 мин</td>
+                    <td>10-15 мин</td>
+                    <td>5 мин</td>
+                    <td>30+ мин</td>
+                    <td>30 секунд</td>
+                </tr>
+            </tbody>
+        </table>
+        <p style="font-size: 0.9em; color: #6b7280;">* Для Apache можно настроить mod_security или fail2ban, но это дополнительная работа.</p>
+
+        <h2 id="ux">10. UX парольной страницы</h2>
+
+        <p>Страница ввода пароля — первое, что видит посетитель. Плохой UX может отпугнуть даже тех, у кого есть пароль. Вот ключевые принципы:</p>
+
+        <h3>Что должно быть на странице</h3>
+        <ul>
+            <li><strong>Название сайта или логотип</strong> — чтобы пользователь понимал, куда он попал</li>
+            <li><strong>Пояснение</strong> — почему сайт закрыт: «Сайт в разработке», «Закрытый раздел», «Доступ по паролю»</li>
+            <li><strong>Одно поле для пароля</strong> — не нужно спрашивать логин, если пароль общий</li>
+            <li><strong>Кнопка «Показать пароль»</strong> — иконка глаза рядом с полем ввода</li>
+            <li><strong>Сообщение об ошибке</strong> — чёткое и конкретное: «Неверный пароль» вместо «Ошибка авторизации»</li>
+            <li><strong>Контактная информация</strong> — как получить пароль, если его нет</li>
+        </ul>
+
+        <h3>Чего не должно быть</h3>
+        <ul>
+            <li><strong>CAPTCHA на странице пароля</strong> — это избыточно, rate limiting достаточно</li>
+            <li><strong>Ограничение попыток без предупреждения</strong> — пользователь может ошибиться</li>
+            <li><strong>Автоматический редирект</strong> после неудачной попытки — человек теряется</li>
+            <li><strong>Слишком сложный дизайн</strong> — это промежуточная страница, а не лендинг</li>
+        </ul>
+
+        <h3>Пример хорошей парольной страницы</h3>
+
+        <pre><code>&lt;div class="password-page"&gt;
+  &lt;div class="password-card"&gt;
+    &lt;img src="/logo.svg" alt="Logo" style="width: 48px; margin-bottom: 16px;"&gt;
+    &lt;h2&gt;Закрытый раздел&lt;/h2&gt;
+    &lt;p class="subtitle"&gt;Сайт находится в разработке.&lt;br&gt;Введите пароль для доступа.&lt;/p&gt;
+
+    &lt;form method="POST"&gt;
+      &lt;div class="input-group"&gt;
+        &lt;input type="password" name="password" id="pwd"
+          placeholder="Введите пароль" autocomplete="current-password"&gt;
+        &lt;button type="button" class="toggle-pwd" onclick="togglePassword()"&gt;
+          &lt;!-- Иконка глаза --&gt;
+        &lt;/button&gt;
+      &lt;/div&gt;
+      &lt;button type="submit" class="submit-btn"&gt;Войти&lt;/button&gt;
+    &lt;/form&gt;
+
+    &lt;p class="help"&gt;Нет пароля? Напишите на &lt;a href="mailto:info@example.ru"&gt;info@example.ru&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <h2 id="mistakes">11. Типичные ошибки при защите паролем</h2>
+
+        <h3>Ошибка 1: Пароль в URL</h3>
+        <p>Никогда не передавайте пароль через GET-параметр (<code>?password=secret</code>). URL сохраняется в истории браузера, логах сервера, реферерных заголовках и аналитике. Всегда используйте POST-запрос.</p>
+
+        <h3>Ошибка 2: Один пароль навсегда</h3>
+        <p>Если вы отправили пароль 20 людям и хотите закрыть доступ для одного из них — придётся менять пароль для всех. Решение: используйте индивидуальные пароли или полноценную систему аккаунтов для больших групп.</p>
+
+        <h3>Ошибка 3: Нет HTTPS</h3>
+        <p>Без SSL-сертификата пароль передаётся открытым текстом. Любой в той же WiFi-сети может его перехватить. На VibeHosting HTTPS включён по умолчанию для всех сайтов.</p>
+
+        <h3>Ошибка 4: Пароль в исходном коде</h3>
+        <p>JavaScript-защита с паролем в коде — это иллюзия безопасности. Используйте хотя бы хеширование (SHA-256), а лучше — серверную проверку.</p>
+
+        <h3>Ошибка 5: Забыли про robots.txt</h3>
+        <p>Даже с паролем добавьте в <code>robots.txt</code> запрет на индексацию закрытого раздела:</p>
+
+        <pre><code># robots.txt
+User-agent: *
+Disallow: /secret/
+Disallow: /admin/</code></pre>
+
+        <h3>Ошибка 6: Пароль «1234» или «password»</h3>
+        <p>Используйте надёжный пароль: минимум 8 символов, буквы и цифры. Для генерации: <code>openssl rand -base64 12</code> в терминале. Для общих паролей (не личных аккаунтов) подойдёт читаемая фраза: «зелёный-слон-2026».</p>
+
+        <h2 id="advanced">12. Продвинутые сценарии</h2>
+
+        <h3>Временный доступ</h3>
+        <p>Нужно дать клиенту доступ на 7 дней для просмотра макетов? На VibeHosting можно менять пароль в любой момент, а предыдущий перестанет работать. Для более сложных сценариев — токенизированные ссылки с датой истечения.</p>
+
+        <h3>Несколько разделов — разные пароли</h3>
+        <p>Закрыть «/investors» одним паролем, а «/partners» — другим. В .htaccess / Nginx это делается через разные файлы <code>.htpasswd</code> для разных директорий. На VibeHosting можно задать пароль для всего сайта.</p>
+
+        <h3>Защита + SEO</h3>
+        <p>Парольная защита и SEO — взаимоисключающие вещи. Поисковые боты не могут ввести пароль, поэтому закрытые страницы не индексируются. Если нужно и то, и другое — используйте пароль только для определённых разделов, а основной контент оставьте открытым.</p>
+
+        <h3>Пароль + QR-код</h3>
+        <p>Для мероприятий и офлайн-встреч удобно совместить QR-код со ссылкой на сайт и пароль. На VibeHosting для каждого проекта генерируется QR-код — распечатайте его и раздайте участникам вместе с паролем.</p>
+
+        <h2 id="faq">13. FAQ</h2>
+
+        <h3>Защитит ли пароль от хакеров?</h3>
+        <p>Пароль защищает от случайных посетителей и поисковых ботов. Для защиты от целенаправленных атак нужна полноценная система безопасности: HTTPS, rate limiting, WAF, регулярное обновление ПО. Пароль — это замок на двери, а не сейф.</p>
+
+        <h3>Можно ли обойти JavaScript-защиту?</h3>
+        <p>Да, за 30 секунд. Откройте DevTools (F12) &rarr; вкладка Sources &rarr; найдите пароль в коде. Или просто отключите JavaScript в настройках браузера. JS-защита — это «от честных людей».</p>
+
+        <h3>Как поделиться паролем безопасно?</h3>
+        <p>Не отправляйте пароль в том же письме, что и ссылку на сайт. Используйте разные каналы: ссылку по email, пароль в Telegram. Или используйте сервисы одноразовых сообщений типа onetimesecret.com.</p>
+
+        <h3>Влияет ли парольная защита на скорость сайта?</h3>
+        <p>Минимально. Серверная проверка пароля занимает менее 1 мс. HTTP Basic Auth вообще не требует дополнительных запросов после авторизации (браузер запоминает креденшалы). Парольная защита не влияет на Core Web Vitals.</p>
+
+        <h3>Можно ли закрыть паролем только одну страницу?</h3>
+        <p>Да. В .htaccess используйте <code>&lt;Files&gt;</code> директиву, в Nginx — <code>location =</code> для точного совпадения URL. В JS-варианте просто добавьте скрипт проверки на нужную страницу.</p>
+
+        <h2 id="conclusion">14. Итоги</h2>
+
+        <p>Парольная защита сайта — задача, которая решается за минуты, а не дни. Выбор способа зависит от ваших требований:</p>
+
+        <ul>
+            <li><strong>Нужна настоящая безопасность?</strong> — Серверная защита (.htaccess, Nginx) или VibeHosting</li>
+            <li><strong>Нужно быстро и красиво?</strong> — VibeHosting: один тумблер в панели управления</li>
+            <li><strong>Нет доступа к серверу?</strong> — JavaScript-защита (помните об ограничениях)</li>
+            <li><strong>Сложный проект с ролями?</strong> — Полноценная аутентификация на сервере</li>
+        </ul>
+
+        <p>Для 90% задач — staging, портфолио, закрытые разделы, предзапуск — хватает простого общего пароля. И проще всего это сделать на VibeHosting: загрузил сайт, включил пароль, поделился ссылкой с нужными людьми.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 12px;">Закройте сайт паролем за 30 секунд</h3>
+            <p>На VibeHosting парольная защита — это один переключатель. Серверная безопасность, красивая форма входа, HTTPS — всё включено.</p>
+            <p style="margin-top: 12px;"><a href="https://hostingvibe.ru">Попробовать бесплатно на hostingvibe.ru &rarr;</a></p>
+        </div>
+
+        <div class="author">
+            <div>
+                <strong>VibeHosting</strong> &middot; Хостинг нового поколения
+                <br>
+                <span>Загрузил ZIP — получил сайт. <a href="https://hostingvibe.ru" style="color: #059669;">hostingvibe.ru</a></span>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать портфолио фотографа и выложить в интернет | VibeHosting</title>
+    <meta name="description" content="Пошаговый гайд: как создать сайт-портфолио фотографа с нуля. HTML, CSS, галерея, адаптивная вёрстка. Бесплатная публикация на VibeHosting.">
+    <meta name="keywords" content="портфолио фотографа, сайт фотографа, создать портфолио, фотограф сайт бесплатно, VibeHosting">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .table-of-contents { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .table-of-contents ul { list-style: none; padding-left: 0; }
+        .table-of-contents li { margin-bottom: 6px; }
+        .table-of-contents a { color: #059669; text-decoration: none; }
+        .table-of-contents a:hover { text-decoration: underline; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th, .comparison-table td { padding: 12px 16px; border: 1px solid #e5e7eb; text-align: left; }
+        .comparison-table th { background: #059669; color: white; }
+        .comparison-table tr:nth-child(even) { background: #f9fafb; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <h1>Как сделать портфолио фотографа и выложить в интернет</h1>
+
+        <p><strong>Время чтения:</strong> 18 минут &nbsp;|&nbsp; <strong>Уровень:</strong> начинающий &nbsp;|&nbsp; <strong>Результат:</strong> сайт-портфолио на своём адресе</p>
+
+        <img src="https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=800&q=80" alt="Фотограф с камерой снимает на улице">
+
+        <p>Вы фотограф. У вас сотни потрясающих снимков на жёстком диске. Но когда потенциальный клиент спрашивает «а можно посмотреть ваши работы?» — вы отправляете ссылку на Instagram или Google Диск. Это непрофессионально. И это стоит вам заказов.</p>
+
+        <p>Собственный сайт-портфолио — это ваша визитная карточка, которая работает 24/7. Клиент открывает ссылку — и за 30 секунд понимает ваш стиль, уровень и направление. Не листая ленту, не скачивая архивы, не ожидая одобрения доступа к папке.</p>
+
+        <p>В этой статье мы создадим портфолио с нуля: от выбора фотографий до публикации на своём адресе. Без конструкторов, без абонентской платы, без ограничений.</p>
+
+        <div class="table-of-contents">
+            <strong>Содержание:</strong>
+            <ul>
+                <li><a href="#why">Зачем фотографу собственный сайт</a></li>
+                <li><a href="#prepare">Подготовка: выбор и оптимизация фотографий</a></li>
+                <li><a href="#structure">Структура портфолио</a></li>
+                <li><a href="#create">Пошаговое создание сайта</a></li>
+                <li><a href="#gallery">CSS-галерея: masonry и lightbox</a></li>
+                <li><a href="#publish">Публикация на VibeHosting</a></li>
+                <li><a href="#protect">Парольная защита для клиентских съёмок</a></li>
+                <li><a href="#seo">SEO для фотографа</a></li>
+                <li><a href="#summary">Итоги</a></li>
+            </ul>
+        </div>
+
+        <h2 id="why">Зачем фотографу собственный сайт</h2>
+
+        <p>Instagram — отличная платформа для привлечения аудитории. Но как инструмент продаж и демонстрации портфолио у него есть серьёзные проблемы:</p>
+
+        <ul>
+            <li><strong>Качество изображений.</strong> Instagram сжимает фотографии. Тонкие градиенты, детали в тенях, текстуры — всё теряется. На собственном сайте вы контролируете качество полностью.</li>
+            <li><strong>Структура.</strong> В Instagram фотографии показываются в хронологическом порядке. Нельзя разделить свадебные съёмки, портреты и репортажи по категориям. На сайте — можно.</li>
+            <li><strong>Поисковая выдача.</strong> Когда невеста гуглит «свадебный фотограф Москва», поисковик показывает сайты, не Instagram-аккаунты.</li>
+            <li><strong>Профессиональное впечатление.</strong> Ссылка <code>ivan-photo.hostingvibe.ru</code> в переписке с заказчиком выглядит профессиональнее, чем «загляните в мой инстаграм».</li>
+            <li><strong>Контроль.</strong> Instagram может изменить алгоритм, скрыть ваши посты, заблокировать аккаунт. Сайт — ваш. Навсегда.</li>
+            <li><strong>Закрытые галереи.</strong> Вы можете создать защищённую паролем страницу для конкретного клиента. Отсняли свадьбу → выложили на сайт → отправили клиенту пароль. Он смотрит, выбирает, делится с гостями.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Статистика:</strong> фотографы с собственным сайтом получают в среднем в 2 раза больше заказов от новых клиентов, чем те, кто работает только через Instagram. Причина — доверие и доступность в поиске.
+        </div>
+
+        <h2 id="prepare">Подготовка: выбор и оптимизация фотографий</h2>
+
+        <p>Перед созданием сайта нужно подготовить фотографии. Это самый важный этап — от него зависит и внешний вид портфолио, и скорость загрузки.</p>
+
+        <h3>Сколько фотографий нужно</h3>
+        <p>Меньше, чем вы думаете. Идеальное портфолио — это 15-30 лучших работ. Не 500. Не 200. Именно 15-30. Каждая фотография должна быть такого уровня, что вы готовы напечатать её на стене в рамке.</p>
+
+        <p>Правило: если сомневаетесь, включать фото или нет — не включайте. Портфолио оценивают по самой слабой работе, а не по самой сильной.</p>
+
+        <h3>Категории</h3>
+        <p>Разбейте работы по направлениям:</p>
+        <ul>
+            <li><strong>Свадебная съёмка</strong> — 5-8 фото, показывающих разные моменты</li>
+            <li><strong>Портреты</strong> — 5-8 студийных и уличных портретов</li>
+            <li><strong>Репортаж / мероприятия</strong> — 5-8 фото</li>
+            <li><strong>Предметная / фуд-фотография</strong> — если снимаете</li>
+        </ul>
+
+        <h3>Оптимизация для веба</h3>
+        <p>Фотографии с камеры весят 10-30 МБ каждая. Для сайта это слишком много. Оптимизируйте:</p>
+
+        <ul>
+            <li><strong>Размер:</strong> 1920px по длинной стороне — достаточно для отображения на любом экране</li>
+            <li><strong>Формат:</strong> JPEG с качеством 80-85% — оптимальный баланс размера и качества</li>
+            <li><strong>Вес:</strong> целевой — 200-400 КБ на фото. Если больше — ещё раз сожмите</li>
+            <li><strong>Имена файлов:</strong> осмысленные, латиницей: <code>wedding-ceremony-01.jpg</code>, <code>portrait-studio-anna.jpg</code></li>
+        </ul>
+
+        <p>Для оптимизации используйте бесплатные инструменты:</p>
+        <ul>
+            <li><strong>Squoosh (squoosh.app)</strong> — от Google, работает в браузере</li>
+            <li><strong>TinyPNG</strong> — пакетная оптимизация</li>
+            <li><strong>Lightroom Export</strong> — настройте пресет: 1920px, Quality 82, Sharpen for Screen</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Важно:</strong> бесплатный план VibeHosting позволяет загрузить до 50 МБ. При оптимизированных фото по 300 КБ это примерно 150 фотографий — более чем достаточно для портфолио. PRO-план даёт 500 МБ.
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1554080353-a576cf803bda?w=800&q=80" alt="Камера на штативе при съёмке пейзажа">
+
+        <h2 id="structure">Структура портфолио</h2>
+
+        <p>Хороший сайт фотографа — это прежде всего фотографии. Минимум текста, максимум визуала. Вот проверенная структура:</p>
+
+        <h3>Первый экран: одна сильная фотография</h3>
+        <p>Полноэкранное фото, которое показывает ваш стиль за 1 секунду. Имя фотографа. Специализация. Кнопка «Смотреть работы».</p>
+
+        <h3>Галерея по категориям</h3>
+        <p>Вкладки или секции: «Свадьбы», «Портреты», «Репортаж». Клиент сразу находит то, что ему нужно.</p>
+
+        <h3>Обо мне</h3>
+        <p>3-5 предложений. Опыт, стиль, подход. Одно фото — ваше, с камерой. Клиент хочет видеть человека, которому доверяет съёмку.</p>
+
+        <h3>Услуги и цены</h3>
+        <p>Необязательно указывать точные цены. Можно написать пакеты: «от 15 000 ₽ за 2 часа». Или «цены по запросу» — но тогда добавьте форму связи.</p>
+
+        <h3>Контакты и форма</h3>
+        <p>Имя, телефон, email, мессенджеры. Форма «Оставить заявку» — имя, email, тип съёмки, предпочтительная дата.</p>
+
+        <h2 id="create">Пошаговое создание сайта</h2>
+
+        <p>Создаём минималистичное портфолио. Чёрный фон, белый текст, фотографии во всей красе.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте папку проекта</strong></p>
+            <p>Папка <code>portfolio</code> → внутри <code>index.html</code> и подпапка <code>photos</code> с оптимизированными фотографиями.</p>
+<pre><code>portfolio/
+├── index.html
+└── photos/
+    ├── hero.jpg
+    ├── wedding-01.jpg
+    ├── wedding-02.jpg
+    ├── wedding-03.jpg
+    ├── portrait-01.jpg
+    ├── portrait-02.jpg
+    ├── portrait-03.jpg
+    ├── reportage-01.jpg
+    ├── reportage-02.jpg
+    └── about.jpg</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>HTML-скелет и стили</strong></p>
+            <p>Полный CSS для фотопортфолио — минимализм, чёрный фон, акцент на фотографиях:</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: #0a0a0a;
+    color: #e0e0e0;
+    line-height: 1.7;
+}
+
+/* Hero */
+.hero {
+    height: 100vh;
+    background: url('photos/hero.jpg') center/cover;
+    display: flex;
+    align-items: flex-end;
+    padding: 60px 40px;
+}
+
+.hero-content {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.8);
+    margin-top: 8px;
+}
+
+.hero .btn {
+    display: inline-block;
+    margin-top: 24px;
+    padding: 12px 32px;
+    border: 1px solid white;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+}
+
+.hero .btn:hover {
+    background: white;
+    color: #0a0a0a;
+}
+
+/* Навигация по категориям */
+.category-nav {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    padding: 40px 20px;
+    flex-wrap: wrap;
+}
+
+.category-nav a {
+    color: #888;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+    transition: all 0.3s;
+}
+
+.category-nav a:hover,
+.category-nav a.active {
+    color: white;
+    border-bottom-color: white;
+}
+
+/* Masonry-галерея */
+.gallery {
+    columns: 3;
+    column-gap: 8px;
+    padding: 0 8px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.gallery img {
+    width: 100%;
+    margin-bottom: 8px;
+    border-radius: 0;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    box-shadow: none;
+}
+
+.gallery img:hover {
+    opacity: 0.85;
+}
+
+/* Lightbox */
+.lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.95);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 0;
+    box-shadow: none;
+    margin: 0;
+}
+
+.lightbox .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+/* Секции */
+.section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+.section h2 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+}
+
+/* Об авторе */
+.about-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-grid img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: none;
+    margin: 0;
+}
+
+.about-grid p {
+    color: #aaa;
+    font-size: 1.05rem;
+}
+
+/* Услуги */
+.services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 24px;
+}
+
+.service-card {
+    border: 1px solid #222;
+    padding: 32px;
+    text-align: center;
+    transition: border-color 0.3s;
+}
+
+.service-card:hover {
+    border-color: #555;
+}
+
+.service-card h3 {
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    color: white;
+}
+
+.service-card .price {
+    color: #10b981;
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    color: #888;
+    font-size: 0.95rem;
+}
+
+/* Форма контакта */
+.contact-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    background: #111;
+    border: 1px solid #333;
+    color: white;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #10b981;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 14px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.contact-form button:hover {
+    background: white;
+    color: #0a0a0a;
+}
+
+footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: #444;
+    font-size: 0.85rem;
+    border-top: 1px solid #1a1a1a;
+}
+
+footer a {
+    color: #10b981;
+    text-decoration: none;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .gallery { columns: 2; }
+    .about-grid {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .about-grid img {
+        max-width: 250px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery { columns: 1; padding: 0 16px; }
+    .hero h1 { font-size: 2rem; }
+    .hero { padding: 40px 20px; }
+    .category-nav { gap: 16px; }
+}</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Hero-секция</strong></p>
+<pre><code>&lt;section class="hero"&gt;
+    &lt;div class="hero-content"&gt;
+        &lt;h1&gt;Иван Петров&lt;/h1&gt;
+        &lt;p&gt;Свадебный и портретный фотограф, Москва&lt;/p&gt;
+        &lt;a href="#gallery" class="btn"&gt;Смотреть работы&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+            <p>Фоновое изображение задаётся в CSS: <code>url('photos/hero.jpg')</code>. Выберите свою самую сильную фотографию. Горизонтальную, с интересной композицией.</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Свадебная фотография — пара на закате">
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Навигация по категориям и галерея</strong></p>
+<pre><code>&lt;!-- Навигация --&gt;
+&lt;nav class="category-nav" id="gallery"&gt;
+    &lt;a href="#" class="active" data-filter="all"&gt;Все работы&lt;/a&gt;
+    &lt;a href="#" data-filter="wedding"&gt;Свадьбы&lt;/a&gt;
+    &lt;a href="#" data-filter="portrait"&gt;Портреты&lt;/a&gt;
+    &lt;a href="#" data-filter="reportage"&gt;Репортаж&lt;/a&gt;
+&lt;/nav&gt;
+
+&lt;!-- Галерея --&gt;
+&lt;div class="gallery"&gt;
+    &lt;img src="photos/wedding-01.jpg"
+         alt="Свадебная церемония" data-category="wedding"&gt;
+    &lt;img src="photos/portrait-01.jpg"
+         alt="Портрет девушки в студии" data-category="portrait"&gt;
+    &lt;img src="photos/reportage-01.jpg"
+         alt="Репортаж с конференции" data-category="reportage"&gt;
+    &lt;img src="photos/wedding-02.jpg"
+         alt="Первый танец молодожёнов" data-category="wedding"&gt;
+    &lt;img src="photos/portrait-02.jpg"
+         alt="Мужской бизнес-портрет" data-category="portrait"&gt;
+    &lt;img src="photos/wedding-03.jpg"
+         alt="Подготовка невесты" data-category="wedding"&gt;
+    &lt;img src="photos/reportage-02.jpg"
+         alt="Корпоративное мероприятие" data-category="reportage"&gt;
+    &lt;img src="photos/portrait-03.jpg"
+         alt="Семейная фотосессия на природе" data-category="portrait"&gt;
+&lt;/div&gt;
+
+&lt;!-- Lightbox --&gt;
+&lt;div class="lightbox" id="lightbox"&gt;
+    &lt;span class="close"&gt;&amp;times;&lt;/span&gt;
+    &lt;img src="" alt=""&gt;
+&lt;/div&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>JavaScript: фильтрация и lightbox</strong></p>
+            <p>Добавьте перед закрывающим <code>&lt;/body&gt;</code>:</p>
+<pre><code>&lt;script&gt;
+// Фильтрация по категориям
+document.querySelectorAll('.category-nav a').forEach(link =&gt; {
+    link.addEventListener('click', (e) =&gt; {
+        e.preventDefault();
+        const filter = link.dataset.filter;
+
+        // Активная вкладка
+        document.querySelectorAll('.category-nav a')
+            .forEach(l =&gt; l.classList.remove('active'));
+        link.classList.add('active');
+
+        // Показ/скрытие фото
+        document.querySelectorAll('.gallery img')
+            .forEach(img =&gt; {
+                if (filter === 'all'
+                    || img.dataset.category === filter) {
+                    img.style.display = 'block';
+                } else {
+                    img.style.display = 'none';
+                }
+            });
+    });
+});
+
+// Lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = lightbox.querySelector('img');
+
+document.querySelectorAll('.gallery img').forEach(img =&gt; {
+    img.addEventListener('click', () =&gt; {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+    });
+});
+
+lightbox.addEventListener('click', () =&gt; {
+    lightbox.classList.remove('active');
+});
+&lt;/script&gt;</code></pre>
+            <p>Теперь посетитель может фильтровать работы по категориям и открывать фотографии на полный экран.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Блок «Обо мне»</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Обо мне&lt;/h2&gt;
+    &lt;div class="about-grid"&gt;
+        &lt;img src="photos/about.jpg" alt="Фотограф Иван Петров"&gt;
+        &lt;div&gt;
+            &lt;p&gt;Привет! Я Иван — фотограф из Москвы.
+            Снимаю свадьбы, портреты и мероприятия
+            уже 8 лет.&lt;/p&gt;
+            &lt;p&gt;Мой стиль — естественные эмоции
+            и мягкий свет. Я не ставлю людей в позы
+            на 2 часа. Я ловлю моменты, которые
+            вы проживаете.&lt;/p&gt;
+            &lt;p&gt;Снимаю в Москве и готов к выездным
+            съёмкам по всей России.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Услуги и цены</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Услуги&lt;/h2&gt;
+    &lt;div class="services"&gt;
+        &lt;div class="service-card"&gt;
+            &lt;h3&gt;Свадебная съёмка&lt;/h3&gt;
+            &lt;div class="price"&gt;от 25 000 ₽&lt;/div&gt;
+            &lt;p&gt;Полный день, подготовка, церемония,
+            банкет. 300+ обработанных фото.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="service-card"&gt;
+            &lt;h3&gt;Портретная съёмка&lt;/h3&gt;
+            &lt;div class="price"&gt;от 8 000 ₽&lt;/div&gt;
+            &lt;p&gt;1-2 часа, студия или улица.
+            20+ обработанных фото.&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div class="service-card"&gt;
+            &lt;h3&gt;Мероприятия&lt;/h3&gt;
+            &lt;div class="price"&gt;от 15 000 ₽&lt;/div&gt;
+            &lt;p&gt;Корпоративы, конференции, дни рождения.
+            Репортажная съёмка.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Форма обратной связи</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Связаться со мной&lt;/h2&gt;
+    &lt;form class="contact-form" id="contact-form"&gt;
+        &lt;input type="text" name="name"
+            placeholder="Ваше имя" required&gt;
+        &lt;input type="email" name="email"
+            placeholder="Email" required&gt;
+        &lt;input type="tel" name="phone"
+            placeholder="Телефон"&gt;
+        &lt;select name="type"&gt;
+            &lt;option value=""&gt;Тип съёмки&lt;/option&gt;
+            &lt;option&gt;Свадебная съёмка&lt;/option&gt;
+            &lt;option&gt;Портрет&lt;/option&gt;
+            &lt;option&gt;Мероприятие&lt;/option&gt;
+            &lt;option&gt;Другое&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;textarea name="message" rows="4"
+            placeholder="Расскажите о вашем мероприятии: дата, место, пожелания"&gt;
+        &lt;/textarea&gt;
+        &lt;button type="submit"&gt;Отправить заявку&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+    &lt;p&gt;© 2026 Иван Петров. Фотограф, Москва.&lt;/p&gt;
+    &lt;p style="margin-top:8px"&gt;Сайт на
+        &lt;a href="https://hostingvibe.ru"&gt;VibeHosting&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+            <p>При публикации на VibeHosting подключите <code>vibe-forms.js</code> — заявки будут приходить в Telegram. Клиент написал — вы сразу видите: имя, тип съёмки, дата, контакты.</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1471341971476-ae15ff5dd4ea?w=800&q=80" alt="Портретная фотосъёмка в студии">
+
+        <h2 id="gallery">CSS-галерея: masonry-раскладка</h2>
+
+        <p>Вы заметили, что в CSS используется свойство <code>columns</code>. Это создаёт masonry-раскладку (как на Pinterest) — фотографии разного формата красиво заполняют пространство без пустых мест.</p>
+
+        <p>Как это работает:</p>
+<pre><code>.gallery {
+    columns: 3;       /* 3 колонки */
+    column-gap: 8px;  /* отступ между колонками */
+}
+
+.gallery img {
+    width: 100%;
+    margin-bottom: 8px;
+}</code></pre>
+
+        <p>Браузер автоматически распределяет фотографии по колонкам, учитывая их высоту. Горизонтальные, вертикальные, квадратные — все встают красиво. На мобильных колонок становится меньше через <code>@media</code>-запросы.</p>
+
+        <h3>Lightbox без библиотек</h3>
+        <p>Мы добавили простой lightbox на чистом JavaScript — без jQuery, без сторонних библиотек. Клик по фото → оно открывается на полный экран на тёмном фоне. Клик в любое место → закрывается. Это минимальная, но достаточная реализация.</p>
+
+        <p>Если хотите более продвинутый lightbox (пролистывание стрелками, зум), можно подключить библиотеку GLightbox или Fancybox — они весят 5-10 КБ и легко интегрируются.</p>
+
+        <h2 id="publish">Публикация на VibeHosting</h2>
+
+        <p>Портфолио готово. Публикуем:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Запакуйте проект в ZIP</strong></p>
+            <p>Убедитесь, что структура правильная:</p>
+<pre><code>portfolio.zip
+├── index.html
+└── photos/
+    ├── hero.jpg
+    ├── wedding-01.jpg
+    ├── ...
+    └── about.jpg</code></pre>
+            <p>Файл <code>index.html</code> должен быть в корне архива.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Загрузите на hostingvibe.ru</strong></p>
+            <p>Регистрация → «Загрузить сайт» → перетащите ZIP. Выберите адрес: например, <code>ivan-photo</code>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Ваше портфолио в сети</strong></p>
+            <p>Сайт доступен по адресу <strong>ivan-photo.hostingvibe.ru</strong>. Отправляйте ссылку клиентам, добавьте в Instagram-шапку, печатайте на визитках.</p>
+        </div>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Опубликуйте портфолио бесплатно</p>
+            <p>ZIP с фотографиями → ваш адрес вида <strong>имя.hostingvibe.ru</strong></p>
+            <p style="margin-top:12px"><a href="https://hostingvibe.ru">Попробовать VibeHosting →</a></p>
+        </div>
+
+        <h2 id="protect">Парольная защита для клиентских съёмок</h2>
+
+        <p>Одна из самых полезных функций VibeHosting для фотографов — <strong>парольная защита</strong>. Вот как её использовать:</p>
+
+        <h3>Сценарий: отправка свадебных фотографий</h3>
+        <ol>
+            <li>Вы отсняли свадьбу Маши и Пети.</li>
+            <li>Обработали 300 фотографий.</li>
+            <li>Создали отдельную HTML-страницу с галереей — только свадебные фото.</li>
+            <li>Загрузили на VibeHosting как отдельный сайт: <code>masha-petya-wedding.hostingvibe.ru</code>.</li>
+            <li>В настройках включили парольную защиту. Пароль: <code>love2026</code>.</li>
+            <li>Отправили ссылку и пароль Маше и Пете.</li>
+        </ol>
+
+        <p>Что получают клиенты:</p>
+        <ul>
+            <li>Красивую галерею, доступную с любого устройства</li>
+            <li>Возможность показать фото родственникам, поделившись ссылкой и паролем</li>
+            <li>Никаких Google-дисков, никаких «запросить доступ», никаких тяжёлых архивов</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Совет:</strong> для каждой съёмки создавайте отдельный сайт на VibeHosting. На PRO-плане доступно 3 сайта одновременно — хватит для текущих проектов. Завершённые проекты можно архивировать, освобождая слоты.
+        </div>
+
+        <h3>Сценарий: закрытое портфолио для конкретного клиента</h3>
+        <p>Крупный клиент (бренд, агентство) хочет видеть ваши работы, но вы не хотите показывать всё публично. Создайте закрытое портфолио:</p>
+        <ul>
+            <li>Подборка работ, релевантных запросу клиента</li>
+            <li>Парольная защита</li>
+            <li>Ссылка и пароль — только для этого клиента</li>
+        </ul>
+
+        <h2 id="seo">SEO для фотографа</h2>
+
+        <p>Чтобы потенциальные клиенты находили вас в поиске, позаботьтесь о базовом SEO:</p>
+
+        <h3>Title и Description</h3>
+<pre><code>&lt;title&gt;Иван Петров — Свадебный фотограф в Москве |
+Портфолио&lt;/title&gt;
+&lt;meta name="description" content="Свадебный и портретный
+фотограф в Москве. 8 лет опыта. Естественные эмоции,
+мягкий свет, 300+ фото в день. Портфолио и цены."&gt;</code></pre>
+
+        <h3>Alt-тексты для фотографий</h3>
+        <p>Каждому <code>&lt;img&gt;</code> — осмысленный <code>alt</code>:</p>
+        <ul>
+            <li>Плохо: <code>alt="фото 1"</code></li>
+            <li>Хорошо: <code>alt="Свадебная фотография — первый танец молодожёнов в ресторане"</code></li>
+        </ul>
+        <p>Это помогает поисковикам понять содержание фотографий и показывать ваш сайт в Google Images и Яндекс.Картинках.</p>
+
+        <h3>Локальные ключевые слова</h3>
+        <p>Включите в текст город и район: «фотограф в Москве», «свадебная съёмка Подмосковье», «фотосессия в центре». Не перегружайте — естественное упоминание 3-5 раз на странице достаточно.</p>
+
+        <h3>Скорость загрузки</h3>
+        <p>Оптимизированные фотографии — ключевой фактор. Google ранжирует быстрые сайты выше. Если ваши фото оптимизированы до 200-400 КБ, сайт будет загружаться за 2-3 секунды даже на мобильном интернете.</p>
+
+        <h2>Чем VibeHosting лучше конструкторов для фотографа</h2>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>VibeHosting</th>
+                    <th>Конструкторы (Tilda, Wix)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Стоимость</td>
+                    <td>Бесплатно (FREE) / 386 ₽ (PRO)</td>
+                    <td>500-1500 ₽/мес</td>
+                </tr>
+                <tr>
+                    <td>Контроль над дизайном</td>
+                    <td>Полный (свой HTML/CSS)</td>
+                    <td>Ограничен шаблоном</td>
+                </tr>
+                <tr>
+                    <td>Качество фотографий</td>
+                    <td>Без дополнительного сжатия</td>
+                    <td>Часто сжимают</td>
+                </tr>
+                <tr>
+                    <td>Парольная защита</td>
+                    <td>Встроена, бесплатно</td>
+                    <td>Только на платных планах</td>
+                </tr>
+                <tr>
+                    <td>Формы в Telegram</td>
+                    <td>vibe-forms.js, бесплатно</td>
+                    <td>Нужна интеграция (Zapier и т.д.)</td>
+                </tr>
+                <tr>
+                    <td>Скорость загрузки</td>
+                    <td>Быстрая (чистый HTML)</td>
+                    <td>Тяжёлый JS-фреймворк</td>
+                </tr>
+                <tr>
+                    <td>Реклама платформы</td>
+                    <td>Нет</td>
+                    <td>На бесплатных планах есть</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="summary">Итоги</h2>
+
+        <p>Вот что мы сделали:</p>
+
+        <ul>
+            <li>Разобрались, почему фотографу нужен собственный сайт, а не только Instagram</li>
+            <li>Подготовили фотографии: выбрали лучшие, оптимизировали для веба</li>
+            <li>Создали минималистичное портфолио с нуля: чёрный фон, masonry-галерея, lightbox, фильтрация по категориям</li>
+            <li>Добавили блоки «Обо мне», «Услуги», «Контакты» с формой заявки</li>
+            <li>Опубликовали на VibeHosting: ZIP → свой адрес → формы в Telegram</li>
+            <li>Разобрали парольную защиту для отправки клиентских съёмок</li>
+            <li>Подготовили SEO для поиска по запросам вроде «фотограф Москва»</li>
+        </ul>
+
+        <p>Всё — бесплатно. Ваше портфолио, ваш дизайн, ваши фотографии в полном качестве. Без конструкторов с водяными знаками, без абонентской платы, без ограничений по шаблонам.</p>
+
+        <p>Покажите миру свои работы. Создайте портфолио сегодня.</p>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Готовы опубликовать портфолио?</p>
+            <p><a href="https://hostingvibe.ru">hostingvibe.ru</a> — загрузите ZIP с фотографиями и получите свой адрес. Бесплатно.</p>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>Команда VibeHosting</strong></p>
+                <p>Помогаем креативным профессионалам выходить в интернет. Быстро, бесплатно, без лишнего.</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

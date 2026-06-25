@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Хлебный Дом — ремесленная пекарня-кафе в Казани</title>
+<meta name="description" content="Хлебный Дом — семейная пекарня-кафе в центре Казани. Хлеб на закваске, свежая выпечка, торты на заказ. Натуральные ингредиенты, без консервантов.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#fdf6ec;color:#2c1810;font:16px/1.65 Georgia,'Times New Roman',serif}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(253,246,236,.95);backdrop-filter:blur(10px);border-bottom:1px solid #e0cdb0}
+.header .wrap{max-width:1200px;margin:auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:24px;font-weight:700;color:#8b5e3c}
+.logo span{color:#5c7a3b}
+nav{display:flex;gap:24px;align-items:center}
+nav a{font-size:14px;font-family:Arial,sans-serif;color:#8b6e52;transition:color .2s}
+nav a:hover{color:#8b5e3c}
+.nav-btn{background:#8b5e3c;color:#fff;padding:10px 22px;border-radius:24px;font-weight:700;font-family:Arial,sans-serif;font-size:14px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:#2c1810}
+
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden;padding-top:68px}
+.hero-bg{position:absolute;inset:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(253,246,236,.93) 0%,rgba(253,246,236,.7) 50%,rgba(253,246,236,.3) 100%)}
+.hero-content{position:relative;z-index:2;max-width:600px;padding:0 24px;margin-left:max(24px,calc((100% - 1200px)/2 + 24px))}
+.hero-badge{display:inline-block;background:#f5e6d0;color:#8b5e3c;font-size:13px;font-weight:700;font-family:Arial,sans-serif;padding:6px 16px;border-radius:24px;border:1px solid #e0cdb0;margin-bottom:16px}
+.hero h1{font-size:clamp(38px,6vw,68px);line-height:.95;margin-bottom:18px;color:#2c1810}
+.hero h1 em{font-style:normal;color:#8b5e3c}
+.hero p{max-width:480px;color:#8b6e52;font-size:18px;margin-bottom:28px}
+.btn{display:inline-block;padding:14px 26px;border-radius:24px;font-weight:700;font-family:Arial,sans-serif;font-size:15px;transition:transform .2s,box-shadow .2s}
+.btn-warm{background:#8b5e3c;color:#fff;box-shadow:0 6px 24px rgba(139,94,60,.2)}
+.btn-warm:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(139,94,60,.3)}
+.btn-light{border:1px solid #e0cdb0;background:#fff9f0;color:#8b6e52}
+.btn-light:hover{border-color:#8b5e3c;color:#8b5e3c}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+section{padding:80px 0}
+.section-label{font-family:Arial,sans-serif;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#5c7a3b;margin-bottom:6px}
+h2{font-size:clamp(26px,4vw,42px);margin-bottom:40px;line-height:1.1;color:#2c1810}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.about-img{border-radius:20px;overflow:hidden;height:380px}
+.about-text p{color:#8b6e52;font-family:Arial,sans-serif;font-size:16px;line-height:1.7}
+
+.stats{background:#f5e6d0;border-top:1px solid #e0cdb0;border-bottom:1px solid #e0cdb0}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:20px}
+.stats-grid .num{font-size:34px;font-weight:700;color:#8b5e3c;display:block;font-family:Arial,sans-serif}
+.stats-grid .label{color:#8b6e52;font-size:14px;margin-top:4px;font-family:Arial,sans-serif}
+
+.menu-section h3{font-size:20px;margin:32px 0 16px;color:#8b5e3c;font-family:Arial,sans-serif;padding-bottom:8px;border-bottom:1px solid #e0cdb0}
+.menu-section h3:first-child{margin-top:0}
+.menu-list{display:grid;gap:8px}
+.menu-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:14px 20px;background:#fff;border:1px solid #e0cdb0;border-radius:12px}
+.menu-row b{font-size:15px;font-family:Arial,sans-serif}
+.menu-row span{color:#8b5e3c;font-weight:700;font-size:15px;font-family:Arial,sans-serif;white-space:nowrap}
+
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.product{border-radius:20px;overflow:hidden;background:#fff;border:1px solid #e0cdb0;box-shadow:0 4px 20px rgba(139,69,19,.06);transition:transform .25s,box-shadow .25s}
+.product:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(139,69,19,.12)}
+.product-img{height:200px;overflow:hidden}
+.product-img img{transition:transform .4s}
+.product:hover .product-img img{transform:scale(1.05)}
+.product-body{padding:20px}
+.product-name{font-size:18px;margin-bottom:6px;display:block;color:#2c1810}
+.product-desc{color:#8b6e52;font-size:14px;font-family:Arial,sans-serif;margin-bottom:10px}
+.product-price{color:#8b5e3c;font-weight:700;font-size:16px;font-family:Arial,sans-serif}
+
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.value-card{padding:32px;background:#fff;border:1px solid #e0cdb0;border-radius:20px;box-shadow:0 2px 12px rgba(139,69,19,.04)}
+.value-icon{width:52px;height:52px;border-radius:50%;background:#f5e6d0;display:grid;place-items:center;font-size:24px;margin-bottom:16px}
+.value-card b{font-size:18px;display:block;margin-bottom:8px;color:#2c1810}
+.value-card p{color:#8b6e52;font-family:Arial,sans-serif;font-size:15px}
+
+.reviews-bg{background:#f5e6d0;border-top:1px solid #e0cdb0;border-bottom:1px solid #e0cdb0}
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.review{padding:28px;background:#fff;border:1px solid #e0cdb0;border-radius:20px}
+.review-stars{color:#f59e0b;margin-bottom:12px;font-size:14px}
+.review-name{font-weight:700;margin-bottom:8px;display:block;color:#2c1810}
+.review-text{color:#8b6e52;font-family:Arial,sans-serif;font-size:15px;font-style:italic}
+
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-item{border-radius:16px;overflow:hidden;height:220px;box-shadow:0 2px 12px rgba(139,69,19,.08)}
+.gallery-item img{transition:transform .4s}
+.gallery-item:hover img{transform:scale(1.06)}
+
+.order-box{background:linear-gradient(135deg,#fef3e2,#fde8c8);border:1px solid #e0cdb0;border-radius:24px;padding:50px;text-align:center;box-shadow:0 6px 30px rgba(139,69,19,.08)}
+.order-box h2{margin-bottom:10px}
+.order-box p{color:#8b6e52;max-width:520px;margin:0 auto 28px;font-family:Arial,sans-serif}
+.form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;max-width:700px;margin:0 auto;align-items:end}
+input,select{width:100%;padding:14px 18px;background:#fff;border:1px solid #e0cdb0;border-radius:12px;color:#2c1810;font-size:15px;font-family:Arial,sans-serif;outline:none;transition:border-color .2s}
+input:focus,select:focus{border-color:#8b5e3c}
+input::placeholder{color:#b09880}
+
+.contacts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.contact-card{padding:28px;background:#fff;border:1px solid #e0cdb0;border-radius:20px;box-shadow:0 2px 12px rgba(139,69,19,.04)}
+.contact-card b{font-size:16px;display:block;margin-bottom:8px;color:#5c7a3b}
+.contact-card p{color:#8b6e52;font-family:Arial,sans-serif;font-size:15px}
+
+.footer{padding:24px 0 40px;text-align:center;color:#b09880;font-size:14px;font-family:Arial,sans-serif}
+.footer a{color:#8b5e3c;font-weight:700}
+
+@media(max-width:1200px){.products-grid,.gallery-grid{grid-template-columns:repeat(2,1fr)}.about-grid{grid-template-columns:1fr}}
+@media(max-width:768px){nav{display:none}.hamburger{display:flex}.hero-content{margin-left:auto;margin-right:auto;max-width:none}.hero h1{font-size:36px}.stats-grid,.values-grid,.reviews-grid,.contacts-grid,.products-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.form-row{grid-template-columns:1fr}.order-box{padding:32px 20px}section{padding:60px 0}.about-img{height:260px}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:30px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="logo">Хлебный <span>Дом</span></div>
+    <nav>
+      <a href="#assortment">Ассортимент</a>
+      <a href="#prices">Цены</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a class="nav-btn" href="#order">Заказать торт</a>
+    </nav>
+    <button class="hamburger" onclick="document.querySelector('nav').classList.toggle('open')" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1600&q=80" alt="Свежий хлеб" loading="eager"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Свежая выпечка каждый день с любовью</div>
+    <h1>Живой хлеб <em>каждое утро</em></h1>
+    <p>Семейная пекарня-кафе в центре Казани. Печём хлеб и выпечку по традиционным рецептам из натуральных ингредиентов, без консервантов. Закваска собственного приготовления.</p>
+    <div class="hero-btns">
+      <a class="btn btn-warm" href="#order">Заказать торт</a>
+      <a class="btn btn-light" href="#assortment">Наш ассортимент</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap" style="padding-top:48px;padding-bottom:48px">
+    <div class="stats-grid">
+      <div><span class="num">07:00</span><span class="label">свежая выпечка каждый день</span></div>
+      <div><span class="num">40+</span><span class="label">видов хлеба и выпечки</span></div>
+      <div><span class="num">0</span><span class="label">консервантов в составе</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">О пекарне</div>
+        <h2>Традиции и натуральность</h2>
+        <p>Мука высшего сорта от местных производителей, закваска собственного приготовления. Уютное кафе с ароматным кофе и свежей выпечкой прямо из печи. Торты на заказ за 24 часа по телефону или в Telegram.</p>
+      </div>
+      <div class="about-img"><img src="https://images.unsplash.com/photo-1556217477-d325251ece38?w=800&q=75" alt="Пекарь с хлебом" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="assortment">
+  <div class="wrap">
+    <div class="section-label">Витрина</div>
+    <h2>Наш ассортимент</h2>
+    <div class="products-grid">
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1549931319-a545753467c8?w=600&q=75" alt="Хлеб на закваске" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Хлеб на закваске</span><span class="product-desc">Домашний, бородинский, чиабатта, багет</span><span class="product-price">от 120 &#8381;</span></div>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=600&q=75" alt="Круассаны" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Круассаны</span><span class="product-desc">Классические, с миндальным кремом</span><span class="product-price">от 150 &#8381;</span></div>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?w=600&q=75" alt="Эклеры" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Эклеры и пирожные</span><span class="product-desc">Ваниль, шоколад, фисташка</span><span class="product-price">от 180 &#8381;</span></div>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=600&q=75" alt="Торты на заказ" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Торты на заказ</span><span class="product-desc">Наполеон, медовик, чизкейк</span><span class="product-price">от 1 100 &#8381;/кг</span></div>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?w=600&q=75" alt="Кофе с круассаном" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Кофе и напитки</span><span class="product-desc">Капучино, латте, фруктовый чай, лимонад</span><span class="product-price">от 180 &#8381;</span></div>
+      </div>
+      <div class="product">
+        <div class="product-img"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=600&q=75" alt="Витрина пекарни" loading="lazy"></div>
+        <div class="product-body"><span class="product-name">Пирожки и сдоба</span><span class="product-desc">Капуста, мясо, яблоко, ватрушки, синнабоны</span><span class="product-price">от 90 &#8381;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prices">
+  <div class="wrap">
+    <div class="section-label">Цены</div>
+    <h2>Подробный прайс</h2>
+    <div class="menu-section">
+      <h3>Хлеб</h3>
+      <div class="menu-list">
+        <div class="menu-row"><b>Хлеб на закваске &laquo;Домашний&raquo; (700г)</b><span>180 &#8381;</span></div>
+        <div class="menu-row"><b>Бородинский классический (500г)</b><span>120 &#8381;</span></div>
+        <div class="menu-row"><b>Чиабатта итальянская</b><span>150 &#8381;</span></div>
+        <div class="menu-row"><b>Багет французский</b><span>130 &#8381;</span></div>
+        <div class="menu-row"><b>Хлеб с оливками и розмарином</b><span>220 &#8381;</span></div>
+      </div>
+      <h3>Выпечка</h3>
+      <div class="menu-list">
+        <div class="menu-row"><b>Круассан классический</b><span>150 &#8381;</span></div>
+        <div class="menu-row"><b>Круассан с миндальным кремом</b><span>190 &#8381;</span></div>
+        <div class="menu-row"><b>Синнабон с корицей</b><span>210 &#8381;</span></div>
+        <div class="menu-row"><b>Ватрушка с творогом</b><span>120 &#8381;</span></div>
+        <div class="menu-row"><b>Пирожки (капуста / мясо / яблоко)</b><span>90 &#8381;</span></div>
+        <div class="menu-row"><b>Эклер (ваниль / шоколад / фисташка)</b><span>180 &#8381;</span></div>
+      </div>
+      <h3>Торты на заказ</h3>
+      <div class="menu-list">
+        <div class="menu-row"><b>Наполеон (1 кг)</b><span>1 200 &#8381;</span></div>
+        <div class="menu-row"><b>Медовик (1 кг)</b><span>1 100 &#8381;</span></div>
+        <div class="menu-row"><b>Чизкейк Нью-Йорк (1 кг)</b><span>1 400 &#8381;</span></div>
+      </div>
+      <h3>Напитки</h3>
+      <div class="menu-list">
+        <div class="menu-row"><b>Капучино</b><span>220 &#8381;</span></div>
+        <div class="menu-row"><b>Латте</b><span>250 &#8381;</span></div>
+        <div class="menu-row"><b>Чай фруктовый</b><span>180 &#8381;</span></div>
+        <div class="menu-row"><b>Лимонад домашний</b><span>200 &#8381;</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-label">Принципы</div>
+    <h2>Наши ценности</h2>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon">&#127806;</div>
+        <b>Без консервантов</b>
+        <p>Только натуральные ингредиенты. Хлеб хранится 2&ndash;3 дня &mdash; как настоящий хлеб и должен.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">&#127969;</div>
+        <b>Местные поставщики</b>
+        <p>Мука от местных производителей, яйца из фермерских хозяйств, молоко от местных ферм.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">&#9200;</div>
+        <b>Заказ за 24 часа</b>
+        <p>Торты и фигурные изделия принимаем за сутки. По телефону или в Telegram.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="reviews-bg" id="reviews">
+  <div class="wrap" style="padding-top:80px;padding-bottom:80px">
+    <div class="section-label">Гости</div>
+    <h2>Отзывы</h2>
+    <div class="reviews-grid">
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Алина Ф.</span>
+        <span class="review-text">&laquo;Заказывала медовик на день рождения &mdash; все гости попросили контакты. Вкуснее, чем у бабушки.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Рустем Г.</span>
+        <span class="review-text">&laquo;Беру ржаной хлеб каждое утро по дороге на работу. Дома другой уже не едим &mdash; стал зависимостью.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Марина С.</span>
+        <span class="review-text">&laquo;Круассаны как в Париже. Не преувеличиваю &mdash; я была в Париже и сравниваю честно.&raquo;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="wrap">
+    <div class="section-label">Фото</div>
+    <h2>Наша пекарня</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517433670267-08bbd4be890f?w=500&q=75" alt="Витрина пекарни" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?w=500&q=75" alt="Интерьер кафе" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1549931319-a545753467c8?w=500&q=75" alt="Хлеб крупный план" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1555507036-ab1f4038024a?w=500&q=75" alt="Круассаны" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="order">
+  <div class="wrap">
+    <div class="order-box">
+      <div class="section-label">Заказ</div>
+      <h2>Закажите торт к празднику</h2>
+      <p>Оставьте заявку &mdash; обсудим дизайн, вкус и детали. Принимаем заказы за 2&ndash;7 дней. Также можно заказать в Telegram.</p>
+      <div class="form-row">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <a class="btn btn-warm" href="#" style="white-space:nowrap;padding:14px 28px">Позвоните мне</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <div class="wrap">
+    <div class="section-label">Где нас найти</div>
+    <h2>Контакты</h2>
+    <div class="contacts-grid">
+      <div class="contact-card"><b>Адрес</b><p>Казань, ул. Баумана, 42</p></div>
+      <div class="contact-card"><b>Часы работы</b><p>Ежедневно: 07:00 &ndash; 21:00</p></div>
+      <div class="contact-card"><b>Телефон / Telegram</b><p>+7 (843) 222-33-44</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">Хлебный Дом &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></div>
+</footer>
+
+</body>
+</html>

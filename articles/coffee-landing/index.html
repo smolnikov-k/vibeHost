@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать лендинг для кофейни с формой заказа | VibeHosting</title>
+    <meta name="description" content="Пошаговый гайд: создаём красивый лендинг для кофейни с онлайн-формой заказа. HTML, CSS, публикация на VibeHosting бесплатно. Заявки прямо в Telegram.">
+    <meta name="keywords" content="лендинг кофейня, сайт для кофейни, форма заказа кофе, создать сайт кофейни, VibeHosting">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .table-of-contents { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+        .table-of-contents ul { list-style: none; padding-left: 0; }
+        .table-of-contents li { margin-bottom: 6px; }
+        .table-of-contents a { color: #059669; text-decoration: none; }
+        .table-of-contents a:hover { text-decoration: underline; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <h1>Как сделать лендинг для кофейни с формой заказа</h1>
+
+        <p><strong>Время чтения:</strong> 18 минут &nbsp;|&nbsp; <strong>Уровень:</strong> начинающий &nbsp;|&nbsp; <strong>Результат:</strong> лендинг с формой заказа, заявки в Telegram</p>
+
+        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80" alt="Уютная кофейня с барной стойкой и посетителями">
+
+        <p>Кофейня — это атмосфера. Аромат свежего зерна, тёплый свет, уютные столики. Но вот проблема: эту атмосферу невозможно передать через карточку в 2GIS. А Instagram-посты теряются в ленте через час.</p>
+
+        <p>Вам нужен лендинг — одностраничный сайт, который покажет вашу кофейню, меню, расскажет историю и позволит клиентам сделать предзаказ прямо с телефона. Заявки будут приходить вам в Telegram. Без программистов, без абонентской платы.</p>
+
+        <p>В этой статье мы пройдём весь путь: от идеи до работающего сайта на своём адресе.</p>
+
+        <div class="table-of-contents">
+            <strong>Содержание:</strong>
+            <ul>
+                <li><a href="#why">Зачем кофейне нужен лендинг</a></li>
+                <li><a href="#what">Что должно быть на сайте кофейни</a></li>
+                <li><a href="#design">Выбираем дизайн и стиль</a></li>
+                <li><a href="#create">Пошаговое создание лендинга</a></li>
+                <li><a href="#form">Форма заказа с отправкой в Telegram</a></li>
+                <li><a href="#publish">Публикация на VibeHosting</a></li>
+                <li><a href="#promote">Продвижение кофейни через сайт</a></li>
+                <li><a href="#summary">Итоги</a></li>
+            </ul>
+        </div>
+
+        <h2 id="why">Зачем кофейне нужен собственный лендинг</h2>
+
+        <p>Большинство владельцев кофеен считают, что Instagram — это достаточно. Красивые фото латте-арта, сторис с новинками. Но у страницы в соцсети есть серьёзные ограничения:</p>
+
+        <ul>
+            <li><strong>Нельзя сделать заказ.</strong> В Instagram нет формы предзаказа. Клиенту нужно писать в директ, ждать ответа, обсуждать детали. Это трение. Трение = потерянные заказы.</li>
+            <li><strong>Нет в поисковой выдаче.</strong> Когда человек гуглит «кофейня рядом» или «кофе с собой на Арбате», Google показывает сайты, а не Instagram-аккаунты.</li>
+            <li><strong>Ограниченная информация.</strong> В Instagram негде разместить полное меню, адрес с картой, историю заведения и форму заказа одновременно. А на лендинге — можно.</li>
+            <li><strong>Профессиональное впечатление.</strong> Свой сайт — это знак, что вы серьёзно относитесь к бизнесу. Для корпоративных заказов, кейтеринга, сотрудничества — это обязательный атрибут.</li>
+            <li><strong>QR-код на стойке.</strong> Клиент сканирует QR на стойке или на стаканчике — и видит меню, спецпредложения, может сделать предзаказ на завтра.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Практика:</strong> кофейни, у которых есть сайт с онлайн-формой заказа, получают на 20-30% больше предзаказов на вынос. Клиенту проще заполнить форму за 30 секунд, чем звонить или писать в директ.
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80" alt="Чашка капучино с латте-артом на деревянном столе">
+
+        <h2 id="what">Что должно быть на сайте кофейни</h2>
+
+        <p>Лендинг — это одна страница с чёткой структурой. Каждый блок решает конкретную задачу. Вот что нужно включить:</p>
+
+        <h3>1. Hero-секция: первое впечатление</h3>
+        <p>Крупная фотография интерьера или фирменного напитка. Название кофейни. Короткий слоган. И кнопка «Сделать заказ» или «Наше меню». У клиента есть 3 секунды — покажите лучшее сразу.</p>
+
+        <h3>2. Меню</h3>
+        <p>Необязательно всё меню — хватит основных категорий с ценами:</p>
+        <ul>
+            <li>Эспрессо, американо, капучино, латте — базовый кофе</li>
+            <li>Авторские напитки — ваша фишка, то, ради чего приходят</li>
+            <li>Десерты и выпечка — то, что берут к кофе</li>
+            <li>Завтраки — если есть</li>
+        </ul>
+
+        <h3>3. О кофейне</h3>
+        <p>2-3 предложения: когда открылись, какое зерно используете, в чём ваша особенность. Не нужно писать роман — достаточно передать дух заведения.</p>
+
+        <h3>4. Фотогалерея</h3>
+        <p>Интерьер, напитки, выпечка, атмосфера. 4-6 фото. Живые, не стоковые. Снимите на телефон при хорошем освещении.</p>
+
+        <h3>5. Форма предзаказа</h3>
+        <p>Имя, телефон, что хотите заказать, к какому времени. Клиент заполняет за 30 секунд — вы получаете заявку в Telegram и готовите заказ к приходу.</p>
+
+        <h3>6. Адрес и контакты</h3>
+        <p>Точный адрес, карта, время работы, телефон, ссылки на соцсети.</p>
+
+        <h3>7. Спецпредложения (опционально)</h3>
+        <p>Бизнес-ланч, скидка на вынос до 10:00, карта лояльности. Если у вас есть акция — покажите её на сайте.</p>
+
+        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80" alt="Интерьер стильной кофейни с деревянной мебелью">
+
+        <h2 id="design">Выбираем дизайн и стиль</h2>
+
+        <p>Дизайн лендинга кофейни должен передавать атмосферу вашего заведения. Вот несколько подходов:</p>
+
+        <h3>Тёплый и уютный</h3>
+        <p>Бежевые и коричневые тона, скруглённые элементы, рукописные шрифты. Подходит для камерных кофеен в жилых районах.</p>
+
+        <h3>Минималистичный</h3>
+        <p>Белый фон, чёрный текст, акцентные фотографии. Подходит для specialty-кофеен, которые ставят зерно на первый план.</p>
+
+        <h3>Яркий и молодёжный</h3>
+        <p>Насыщенные цвета, крупная типографика, анимации. Подходит для кофеен в бизнес-центрах или студенческих районах.</p>
+
+        <p>Мы выберем тёплый стиль — он универсален и хорошо передаёт ощущение уюта. Но вы можете адаптировать цвета под себя.</p>
+
+        <div class="highlight">
+            <strong>Совет:</strong> определите 2-3 основных цвета вашего бренда. Для кофейни классика — коричневый (#6F4E37), кремовый (#FFF8F0), акцент — терракотовый (#C75B39) или зелёный (#2D6A4F). Используйте их на сайте.
+        </div>
+
+        <h2 id="create">Пошаговое создание лендинга</h2>
+
+        <p>Создаём лендинг для кофейни с нуля. Всё, что нужно — текстовый редактор и фотографии.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте структуру проекта</strong></p>
+            <p>Создайте папку <code>coffee-site</code> на рабочем столе. Внутри будет один файл <code>index.html</code> и фотографии.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Базовый HTML и стили</strong></p>
+            <p>Вот полный CSS для тёплого дизайна кофейни:</p>
+<pre><code>* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background: #FFF8F0;
+    color: #3D2B1F;
+    line-height: 1.8;
+}
+
+.hero {
+    background: linear-gradient(rgba(61,43,31,0.5), rgba(61,43,31,0.7)),
+                url('hero-coffee.jpg') center/cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: #FFF8F0;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    margin-bottom: 24px;
+    opacity: 0.9;
+}
+
+.btn {
+    display: inline-block;
+    background: #C75B39;
+    color: white;
+    padding: 14px 36px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #A84B30;
+}
+
+.section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+.section h2 {
+    font-size: 2rem;
+    color: #6F4E37;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+/* Карточки меню */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.menu-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.menu-card h3 {
+    color: #6F4E37;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e5d5c5;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-price {
+    color: #C75B39;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Галерея */
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.gallery img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* О кофейне */
+.about {
+    background: #6F4E37;
+    color: #FFF8F0;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.about h2 {
+    color: #FFF8F0;
+}
+
+.about p {
+    max-width: 600px;
+    margin: 0 auto 16px;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Форма */
+.order-form {
+    max-width: 500px;
+    margin: 0 auto;
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.order-form input,
+.order-form select,
+.order-form textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 16px;
+    border: 1px solid #e5d5c5;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #FFF8F0;
+}
+
+.order-form input:focus,
+.order-form select:focus,
+.order-form textarea:focus {
+    outline: none;
+    border-color: #C75B39;
+}
+
+/* Контакты */
+.contacts {
+    text-align: center;
+    background: white;
+    padding: 60px 20px;
+}
+
+.contacts a {
+    color: #C75B39;
+    text-decoration: none;
+}
+
+.contacts a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    text-align: center;
+    padding: 24px;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 640px) {
+    .hero h1 { font-size: 2.2rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+}</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Hero-секция</strong></p>
+            <p>Первый экран с фотографией, названием и призывом к действию:</p>
+<pre><code>&lt;section class="hero"&gt;
+    &lt;div&gt;
+        &lt;h1&gt;Coffee Lab&lt;/h1&gt;
+        &lt;p&gt;Specialty-кофе и свежая выпечка на Покровке&lt;/p&gt;
+        &lt;a href="#order" class="btn"&gt;Сделать предзаказ&lt;/a&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+            <p>Фоновое изображение задано в CSS через <code>url('hero-coffee.jpg')</code>. Подготовьте красивое фото интерьера или чашки кофе размером не менее 1920x1080 пикселей.</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80" alt="Процесс приготовления кофе — бариста за работой">
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Блок меню</strong></p>
+            <p>Разбиваем меню на категории — карточками:</p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Наше меню&lt;/h2&gt;
+    &lt;div class="menu-grid"&gt;
+        &lt;div class="menu-card"&gt;
+            &lt;h3&gt;Кофе&lt;/h3&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Эспрессо&lt;/span&gt;
+                &lt;span class="menu-price"&gt;150 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Американо&lt;/span&gt;
+                &lt;span class="menu-price"&gt;200 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Капучино&lt;/span&gt;
+                &lt;span class="menu-price"&gt;280 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Латте&lt;/span&gt;
+                &lt;span class="menu-price"&gt;300 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Флэт уайт&lt;/span&gt;
+                &lt;span class="menu-price"&gt;320 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Раф&lt;/span&gt;
+                &lt;span class="menu-price"&gt;350 ₽&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="menu-card"&gt;
+            &lt;h3&gt;Авторские напитки&lt;/h3&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Лавандовый латте&lt;/span&gt;
+                &lt;span class="menu-price"&gt;380 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Кокосовый айс-латте&lt;/span&gt;
+                &lt;span class="menu-price"&gt;360 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Матча с миндальным молоком&lt;/span&gt;
+                &lt;span class="menu-price"&gt;400 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Бамбл (эспрессо + апельсин)&lt;/span&gt;
+                &lt;span class="menu-price"&gt;340 ₽&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="menu-card"&gt;
+            &lt;h3&gt;Выпечка и десерты&lt;/h3&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Круассан с миндалём&lt;/span&gt;
+                &lt;span class="menu-price"&gt;220 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Морковный торт&lt;/span&gt;
+                &lt;span class="menu-price"&gt;280 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Чизкейк Нью-Йорк&lt;/span&gt;
+                &lt;span class="menu-price"&gt;320 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Банановый хлеб&lt;/span&gt;
+                &lt;span class="menu-price"&gt;180 ₽&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class="menu-card"&gt;
+            &lt;h3&gt;Завтраки (до 12:00)&lt;/h3&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Тост с авокадо и яйцом&lt;/span&gt;
+                &lt;span class="menu-price"&gt;380 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Гранола с йогуртом&lt;/span&gt;
+                &lt;span class="menu-price"&gt;300 ₽&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div class="menu-item"&gt;
+                &lt;span&gt;Сырники со сметаной&lt;/span&gt;
+                &lt;span class="menu-price"&gt;320 ₽&lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Блок «О кофейне»</strong></p>
+<pre><code>&lt;section class="about"&gt;
+    &lt;div class="section"&gt;
+        &lt;h2&gt;О нас&lt;/h2&gt;
+        &lt;p&gt;Coffee Lab — это specialty-кофейня на Покровке.
+        Мы обжариваем зерно сами и готовим каждую чашку
+        с любовью к деталям.&lt;/p&gt;
+        &lt;p&gt;Наше зерно — из Эфиопии, Колумбии и Бразилии.
+        Мы работаем с фермерами напрямую, обжариваем
+        в micro-roastery на Чистых прудах и доставляем
+        в кофейню каждое утро.&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">6</span><strong>Фотогалерея</strong></p>
+<pre><code>&lt;section class="section"&gt;
+    &lt;h2&gt;Атмосфера&lt;/h2&gt;
+    &lt;div class="gallery"&gt;
+        &lt;img src="photo-1.jpg" alt="Интерьер Coffee Lab"&gt;
+        &lt;img src="photo-2.jpg" alt="Латте-арт"&gt;
+        &lt;img src="photo-3.jpg" alt="Свежие круассаны"&gt;
+        &lt;img src="photo-4.jpg" alt="Бариста готовит кофе"&gt;
+    &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+            <p>Положите фотографии в ту же папку. Снимите интерьер, напитки и выпечку при дневном свете — это лучшее освещение для фуд-фотографии на телефон.</p>
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&q=80" alt="Кофе латте в стакане на светлом фоне">
+
+        <h2 id="form">Форма заказа с отправкой в Telegram</h2>
+
+        <p>Это ключевая часть лендинга. Форма позволяет клиенту сделать предзаказ — а вам получить заявку прямо в Telegram. Рассмотрим два варианта.</p>
+
+        <h3>Вариант 1: простая форма (без бэкенда)</h3>
+
+        <p>Если вы публикуете сайт на VibeHosting, используйте встроенный <code>vibe-forms.js</code>. Он отправляет данные формы в Telegram-бот без написания серверного кода:</p>
+
+        <div class="step">
+            <p><span class="step-number">7</span><strong>Форма предзаказа</strong></p>
+<pre><code>&lt;section class="section" id="order"&gt;
+    &lt;h2&gt;Предзаказ&lt;/h2&gt;
+    &lt;p style="text-align:center; color:#666; margin-bottom:24px"&gt;
+        Закажите заранее — мы приготовим к вашему приходу
+    &lt;/p&gt;
+
+    &lt;form class="order-form" id="preorder-form"&gt;
+        &lt;input type="text" name="name"
+            placeholder="Ваше имя" required&gt;
+
+        &lt;input type="tel" name="phone"
+            placeholder="Телефон" required&gt;
+
+        &lt;select name="drink" required&gt;
+            &lt;option value=""&gt;Выберите напиток&lt;/option&gt;
+            &lt;option&gt;Эспрессо (150 ₽)&lt;/option&gt;
+            &lt;option&gt;Американо (200 ₽)&lt;/option&gt;
+            &lt;option&gt;Капучино (280 ₽)&lt;/option&gt;
+            &lt;option&gt;Латте (300 ₽)&lt;/option&gt;
+            &lt;option&gt;Флэт уайт (320 ₽)&lt;/option&gt;
+            &lt;option&gt;Раф (350 ₽)&lt;/option&gt;
+            &lt;option&gt;Лавандовый латте (380 ₽)&lt;/option&gt;
+            &lt;option&gt;Матча (400 ₽)&lt;/option&gt;
+        &lt;/select&gt;
+
+        &lt;select name="extras"&gt;
+            &lt;option value=""&gt;Добавить к заказу&lt;/option&gt;
+            &lt;option&gt;Круассан с миндалём (220 ₽)&lt;/option&gt;
+            &lt;option&gt;Морковный торт (280 ₽)&lt;/option&gt;
+            &lt;option&gt;Чизкейк (320 ₽)&lt;/option&gt;
+            &lt;option&gt;Банановый хлеб (180 ₽)&lt;/option&gt;
+        &lt;/select&gt;
+
+        &lt;input type="time" name="pickup_time"
+            placeholder="К какому времени"&gt;
+
+        &lt;textarea name="comment" rows="3"
+            placeholder="Комментарий (альтернативное молоко, сироп и т.д.)"&gt;
+        &lt;/textarea&gt;
+
+        &lt;button type="submit" class="btn"
+            style="width:100%; border:none; cursor:pointer;
+                   font-family:inherit"&gt;
+            Отправить заказ
+        &lt;/button&gt;
+    &lt;/form&gt;
+&lt;/section&gt;</code></pre>
+        </div>
+
+        <p>После публикации на VibeHosting подключите <code>vibe-forms.js</code> в настройках проекта. Каждая отправка формы будет приходить вам в Telegram. Вот так выглядит сообщение:</p>
+
+        <div class="highlight">
+            <strong>Новый заказ с Coffee Lab:</strong><br>
+            Имя: Мария<br>
+            Телефон: +7 (903) 456-78-90<br>
+            Напиток: Лавандовый латте (380 ₽)<br>
+            Добавка: Круассан с миндалём (220 ₽)<br>
+            К времени: 09:30<br>
+            Комментарий: На овсяном молоке, пожалуйста
+        </div>
+
+        <h3>Вариант 2: форма с JavaScript (без VibeHosting)</h3>
+
+        <p>Если вы хотите использовать свой Telegram-бот, вот базовый пример отправки через Telegram Bot API:</p>
+
+<pre><code>&lt;script&gt;
+document.getElementById('preorder-form')
+    .addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        const text = `Новый заказ!\n`
+            + `Имя: ${form.get('name')}\n`
+            + `Тел: ${form.get('phone')}\n`
+            + `Напиток: ${form.get('drink')}\n`
+            + `Доп: ${form.get('extras')}\n`
+            + `Время: ${form.get('pickup_time')}\n`
+            + `Коммент: ${form.get('comment')}`;
+
+        // Замените на токен вашего бота и chat_id
+        const BOT_TOKEN = 'ВАШ_ТОКЕН';
+        const CHAT_ID = 'ВАШ_CHAT_ID';
+
+        await fetch(
+            `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,
+            {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: text
+                })
+            }
+        );
+
+        e.target.innerHTML = '&lt;p style="text-align:center;'
+            + 'color:#2D6A4F;font-size:1.2rem;padding:40px"&gt;'
+            + 'Спасибо! Ваш заказ принят. '
+            + 'Мы приготовим его к указанному времени.&lt;/p&gt;';
+    });
+&lt;/script&gt;</code></pre>
+
+        <div class="highlight">
+            <strong>Важно:</strong> использование Telegram Bot API напрямую из клиентского кода небезопасно — токен бота видно всем. Рекомендуем использовать <code>vibe-forms.js</code> на VibeHosting: он обрабатывает данные на сервере, токен бота не раскрывается, и никакого бэкенда писать не нужно.
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">8</span><strong>Контакты и адрес</strong></p>
+<pre><code>&lt;section class="contacts"&gt;
+    &lt;div class="section"&gt;
+        &lt;h2&gt;Как нас найти&lt;/h2&gt;
+        &lt;p style="font-size:1.2rem"&gt;
+            📍 Москва, ул. Покровка, 17
+        &lt;/p&gt;
+        &lt;p style="color:#666"&gt;
+            Пн—Пт: 7:30 — 21:00 &nbsp;|&nbsp;
+            Сб—Вс: 9:00 — 22:00
+        &lt;/p&gt;
+        &lt;p style="margin-top:12px"&gt;
+            📞 &lt;a href="tel:+79001234567"&gt;+7 (900) 123-45-67&lt;/a&gt;
+        &lt;/p&gt;
+        &lt;p&gt;
+            &lt;a href="https://instagram.com/coffeelab"&gt;Instagram&lt;/a&gt;
+            &nbsp;|&nbsp;
+            &lt;a href="https://t.me/coffeelab"&gt;Telegram&lt;/a&gt;
+        &lt;/p&gt;
+
+        &lt;iframe
+            src="https://yandex.ru/map-widget/v1/?ll=37.648647,55.760244
+            &amp;z=16&amp;pt=37.648647,55.760244,pm2rdm"
+            width="100%" height="300"
+            style="border:0; border-radius:12px; margin-top:24px"&gt;
+        &lt;/iframe&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;footer&gt;
+    &lt;p&gt;© 2026 Coffee Lab. Сделано на
+        &lt;a href="https://hostingvibe.ru"
+            style="color:#C75B39"&gt;VibeHosting&lt;/a&gt;
+    &lt;/p&gt;
+&lt;/footer&gt;</code></pre>
+        </div>
+
+        <h2 id="publish">Публикация на VibeHosting</h2>
+
+        <p>Сайт готов — публикуем. Это занимает 2 минуты:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Запакуйте всё в ZIP</strong></p>
+            <p>Файл <code>index.html</code> + все фотографии → в ZIP-архив. Убедитесь, что <code>index.html</code> находится в корне архива, а не внутри вложенной папки.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Загрузите на hostingvibe.ru</strong></p>
+            <p>Зарегистрируйтесь (бесплатно, без карты) → «Загрузить сайт» → перетащите ZIP.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Выберите адрес</strong></p>
+            <p>Например, <code>coffeelab</code>. Ваш лендинг будет на <strong>coffeelab.hostingvibe.ru</strong>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Подключите формы</strong></p>
+            <p>В панели управления включите <code>vibe-forms.js</code> и укажите Telegram-бот для получения заявок. Готово — теперь каждый заказ с формы приходит вам в Telegram.</p>
+        </div>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Опубликуйте лендинг кофейни бесплатно</p>
+            <p>ZIP → загрузка → свой адрес. Формы с заявками в Telegram.</p>
+            <p style="margin-top:12px"><a href="https://hostingvibe.ru">Попробовать VibeHosting →</a></p>
+        </div>
+
+        <h2 id="promote">Продвижение кофейни через сайт</h2>
+
+        <p>Сайт опубликован. Теперь нужно, чтобы о нём узнали. Вот конкретные действия:</p>
+
+        <h3>QR-код на стойке и стаканчиках</h3>
+        <p>VibeHosting автоматически генерирует QR-код для вашего сайта. Распечатайте его и разместите:</p>
+        <ul>
+            <li>На стойке у кассы — клиент сканирует, пока ждёт заказ</li>
+            <li>На стаканчиках для кофе с собой — ваш сайт уходит с клиентом на работу, в метро, в офис</li>
+            <li>На визитках — вместо длинного URL</li>
+            <li>На флаерах для раздачи в районе</li>
+        </ul>
+
+        <h3>Instagram и социальные сети</h3>
+        <ul>
+            <li>Добавьте ссылку на сайт в шапку Instagram-профиля</li>
+            <li>Делайте сторис «Предзаказ на утро → ссылка в шапке»</li>
+            <li>Фотографируйте новинки меню — и ведите на сайт за полным списком</li>
+        </ul>
+
+        <h3>Яндекс.Бизнес и Google</h3>
+        <ul>
+            <li>Добавьте кофейню в Яндекс.Бизнес — укажите ссылку на сайт</li>
+            <li>Зарегистрируйте Google My Business</li>
+            <li>Попросите постоянных клиентов оставить отзывы</li>
+        </ul>
+
+        <h3>Локальный SEO</h3>
+        <p>Ваш сайт уже оптимизирован: название кофейни, адрес и услуги в тексте. Со временем поисковики начнут показывать его по запросам вроде «кофейня на Покровке» или «кофе с собой центр Москвы».</p>
+
+        <h3>Спецпредложения и сезонные обновления</h3>
+        <p>Используйте визуальный редактор VibeHosting, чтобы быстро обновлять сайт:</p>
+        <ul>
+            <li>Добавили сезонный напиток — обновите меню за 30 секунд</li>
+            <li>Запустили акцию «3-й кофе бесплатно» — добавьте баннер на сайт</li>
+            <li>Изменили часы работы на праздники — поправьте прямо в браузере</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Лайфхак:</strong> сделайте табличку для стола «Сканируй QR → закажи кофе → мы приготовим, пока идёшь к нам». Работает для кофейни у метро или бизнес-центра.
+        </div>
+
+        <h2>Парольная защита: кейтеринг-меню для корпоратов</h2>
+
+        <p>Интересная возможность VibeHosting — парольная защита страниц. Используйте её для:</p>
+
+        <ul>
+            <li><strong>Кейтеринг-меню.</strong> Создайте отдельную страницу с корпоративным предложением и ценами. Закройте паролем. Отправляйте пароль только корпоративным клиентам.</li>
+            <li><strong>Меню для частных мероприятий.</strong> Организуете кофебрейк для конференции? Создайте страницу с меню и таймингом, защитите паролем, дайте ссылку организаторам.</li>
+        </ul>
+
+        <h2 id="summary">Итоги</h2>
+
+        <p>Мы прошли полный путь создания лендинга для кофейни:</p>
+
+        <ul>
+            <li>Разобрались, зачем кофейне нужен собственный сайт, а не только Instagram</li>
+            <li>Определили структуру: hero, меню, о кофейне, галерея, форма заказа, контакты</li>
+            <li>Написали весь HTML и CSS — тёплый дизайн с коричневыми и терракотовыми акцентами</li>
+            <li>Сделали форму предзаказа с отправкой заявок в Telegram</li>
+            <li>Опубликовали на VibeHosting: ZIP → загрузка → свой адрес → формы работают</li>
+            <li>Подготовили план продвижения: QR-коды, соцсети, локальный SEO</li>
+        </ul>
+
+        <p>Всё бесплатно. Сайт на своём адресе, формы с заявками в Telegram, QR-код для стойки и стаканчиков. Никакого программирования, никакой абонентской платы.</p>
+
+        <p>Ваша кофейня заслуживает того, чтобы её нашли. И чтобы заказ можно было сделать за 30 секунд, а не через директ.</p>
+
+        <div class="cta">
+            <p style="font-size:1.3rem; margin-bottom:12px">Готовы запустить лендинг?</p>
+            <p><a href="https://hostingvibe.ru">hostingvibe.ru</a> — загрузите ZIP, подключите формы, получайте заказы в Telegram. Бесплатно.</p>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>Команда VibeHosting</strong></p>
+                <p>Помогаем малому бизнесу выходить в интернет. Быстро, бесплатно, без лишнего.</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

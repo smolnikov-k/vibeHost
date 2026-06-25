@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fresh Cut — Мужской барбершоп в Санкт-Петербурге</title>
+  <meta name="description" content="Fresh Cut — мужской барбершоп на Петроградской стороне. Стрижки, бороды, стиль. Онлайн-запись.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #111;
+      --fg: #f4efe6;
+      --gold: #d4a843;
+      --gold-dim: rgba(212,168,67,0.12);
+      --line: #2a2318;
+      --muted: #b8ad98;
+    }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 'Segoe UI', system-ui, sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+    .w { max-width: 1080px; margin: auto; padding: 0 20px; }
+    section { padding: 0 0 56px; }
+
+    /* Header */
+    .head { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; flex-wrap: wrap; gap: 12px; }
+    .logo { font-size: 28px; font-weight: 900; letter-spacing: 0.18em; color: var(--gold); }
+    nav { display: flex; gap: 22px; color: var(--muted); font-size: 14px; text-transform: uppercase; }
+    nav a:hover { color: var(--gold); }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 480px; display: flex; align-items: center;
+      overflow: hidden; margin-bottom: 48px; border-radius: 0 0 24px 24px;
+    }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(17,17,17,0.88), rgba(17,17,17,0.65));
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 60px 20px;
+      max-width: 1080px; margin: 0 auto; width: 100%;
+    }
+    .hero h1 {
+      font-size: clamp(36px, 7vw, 64px); line-height: 0.95;
+      margin: 0 0 16px; text-transform: uppercase; font-weight: 900;
+    }
+    .hero p { color: var(--muted); max-width: 500px; font-size: 16px; line-height: 1.65; margin-bottom: 24px; }
+    .btn { display: inline-block; padding: 14px 28px; border-radius: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; background: var(--gold); color: #111; font-size: 14px; transition: transform 0.2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .ghost { display: inline-block; padding: 14px 28px; border-radius: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; border: 1px solid var(--line); background: rgba(23,23,23,0.8); color: var(--fg); font-size: 14px; }
+
+    /* Photo strip */
+    .photo-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-bottom: 48px; }
+    .photo-strip img { width: 100%; height: 220px; object-fit: cover; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 48px; }
+    .stat {
+      border: 1px solid var(--line); border-radius: 20px;
+      background: linear-gradient(180deg, #171717, #101010);
+      padding: 22px; text-align: center;
+    }
+    .stat b { display: block; font-size: 28px; color: var(--gold); margin-bottom: 4px; }
+    .stat p { color: var(--muted); font-size: 13px; }
+
+    /* Section title */
+    h2.sec { font-size: 26px; margin: 0 0 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* Why */
+    .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .why-card {
+      border: 1px solid var(--line); border-radius: 20px;
+      background: linear-gradient(180deg, #171717, #101010); padding: 22px;
+    }
+    .why-card b { font-size: 17px; display: block; margin-bottom: 8px; }
+    .why-card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* Prices */
+    .price-section { margin-bottom: 48px; }
+    .price-group-title {
+      font-size: 13px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--gold); margin: 24px 0 12px;
+    }
+    .price-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 18px; border: 1px solid var(--line); border-radius: 14px;
+      background: linear-gradient(180deg, #171717, #101010); margin-bottom: 8px;
+    }
+    .price-row b { font-size: 15px; }
+    .price-row span { color: var(--gold); font-weight: 700; white-space: nowrap; }
+
+    /* Features */
+    .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 48px; }
+    .feature {
+      border: 1px solid var(--line); border-radius: 20px;
+      background: linear-gradient(180deg, #171717, #101010); padding: 22px;
+    }
+    .feature b { font-size: 15px; display: block; margin-bottom: 6px; color: var(--gold); }
+    .feature p { color: var(--muted); font-size: 14px; }
+
+    /* Gallery */
+    .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 48px; }
+    .gallery img { width: 100%; height: 260px; object-fit: cover; border-radius: 16px; }
+
+    /* Reviews */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .review {
+      border: 1px solid var(--line); border-radius: 20px;
+      background: linear-gradient(180deg, #171717, #101010); padding: 22px;
+    }
+    .review .stars { color: #f59e0b; font-size: 14px; margin-bottom: 10px; }
+    .review b { font-size: 15px; display: block; margin-bottom: 8px; }
+    .review p { color: var(--muted); font-size: 14px; font-style: italic; line-height: 1.6; }
+
+    /* Contact */
+    .contacts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .contactbox {
+      border: 1px solid var(--line); border-radius: 20px;
+      background: linear-gradient(180deg, #171717, #101010); padding: 22px;
+    }
+    .contactbox b { font-size: 15px; display: block; margin-bottom: 6px; }
+    .contactbox p { color: var(--muted); font-size: 14px; }
+
+    /* CTA */
+    .cta {
+      padding: 40px; border-radius: 24px;
+      background: linear-gradient(135deg, #171717, #2a1f0f);
+      border: 1px solid var(--line); text-align: center; margin-bottom: 48px;
+    }
+    .cta h2 { margin-bottom: 8px; }
+    .cta p { color: var(--muted); max-width: 520px; margin: 0 auto 20px; font-size: 15px; }
+
+    /* Footer */
+    .foot { padding: 20px 0 38px; text-align: center; color: var(--muted); font-size: 14px; }
+    .foot a { color: var(--gold); }
+
+    @media (max-width: 768px) {
+      .stats, .why-grid, .reviews-grid, .contacts-grid { grid-template-columns: 1fr; }
+      .photo-strip { grid-template-columns: 1fr 1fr; }
+      .gallery { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 40px; }
+    }
+    @media (max-width: 480px) {
+      .photo-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="w">
+  <div class="head">
+    <div class="logo">FRESH CUT</div>
+    <nav>
+      <a href="#services">Услуги</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </div>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=800&h=600&fit=crop" alt="Fresh Cut barbershop">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>Мужской<br>барбершоп</h1>
+    <p>Стрижки, бороды, стиль. Петроградская сторона, Санкт-Петербург. Работаем точно, спокойно и с уважением к деталям.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a class="btn" href="#contacts">Записаться</a>
+      <a class="ghost" href="#services">Смотреть прайс</a>
+    </div>
+  </div>
+</section>
+
+<div class="w">
+
+  <!-- Photo strip -->
+  <div class="photo-strip">
+    <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=800&h=600&fit=crop" alt="Стрижка в процессе">
+    <img src="https://images.unsplash.com/photo-1585747860019-024e904e8bbb?w=800&h=600&fit=crop" alt="Инструменты барбера">
+    <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=800&h=600&fit=crop" alt="Fade стрижка">
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><b>10:00-21:00</b><p>работаем ежедневно без выходных</p></div>
+    <div class="stat"><b>3 мастера</b><p>каждый со своей специализацией</p></div>
+    <div class="stat"><b>15 мин</b><p>среднее ожидание при записи онлайн</p></div>
+  </div>
+
+  <!-- Why -->
+  <section>
+    <h2 class="sec">Почему Fresh Cut</h2>
+    <div class="why-grid">
+      <div class="why-card"><b>Чёткая форма</b><p>Работаем на точность: fade, texture, classic и beard architecture. Аккуратный финиш без случайных деталей.</p></div>
+      <div class="why-card"><b>Атмосфера</b><p>Тёмный интерьер, крепкий кофе, хороший свет. Бесплатный виски или крафтовое пиво к стрижке.</p></div>
+      <div class="why-card"><b>Без суеты</b><p>Каждая запись идёт в своём темпе. PlayStation 5 в зоне ожидания. Программа лояльности.</p></div>
+    </div>
+  </section>
+
+  <!-- Prices -->
+  <section id="services">
+    <h2 class="sec">Услуги и цены</h2>
+    <div class="price-section">
+      <div class="price-group-title">Стрижки</div>
+      <div class="price-row"><b>Мужская стрижка</b><span>1 500 &#8381;</span></div>
+      <div class="price-row"><b>Стрижка машинкой (fade/crop)</b><span>1 200 &#8381;</span></div>
+      <div class="price-row"><b>Детская стрижка (до 12 лет)</b><span>1 000 &#8381;</span></div>
+      <div class="price-row"><b>Стрижка + укладка</b><span>1 800 &#8381;</span></div>
+
+      <div class="price-group-title">Борода</div>
+      <div class="price-row"><b>Моделирование бороды</b><span>800 &#8381;</span></div>
+      <div class="price-row"><b>Королевское бритьё (опасная бритва)</b><span>1 200 &#8381;</span></div>
+      <div class="price-row"><b>Стрижка + борода (комбо)</b><span>2 000 &#8381;</span></div>
+
+      <div class="price-group-title">Уход</div>
+      <div class="price-row"><b>Камуфляж седины</b><span>1 500 &#8381;</span></div>
+      <div class="price-row"><b>Тонирование волос</b><span>2 000 &#8381;</span></div>
+      <div class="price-row"><b>Чёрная маска для лица</b><span>500 &#8381;</span></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <div class="features-grid">
+    <div class="feature"><b>Бесплатный виски или пиво</b><p>К каждой стрижке — напиток на выбор</p></div>
+    <div class="feature"><b>PlayStation 5</b><p>В зоне ожидания — FIFA, Mortal Kombat</p></div>
+    <div class="feature"><b>Онлайн-запись в 2 клика</b><p>Выбери мастера и время без звонков</p></div>
+    <div class="feature"><b>Каждая 5-я стрижка -50%</b><p>Программа лояльности для постоянных</p></div>
+  </div>
+
+  <!-- Gallery -->
+  <section id="gallery">
+    <h2 class="sec">Галерея</h2>
+    <div class="gallery">
+      <img src="https://images.unsplash.com/photo-1519500528352-2d1460418d41?w=800&h=600&fit=crop" alt="Бритьё опасной бритвой">
+      <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=800&h=600&fit=crop" alt="Клиент в кресле">
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section>
+    <h2 class="sec">Отзывы</h2>
+    <div class="reviews-grid">
+      <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Илья</b><p>Редкий случай, когда стрижка выглядит лучше не только в кресле, но и через две недели после визита.</p></div>
+      <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Роман</b><p>Пришёл по рекомендации и понял, что здесь умеют слышать, а не просто стричь "как обычно".</p></div>
+      <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><b>Максим</b><p>Сильная атмосфера и такой же сильный сервис. Записываюсь только сюда.</p></div>
+    </div>
+  </section>
+
+  <!-- Contacts -->
+  <section id="contacts">
+    <h2 class="sec">Расположение</h2>
+    <div class="contacts-grid">
+      <div class="contactbox"><b>Адрес</b><p>СПб, Большой проспект П.С., 42</p></div>
+      <div class="contactbox"><b>Часы работы</b><p>Ежедневно, 10:00-21:00</p></div>
+      <div class="contactbox"><b>Телефон</b><p>+7 (812) 555-40-40</p></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2 class="sec" style="margin-bottom:8px;">Запишись онлайн</h2>
+    <p>Выбери удобное время и приходи в барбершоп, где к мужской стрижке относятся серьёзно.</p>
+    <a class="btn" href="#">Записаться</a>
+  </div>
+
+  <div class="foot">Fresh Cut &copy; 2026 &mdash; Сайт на <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></div>
+</div>
+
+</body>
+</html>

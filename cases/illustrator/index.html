@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мария Лесная — Иллюстратор и художник</title>
+  <meta name="description" content="Портфолио Марии Лесной: иллюстрации для книг, брендов и digital-проектов. Детская иллюстрация, editorial, айдентика, digital art.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0a0a0a;
+      --fg: #fafafa;
+      --muted: #a1a1aa;
+      --line: #27272a;
+      --yellow: #facc15;
+      --pink: #f472b6;
+      --blue: #38bdf8;
+    }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.6 'Segoe UI', system-ui, sans-serif; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; height: auto; }
+    .w { max-width: 1100px; margin: auto; padding: 0 20px; }
+    section { padding: 0 0 56px; }
+
+    /* Top */
+    .top {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 22px 0; flex-wrap: wrap; gap: 12px;
+    }
+    .brand { font-weight: 900; letter-spacing: 0.16em; font-size: 18px; }
+    .nav { display: flex; gap: 22px; color: var(--muted); font-size: 14px; }
+    .nav a:hover { color: var(--yellow); }
+    .pill {
+      padding: 8px 14px; border-radius: 999px;
+      background: rgba(250,204,21,0.1); border: 1px solid rgba(250,204,21,0.24);
+      color: var(--yellow); font-weight: 700; font-size: 13px;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 480px; display: flex; align-items: center;
+      overflow: hidden; margin-bottom: 56px;
+    }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(10,10,10,0.88), rgba(10,10,10,0.7));
+    }
+    .hero-content {
+      position: relative; z-index: 2; padding: 60px 20px;
+      max-width: 1100px; margin: 0 auto; width: 100%;
+    }
+    .hero h1 {
+      font-size: clamp(48px, 10vw, 96px); line-height: 0.9;
+      margin: 0 0 16px; letter-spacing: 0.03em; font-weight: 900;
+    }
+    .hero p { color: var(--muted); max-width: 520px; font-size: 16px; line-height: 1.65; margin-bottom: 24px; }
+    .btn { display: inline-block; padding: 14px 24px; border-radius: 14px; font-weight: 800; background: linear-gradient(135deg, var(--yellow), #fb7185); color: #111; font-size: 14px; transition: transform 0.2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn2 { display: inline-block; padding: 14px 24px; border-radius: 14px; font-weight: 800; border: 1px solid var(--line); background: #111114; color: var(--fg); font-size: 14px; }
+
+    /* Photo grid */
+    .photo-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;
+      margin-bottom: 56px;
+    }
+    .photo-grid img { width: 100%; height: 220px; object-fit: cover; }
+
+    /* Cards */
+    .card-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      border: 1px solid var(--line); border-radius: 22px;
+      background: #111114; padding: 22px; display: flex; flex-direction: column; gap: 10px;
+    }
+    .card b { font-size: 18px; }
+    .card p { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    /* Services */
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .service {
+      border: 1px solid var(--line); border-radius: 22px;
+      background: #111114; padding: 22px;
+    }
+    .service b { font-size: 17px; display: block; margin-bottom: 8px; }
+    .service p { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+    .service .price { color: var(--yellow); font-weight: 700; font-size: 15px; }
+
+    /* Clients */
+    .logos {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;
+    }
+    .logos div {
+      padding: 16px; border: 1px solid var(--line); border-radius: 14px;
+      background: #0f0f10; text-align: center; font-weight: 700; font-size: 14px;
+    }
+
+    /* Manifesto */
+    .manifesto {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+      border: 1px solid var(--line); border-radius: 22px;
+      background: linear-gradient(135deg, rgba(244,114,182,0.06), rgba(56,189,248,0.06));
+      padding: 32px; margin-bottom: 56px;
+    }
+    .manifesto h2 { font-size: 24px; margin-bottom: 12px; }
+    .manifesto p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+
+    /* Quotes */
+    .quotes-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+    }
+    .quote {
+      border: 1px solid var(--line); border-radius: 22px;
+      background: #111114; padding: 22px;
+    }
+    .quote b { font-size: 14px; display: block; margin-bottom: 8px; color: var(--yellow); }
+    .quote p { color: var(--muted); font-size: 14px; font-style: italic; line-height: 1.65; }
+
+    /* Contact */
+    .contacts-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .contactbox {
+      border: 1px solid var(--line); border-radius: 22px;
+      background: #111114; padding: 22px;
+    }
+    .contactbox b { font-size: 15px; display: block; margin-bottom: 6px; }
+    .contactbox p { color: var(--muted); font-size: 14px; }
+
+    /* Footer */
+    .foot { padding: 20px 0 38px; color: var(--muted); text-align: center; font-size: 14px; }
+    .foot a { color: var(--yellow); }
+
+    h2.sec-title { font-size: 28px; margin: 0 0 20px; }
+
+    @media (max-width: 768px) {
+      .photo-grid { grid-template-columns: 1fr 1fr; }
+      .card-grid, .services-grid, .quotes-grid, .contacts-grid { grid-template-columns: 1fr; }
+      .logos { grid-template-columns: repeat(3, 1fr); }
+      .manifesto { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 48px; }
+    }
+    @media (max-width: 480px) {
+      .photo-grid { grid-template-columns: 1fr; }
+      .logos { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="w">
+  <div class="top">
+    <div class="brand">МАРИЯ / АРТ</div>
+    <div class="nav">
+      <a href="#works">Работы</a>
+      <a href="#services">Услуги</a>
+      <a href="#contacts">Контакты</a>
+    </div>
+    <div class="pill">Открыта к заказам</div>
+  </div>
+</div>
+
+<!-- Hero with photo -->
+<section class="hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&h=600&fit=crop" alt="Краски и палитра">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1>МАРИЯ<br>ЛЕСНАЯ</h1>
+    <p>Иллюстратор и художник. Создаю иллюстрации для книг, брендов и digital-проектов. Люблю сочетать дерзкий цвет, пластичную форму и сильный характер персонажей.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a class="btn" href="#contacts">Обсудить проект</a>
+      <a class="btn2" href="#works">Смотреть портфолио</a>
+    </div>
+  </div>
+</section>
+
+<!-- Photo grid -->
+<div class="w">
+  <div class="photo-grid">
+    <img src="https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&h=600&fit=crop" alt="Художник за работой">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop" alt="Арт-студия">
+    <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&h=600&fit=crop" alt="Акварель крупным планом">
+  </div>
+</div>
+
+<!-- Works -->
+<section class="w" id="works">
+  <h2 class="sec-title">Направления работы</h2>
+  <div class="card-grid">
+    <div class="card">
+      <b>Детская книжная иллюстрация</b>
+      <p>Тёплые акварельные текстуры, уютные персонажи. Обложки, серии разворотов и визуальный ритм книги.</p>
+    </div>
+    <div class="card">
+      <b>Editorial / журнальная</b>
+      <p>Концептуальные иллюстрации для СМИ и медиа. Обложки, колонки, digital-спецпроекты.</p>
+    </div>
+    <div class="card">
+      <b>Брендинг и айдентика</b>
+      <p>Паттерны, иконки, фирменные персонажи. Key visuals и campaign art для запусков.</p>
+    </div>
+    <div class="card">
+      <b>Digital art</b>
+      <p>Иллюстрации для сайтов, приложений, соцсетей. Современный визуал для digital-продуктов.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Digital art photo -->
+<div class="w" style="margin-bottom:56px;">
+  <img src="https://images.unsplash.com/photo-1572044162444-ad60f128bdea?w=800&h=600&fit=crop" alt="Digital art на планшете" style="width:100%;height:280px;object-fit:cover;border-radius:22px;border:1px solid var(--line);">
+</div>
+
+<!-- Services -->
+<section class="w" id="services">
+  <h2 class="sec-title">Стоимость</h2>
+  <div class="services-grid">
+    <div class="service">
+      <b>Иллюстрация для соцсетей</b>
+      <p>Одна иллюстрация для поста, stories или рекламы</p>
+      <div class="price">от 5 000 &#8381;</div>
+    </div>
+    <div class="service">
+      <b>Обложка книги</b>
+      <p>Дизайн обложки с проработкой персонажей и композиции</p>
+      <div class="price">от 25 000 &#8381;</div>
+    </div>
+    <div class="service">
+      <b>Серия иллюстраций (5-10 шт.)</b>
+      <p>Единый стиль, общая концепция, все форматы</p>
+      <div class="price">от 40 000 &#8381;</div>
+    </div>
+    <div class="service">
+      <b>Разработка персонажа</b>
+      <p>Дизайн героя: характер, костюм, эмоции, повороты</p>
+      <div class="price">от 15 000 &#8381;</div>
+    </div>
+    <div class="service">
+      <b>Паттерн для бренда</b>
+      <p>Бесшовный паттерн для упаковки, мерча, digital</p>
+      <div class="price">от 10 000 &#8381;</div>
+    </div>
+    <div class="service">
+      <b>Полная айдентика</b>
+      <p>Лого + паттерн + персонаж + key visuals</p>
+      <div class="price">от 80 000 &#8381;</div>
+    </div>
+  </div>
+</section>
+
+<!-- Clients -->
+<section class="w">
+  <h2 class="sec-title">Клиенты</h2>
+  <div class="logos">
+    <div>МИФ</div>
+    <div>Яндекс.Лавка</div>
+    <div>Самокат</div>
+    <div>Storytel</div>
+    <div>vc.ru</div>
+  </div>
+</section>
+
+<!-- Manifesto -->
+<div class="w">
+  <div class="manifesto">
+    <div>
+      <h2>О подходе</h2>
+      <p>Мне важно, чтобы иллюстрация держала характер бренда или истории, работала на эмоцию и была пригодна к реальному использованию: обложка, лендинг, печать, соцсети, упаковка запуска.</p>
+    </div>
+    <div>
+      <h2>Что ценят клиенты</h2>
+      <p>Чёткий процесс, сильная первая подача, яркая цветовая драматургия и умение не терять художественность в коммерческом контексте.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Quotes -->
+<section class="w">
+  <h2 class="sec-title">Отзывы</h2>
+  <div class="quotes-grid">
+    <div class="quote">
+      <b>Редактор издательства МИФ</b>
+      <p>Мария сразу поймала тон книги. Иллюстрация получилась не просто красивой, а действительно продающей настроение истории.</p>
+    </div>
+    <div class="quote">
+      <b>Бренд-менеджер Яндекс.Лавка</b>
+      <p>Нам был нужен смелый арт с коммерческой дисциплиной, и Мария идеально попала в этот баланс.</p>
+    </div>
+    <div class="quote">
+      <b>Арт-директор vc.ru</b>
+      <p>Сильная подача уже на этапе скетча. Почти все ключевые решения мы утвердили с первого раунда.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Contacts -->
+<section class="w" id="contacts">
+  <h2 class="sec-title">Контакты</h2>
+  <div class="contacts-grid">
+    <div class="contactbox"><b>Email</b><p>maria@portfolio.art</p></div>
+    <div class="contactbox"><b>Telegram</b><p>@maria_lesnaya</p></div>
+    <div class="contactbox"><b>Behance / Instagram</b><p>behance.net/marialesnaya</p></div>
+  </div>
+</section>
+
+<div class="foot">Мария Лесная &copy; 2026 &mdash; Размещено на <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></div>
+
+</body>
+</html>

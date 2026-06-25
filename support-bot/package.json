@@ -1,0 +1,12 @@
+{
+  "name": "vibe-support-bot",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}

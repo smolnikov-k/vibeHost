@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Прана — йога-студия в Москве</title>
+<meta name="description" content="Прана — йога-студия в Москве. Хатха, виньяса, йога-нидра и медитация. Для начинающих и практикующих.">
+<style>
+:root{--bg:#faf7f4;--fg:#1e1810;--acc:#7c5c3e;--acc2:#a87f5a;--line:#e0d4c4;--muted:#8c7a68;--soft:#fff;--sand:#f5ede0}*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--fg);font:16px/1.65 Georgia,serif}img{display:block;width:100%;height:100%;object-fit:cover}a{text-decoration:none;color:inherit}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 64px}
+
+.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}.logo{font-size:24px;font-weight:700;color:var(--acc);letter-spacing:.08em;font-style:italic}nav{display:flex;gap:20px;color:var(--muted);font-size:14px;font-family:Arial,sans-serif;justify-self:end;margin-right:20px}nav a:hover{color:var(--acc)}.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:700;font-family:Arial,sans-serif;transition:transform .2s}.btn{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff}.btn:hover{transform:translateY(-2px)}.ghost{border:1px solid var(--line);background:var(--soft)}
+
+.hero{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:24px;padding:40px 0 72px}.panel{padding:38px;min-height:380px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line);border-radius:22px;background:var(--soft);box-shadow:0 6px 30px rgba(124,92,62,.06)}.hero h1{font-size:clamp(36px,5.5vw,64px);line-height:.95;margin:0 0 14px}.hero p{color:var(--muted);font-family:Arial,sans-serif;margin:0 0 22px}.hero-img{height:440px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc);font-family:Arial,sans-serif}.stat p{color:var(--muted);margin:4px 0 0;font-size:14px;font-family:Arial,sans-serif}
+
+h2{font-size:28px;margin:0 0 18px;color:var(--fg)}.classes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.class-card{border:1px solid var(--line);border-radius:18px;background:var(--soft);overflow:hidden;transition:transform .2s}.class-card:hover{transform:translateY(-4px)}.class-head{height:160px;overflow:hidden}.class-body{padding:18px}.class-body b{display:block;font-size:16px;margin-bottom:4px;font-family:Arial,sans-serif}.level{display:inline-block;background:var(--acc);color:#fff;font-size:11px;padding:2px 8px;border-radius:20px;margin-bottom:8px;font-family:Arial,sans-serif}.class-body p{color:var(--muted);font-size:14px;font-family:Arial,sans-serif;margin:0 0 8px}.class-price{color:var(--acc);font-weight:700;font-family:Arial,sans-serif}
+
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px;box-shadow:0 6px 30px rgba(124,92,62,.06)}.card b{display:block;margin-bottom:8px;font-size:17px;font-family:Arial,sans-serif}.card p{color:var(--muted);font-family:Arial,sans-serif;margin:0}
+
+.teachers{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.ava{width:72px;height:72px;border-radius:50%;overflow:hidden;margin-bottom:12px}
+
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px;box-shadow:0 6px 30px rgba(124,92,62,.06)}.review .stars{color:#f59e0b;font-size:14px;margin-bottom:10px;font-family:Arial,sans-serif}.review b{display:block;margin-bottom:6px;font-family:Arial,sans-serif}.review p{color:var(--muted);font-family:Arial,sans-serif;margin:0}
+
+.cta{padding:42px;border-radius:22px;background:linear-gradient(135deg,#f5ede0,var(--sand));border:1px solid var(--line);text-align:center}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:620px;margin:20px auto 0;font-family:Arial,sans-serif}input,select{width:100%;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px;font-family:Arial,sans-serif}input::placeholder{color:var(--muted)}
+
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{border:1px solid var(--line);border-radius:22px;background:var(--soft);padding:22px;box-shadow:0 6px 30px rgba(124,92,62,.06)}.contactbox b{display:block;margin-bottom:6px;font-family:Arial,sans-serif}.contactbox p{color:var(--muted);font-family:Arial,sans-serif;margin:0}
+
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:14px;font-family:Arial,sans-serif}
+
+@media(max-width:920px){.hero,.stats,.classes,.why,.reviews,.teachers,.contact{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}.form-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.hero,.stats,.classes,.why,.reviews,.teachers,.contact{grid-template-columns:1fr}.hero h1{font-size:40px}.hero-img{height:280px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">Прана</div>
+    <nav><a href="#classes">Занятия</a><a href="#teachers">Преподаватели</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#trial">Пробное занятие</a>
+  </div>
+
+  <div class="hero">
+    <div class="panel">
+      <h1>Найти себя через практику</h1>
+      <p>Прана — йога-студия в центре Москвы. Хатха, виньяса, инь-йога, пранаяма и медитация для начинающих и опытных практиков. Маленькие группы, опытные преподаватели, настоящее внимание к каждому.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="#trial">Первое занятие бесплатно</a><a class="ghost" href="#classes">Расписание</a></div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=860&fit=crop&q=75" alt="Практика йоги в студии" loading="eager">
+    </div>
+  </div>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>8 лет</b><p>студия работает в Москве</p></div>
+      <div class="stat"><b>600+</b><p>учеников прошли практику</p></div>
+      <div class="stat"><b>до 12 чел</b><p>в каждой группе</p></div>
+      <div class="stat"><b>7 дней</b><p>занятия без выходных</p></div>
+    </div>
+  </section>
+
+  <section id="classes">
+    <h2>Направления</h2>
+    <div class="classes">
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=400&h=240&fit=crop&q=70" alt="Хатха-йога на рассвете" loading="lazy"></div><div class="class-body"><span class="level">Все уровни</span><b>Хатха-йога</b><p>Классическая практика асан и дыхания. Развивает гибкость, баланс и осознанность.</p><span class="class-price">1 200 руб/занятие</span></div></div>
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?w=400&h=240&fit=crop&q=70" alt="Динамичная виньяса-флоу" loading="lazy"></div><div class="class-body"><span class="level">Средний+</span><b>Виньяса-флоу</b><p>Динамичная практика в потоке с дыханием. Укрепляет тело, развивает выносливость.</p><span class="class-price">1 400 руб/занятие</span></div></div>
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1552196563-55cd4e45efb3?w=400&h=240&fit=crop&q=70" alt="Инь-йога расслабление" loading="lazy"></div><div class="class-body"><span class="level">Все уровни</span><b>Инь-йога</b><p>Медленные длинные удержания. Глубокое расслабление, работа с фасциями.</p><span class="class-price">1 200 руб/занятие</span></div></div>
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1593811167562-9cef47bfc4d7?w=400&h=240&fit=crop&q=70" alt="Пранаяма и медитация" loading="lazy"></div><div class="class-body"><span class="level">Все уровни</span><b>Пранаяма и медитация</b><p>Дыхательные техники, работа с умом. Снижает стресс, улучшает концентрацию.</p><span class="class-price">1 000 руб/занятие</span></div></div>
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1510531704581-5b2870972060?w=400&h=240&fit=crop&q=70" alt="Йога-нидра глубокое восстановление" loading="lazy"></div><div class="class-body"><span class="level">Все уровни</span><b>Йога-нидра</b><p>Йогический сон — практика глубокого восстановления и осознанного расслабления.</p><span class="class-price">1 000 руб/занятие</span></div></div>
+      <div class="class-card"><div class="class-head"><img src="https://images.unsplash.com/photo-1575052814086-f385e2e2ad1b?w=400&h=240&fit=crop&q=70" alt="Йога для начинающих" loading="lazy"></div><div class="class-body"><span class="level">Новичок</span><b>Йога для начинающих</b><p>Мягкое введение в практику: базовые асаны, работа с дыханием и телом.</p><span class="class-price">1 000 руб/занятие</span></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Почему Прана</h2>
+    <div class="why">
+      <div class="card"><b>Живое присутствие</b><p>Преподаватель видит каждого. Индивидуальная коррекция, работа с вашим телом, а не с группой в целом.</p></div>
+      <div class="card"><b>Уютное пространство</b><p>Деревянный пол, натуральные ткани, тишина и запах сандала. Студия создана для практики, а не для фото.</p></div>
+      <div class="card"><b>Абонементы и разовые</b><p>Приходите когда удобно. Абонемент не горит — занятия в удобном ритме без давления.</p></div>
+    </div>
+  </section>
+
+  <section id="teachers">
+    <h2>Преподаватели</h2>
+    <div class="teachers">
+      <div class="card"><div class="ava"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&q=70" alt="Мария Алёхина"></div><b>Мария Алёхина</b><p style="color:var(--muted);font-family:Arial,sans-serif">Хатха, виньяса &middot; 14 лет практики, 9 лет преподавания. Обучение в Индии у Шри Прабхудева.</p></div>
+      <div class="card"><div class="ava"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&q=70" alt="Виктория Смирнова"></div><b>Виктория Смирнова</b><p style="color:var(--muted);font-family:Arial,sans-serif">Инь-йога, пранаяма &middot; 10 лет. Специализация — восстановительные практики и работа со стрессом.</p></div>
+      <div class="card"><div class="ava"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&q=70" alt="Алексей Орехов"></div><b>Алексей Орехов</b><p style="color:var(--muted);font-family:Arial,sans-serif">Медитация, йога-нидра &middot; 8 лет. Практик тантрической традиции, медитативные и нидра-сессии.</p></div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review"><div class="stars">★★★★★</div><b>Кристина В.</b><p>«После полугода занятий — другая спина, другой сон, другая голова. Прана изменила мою жизнь без громких слов.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Игорь Б.</b><p>«Начинал с нуля. Мария объяснила так, что ничего не было страшно. Теперь хожу три раза в неделю.»</p></div>
+      <div class="review"><div class="stars">★★★★★</div><b>Наталья Д.</b><p>«Йога-нидра — лучшее, что я открыла за последние годы. 45 минут = 3 часа сна. Это не метафора.»</p></div>
+    </div>
+  </section>
+
+  <section id="trial">
+    <div class="cta">
+      <h2 style="margin:0 0 8px">Первое занятие — бесплатно</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto;font-family:Arial,sans-serif">Приходите познакомиться с практикой и студией. Предварительная запись обязательна — группы маленькие.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Направление</option><option>Хатха-йога</option><option>Виньяса-флоу</option><option>Инь-йога</option><option>Медитация</option><option>Для начинающих</option></select>
+        <select><option>Опыт практики</option><option>Без опыта</option><option>До 1 года</option><option>1–3 года</option><option>3+ лет</option></select>
+        <a class="btn" href="#" style="grid-column:1/-1;text-align:center">Записаться на пробное</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="contact">
+      <div class="contactbox"><b>Адрес</b><p style="font-family:Arial,sans-serif">Москва, Пятницкая ул., 27<br>м. Новокузнецкая, 5 минут пешком</p></div>
+      <div class="contactbox"><b>Часы работы</b><p style="font-family:Arial,sans-serif">Пн–Пт: 07:00–22:00<br>Сб–Вс: 09:00–20:00</p></div>
+      <div class="contactbox"><b>Telegram / WhatsApp</b><p style="font-family:Arial,sans-serif">@prana_yoga_msk<br>+7 (916) 244-77-88</p></div>
+    </div>
+  </section>
+
+  <div class="foot">Прана &copy; 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

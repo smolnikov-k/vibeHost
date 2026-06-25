@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoPro — профессиональный автосервис в Москве</title>
+<meta name="description" content="AutoPro — многопрофильный автосервис в Москве. Диагностика, ремонт двигателя, АКПП, кузовной ремонт, шиномонтаж. Гарантия 12 месяцев.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#111;color:#f0f0f0;font:16px/1.6 Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(17,17,17,.92);backdrop-filter:blur(10px);border-bottom:3px solid #ff6b00}
+.header .wrap{max-width:1200px;margin:auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:26px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}
+.logo span{color:#ff6b00}
+nav{display:flex;gap:22px;align-items:center}
+nav a{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#999;font-weight:700;transition:color .2s}
+nav a:hover{color:#ff6b00}
+.nav-btn{background:#ff6b00;color:#fff;padding:10px 20px;border-radius:8px;font-weight:900;font-size:13px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:#f0f0f0}
+
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(17,17,17,.93) 0%,rgba(17,17,17,.6) 50%,rgba(17,17,17,.35) 100%)}
+.hero-content{position:relative;z-index:2;max-width:1200px;margin:auto;padding:0 24px;width:100%}
+.hero-tag{display:inline-block;background:#ff6b00;color:#fff;font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:4px;margin-bottom:20px}
+.hero h1{font-size:clamp(38px,7vw,76px);line-height:.92;font-weight:900;text-transform:uppercase;margin-bottom:16px}
+.hero h1 em{font-style:normal;color:#ff6b00}
+.hero p{max-width:560px;color:#aaa;font-size:17px;margin-bottom:28px}
+.btn{display:inline-block;padding:15px 28px;border-radius:10px;font-weight:900;font-size:14px;text-transform:uppercase;letter-spacing:.04em;transition:transform .2s,box-shadow .2s}
+.btn-orange{background:#ff6b00;color:#fff;box-shadow:0 6px 24px rgba(255,107,0,.3)}
+.btn-orange:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(255,107,0,.45)}
+.btn-dark{border:2px solid #333;background:rgba(20,20,20,.8);color:#ccc}
+.btn-dark:hover{border-color:#ff6b00;color:#ff6b00}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+section{padding:80px 0}
+.section-tag{font-size:12px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:#ff6b00;margin-bottom:6px}
+h2{font-size:clamp(28px,4vw,44px);font-weight:900;text-transform:uppercase;letter-spacing:.02em;margin-bottom:40px}
+
+.stats{background:#1a1a1a;border-top:3px solid #ff6b00;border-bottom:1px solid #222}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;gap:20px}
+.stats-grid .num{font-size:36px;font-weight:900;color:#ff6b00;display:block}
+.stats-grid .label{color:#888;font-size:14px;margin-top:4px}
+
+.services-list{display:grid;gap:10px}
+.service-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:18px 24px;background:#1a1a1a;border:1px solid #222;border-radius:12px;transition:border-color .2s}
+.service-row:hover{border-color:#ff6b00}
+.service-row b{font-size:16px}
+.service-row span{color:#ff6b00;font-weight:900;font-size:15px;white-space:nowrap}
+
+.brands{text-align:center;padding:40px 0;background:#1a1a1a;border-top:1px solid #222;border-bottom:1px solid #222}
+.brands p{color:#666;font-size:14px;max-width:800px;margin:0 auto;line-height:1.8}
+.brands b{color:#ff6b00}
+
+.why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.why-card{padding:28px;background:#1a1a1a;border:1px solid #222;border-radius:16px;position:relative;overflow:hidden;transition:border-color .3s}
+.why-card:hover{border-color:#ff6b00}
+.why-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:#ff6b00}
+.why-card b{font-size:16px;display:block;margin-bottom:8px}
+.why-card p{color:#888;font-size:14px}
+
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.review{padding:28px;background:#1a1a1a;border:1px solid #222;border-radius:16px}
+.review-stars{color:#ff6b00;margin-bottom:12px;font-size:14px}
+.review-name{font-weight:900;margin-bottom:8px;display:block}
+.review-text{color:#888;font-size:15px;font-style:italic}
+
+.gallery{background:#1a1a1a;border-top:1px solid #222;border-bottom:1px solid #222}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-item{border-radius:12px;overflow:hidden;height:220px}
+.gallery-item img{transition:transform .4s}
+.gallery-item:hover img{transform:scale(1.08)}
+
+.booking{background:linear-gradient(135deg,#1a0800,#2a1200);border:2px solid #ff6b00;border-radius:24px;padding:50px;text-align:center}
+.booking h2{margin-bottom:12px}
+.booking p{color:#888;max-width:560px;margin:0 auto 28px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:680px;margin:0 auto}
+input,select,textarea{width:100%;padding:14px 18px;background:rgba(17,17,17,.7);border:1px solid #333;border-radius:10px;color:#f0f0f0;font-size:15px;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:#ff6b00}
+input::placeholder,textarea::placeholder{color:#666}
+select option{background:#111}
+.full{grid-column:1/-1}
+
+.contacts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.contact-card{padding:28px;background:#1a1a1a;border:1px solid #222;border-radius:16px}
+.contact-card b{font-size:16px;display:block;margin-bottom:8px;color:#ff6b00}
+.contact-card p{color:#888;font-size:15px}
+
+.footer{padding:24px 0 40px;text-align:center;color:#555;font-size:14px}
+.footer a{color:#ff6b00;font-weight:700}
+
+@media(max-width:1200px){.gallery-grid{grid-template-columns:repeat(2,1fr)}.why-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){nav{display:none}.hamburger{display:flex}.hero{min-height:500px}.hero h1{font-size:34px}.stats-grid,.why-grid,.reviews-grid,.contacts-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.booking{padding:32px 20px}section{padding:60px 0}}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="wrap">
+    <div class="logo">AUTO<span>PRO</span></div>
+    <nav>
+      <a href="#services">Услуги</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#contacts">Контакты</a>
+      <a class="nav-btn" href="#booking">Записаться</a>
+    </nav>
+    <button class="hamburger" onclick="document.querySelector('nav').classList.toggle('open')" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1600&q=80" alt="Автосервис AutoPro" loading="eager"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-tag">10 лет опыта &middot; Гарантия 12 мес.</div>
+    <h1>Профессиональный подход <em>к вашему автомобилю</em></h1>
+    <p>Многопрофильный автосервис в Москве. Современное диагностическое оборудование, сертифицированные мастера. Работаем со всеми марками.</p>
+    <div class="hero-btns">
+      <a class="btn btn-orange" href="#booking">Записаться на ТО</a>
+      <a class="btn btn-dark" href="#services">Прайс-лист</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap" style="padding-top:48px;padding-bottom:48px">
+    <div class="stats-grid">
+      <div><span class="num">10 лет</span><span class="label">опыта работы</span></div>
+      <div><span class="num">12 мес.</span><span class="label">гарантия на работы</span></div>
+      <div><span class="num">17+ марок</span><span class="label">автомобилей обслуживаем</span></div>
+      <div><span class="num">2 500 &#8381;</span><span class="label">эвакуатор по Москве</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-tag">Прайс-лист</div>
+    <h2>Услуги и цены</h2>
+    <div class="services-list">
+      <div class="service-row"><b>Компьютерная диагностика двигателя</b><span>от 1 500 &#8381;</span></div>
+      <div class="service-row"><b>Замена масла и фильтров</b><span>от 2 000 &#8381;</span></div>
+      <div class="service-row"><b>Замена тормозных колодок (ось)</b><span>от 2 500 &#8381;</span></div>
+      <div class="service-row"><b>Развал-схождение 3D</b><span>3 500 &#8381;</span></div>
+      <div class="service-row"><b>Ремонт подвески</b><span>от 3 000 &#8381;</span></div>
+      <div class="service-row"><b>Кузовной ремонт</b><span>от 5 000 &#8381;</span></div>
+      <div class="service-row"><b>Покраска детали</b><span>от 7 000 &#8381;</span></div>
+      <div class="service-row"><b>Замена ремня ГРМ</b><span>от 8 000 &#8381;</span></div>
+      <div class="service-row"><b>Шиномонтаж R14&ndash;R18 (4 колеса)</b><span>от 2 000 &#8381;</span></div>
+      <div class="service-row"><b>Ремонт АКПП / МКПП</b><span>от 25 000 &#8381;</span></div>
+      <div class="service-row"><b>Капитальный ремонт двигателя</b><span>от 45 000 &#8381;</span></div>
+      <div class="service-row"><b>Кондиционер: заправка + диагностика</b><span>3 000 &#8381;</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="brands">
+  <div class="wrap">
+    <div class="section-tag">Марки</div>
+    <p><b>Mercedes-Benz</b> &middot; <b>BMW</b> &middot; <b>Audi</b> &middot; <b>Volkswagen</b> &middot; <b>Skoda</b> &middot; <b>Toyota</b> &middot; <b>Lexus</b> &middot; <b>Honda</b> &middot; <b>Nissan</b> &middot; <b>Hyundai</b> &middot; <b>Kia</b> &middot; <b>Renault</b> &middot; <b>Ford</b> &middot; <b>Chevrolet</b> &middot; <b>Mazda</b> &middot; <b>Mitsubishi</b> &middot; <b>Subaru</b></p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-tag">Преимущества</div>
+    <h2>Почему AutoPro</h2>
+    <div class="why-grid">
+      <div class="why-card"><b>Гарантия 12 мес.</b><p>На все виды работ и установленные запчасти.</p></div>
+      <div class="why-card"><b>Бесплатная диагностика</b><p>При заказе ремонта диагностика за наш счёт.</p></div>
+      <div class="why-card"><b>Эвакуатор</b><p>Доставим ваш автомобиль по Москве за 2 500 &#8381;.</p></div>
+      <div class="why-card"><b>Зона ожидания</b><p>Wi-Fi, кофе, телевизор &mdash; ждите с комфортом.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-tag">Клиенты</div>
+    <h2>Отзывы</h2>
+    <div class="reviews-grid">
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Дмитрий К.</span>
+        <span class="review-text">&laquo;Привёз BMW с непонятным стуком. Нашли проблему за час, объяснили и починили в тот же день.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Ирина М.</span>
+        <span class="review-text">&laquo;Делала ТО у дилера &mdash; втридорога. AutoPro сделали вдвое дешевле и быстрее. Теперь только сюда.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Павел Р.</span>
+        <span class="review-text">&laquo;Зона ожидания с кофе &mdash; приятный бонус. А главное, ремонт сделали качественно и в срок.&raquo;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="wrap" style="padding-top:80px;padding-bottom:80px">
+    <div class="section-tag">Фото</div>
+    <h2>Наш автосервис</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=500&q=75" alt="Гараж с подъёмниками" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=500&q=75" alt="Механик у двигателя" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1504222490345-c075b6008014?w=500&q=75" alt="Инструменты" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=500&q=75" alt="Шиномонтаж" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="wrap">
+    <div class="booking">
+      <div class="section-tag">Запись</div>
+      <h2>Запишитесь на диагностику</h2>
+      <p>Оставьте заявку &mdash; менеджер свяжется в течение 15 минут и подберёт удобное время.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Выберите услугу</option><option>Диагностика</option><option>ТО / замена масла</option><option>Ремонт двигателя</option><option>Ремонт АКПП</option><option>Кузовной ремонт</option><option>Шиномонтаж</option><option>Другое</option></select>
+        <input type="text" placeholder="Марка и модель авто">
+        <textarea class="full" placeholder="Опишите проблему (необязательно)" style="resize:vertical;min-height:80px"></textarea>
+        <a class="btn btn-orange full" href="#" style="text-align:center">Отправить заявку</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <div class="wrap">
+    <div class="section-tag">Адрес</div>
+    <h2>Контакты</h2>
+    <div class="contacts-grid">
+      <div class="contact-card"><b>Адрес</b><p>Москва<br>ул. Подольских Курсантов, 15, стр. 2</p></div>
+      <div class="contact-card"><b>Часы работы</b><p>Пн&ndash;Сб: 09:00&ndash;21:00<br>Вс: 10:00&ndash;18:00</p></div>
+      <div class="contact-card"><b>Телефон</b><p>+7 (495) 777-45-67</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">AutoPro &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></div>
+</footer>
+
+</body>
+</html>

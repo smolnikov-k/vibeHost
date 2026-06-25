@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brew & Co. — Specialty Coffee в Москве</title>
+  <meta name="description" content="Brew & Co. — кофейня третьей волны у Патриарших прудов. Обжариваем сами, варим с любовью. Specialty кофе, завтраки, выпечка.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --brown: #92400E;
+      --brown-light: #D97706;
+      --cream: #FFFBEB;
+      --dark: #1C1917;
+      --gray: #78716C;
+      --warm: #FEF3C7;
+      --white: #FFFFFF;
+    }
+    body { font-family: 'Georgia', 'Times New Roman', serif; color: var(--dark); line-height: 1.7; background: var(--cream); }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* Nav */
+    .nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 900px; margin: 0 auto; }
+    .nav-brand { font-size: 22px; font-weight: 700; color: var(--brown); text-decoration: none; letter-spacing: -0.5px; }
+    .nav-brand span { font-family: 'Segoe UI', system-ui, sans-serif; font-weight: 300; color: var(--gray); font-size: 14px; margin-left: 8px; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--gray); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--brown); }
+
+    /* Hero */
+    .hero-img {
+      position: relative; height: 400px; overflow: hidden; border-radius: 0 0 24px 24px;
+    }
+    .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(28,25,23,0.2) 0%, rgba(28,25,23,0.65) 100%);
+      display: flex; align-items: flex-end; padding: 40px;
+    }
+    .hero-img-text { color: white; }
+    .hero-img-text h1 { font-size: clamp(32px, 5vw, 52px); font-weight: 700; line-height: 1.15; margin-bottom: 8px; }
+    .hero-img-text p {
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 17px;
+      color: rgba(255,255,255,0.8); max-width: 440px;
+    }
+
+    /* Info bar */
+    .info-bar { display: flex; gap: 1px; background: #E7E5E4; border-radius: 16px; overflow: hidden; margin: 32px auto; max-width: 900px; }
+    .info-item { flex: 1; background: white; padding: 20px; text-align: center; }
+    .info-item h3 { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .info-item p { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; color: var(--gray); }
+
+    /* Photo row */
+    .photo-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 32px 0; }
+    .photo-row img { width: 100%; height: 240px; object-fit: cover; border-radius: 16px; }
+
+    /* Menu */
+    .menu { padding: 40px 0; }
+    .menu h2 { text-align: center; font-size: 28px; color: var(--brown); margin-bottom: 32px; }
+    .menu-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .menu-col h3 {
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--brown-light); margin-bottom: 16px;
+    }
+    .menu-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      padding: 8px 0; border-bottom: 1px solid #E7E5E4;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item-name { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; }
+    .menu-item-price {
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; font-weight: 600;
+      color: var(--brown); white-space: nowrap; margin-left: 16px;
+    }
+
+    /* About */
+    .about { padding: 50px 0; text-align: center; }
+    .about h2 { font-size: 28px; color: var(--brown); margin-bottom: 16px; }
+    .about > p { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--gray); font-size: 15px; max-width: 560px; margin: 0 auto; }
+    .about-features { display: flex; gap: 24px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+    .about-feat {
+      background: white; border-radius: 14px; padding: 20px 24px; text-align: center;
+      border: 1px solid #E7E5E4; min-width: 150px;
+    }
+    .about-feat h4 { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; margin-bottom: 2px; }
+    .about-feat p { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; color: var(--gray); }
+
+    /* Reviews */
+    .reviews { padding: 50px 0; }
+    .reviews h2 { text-align: center; font-size: 28px; color: var(--brown); margin-bottom: 32px; }
+    .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .review { background: white; border-radius: 14px; padding: 20px; border: 1px solid #E7E5E4; }
+    .review-stars { color: #F59E0B; font-size: 14px; margin-bottom: 8px; }
+    .review p { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; color: var(--dark); margin-bottom: 8px; font-style: italic; }
+    .review-author { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; color: var(--gray); }
+
+    /* Booking */
+    .contact-section { padding: 50px 0; }
+    .contact-card {
+      background: white; border-radius: 20px; padding: 40px;
+      border: 1px solid #E7E5E4; text-align: center;
+    }
+    .contact-card h2 { font-size: 24px; color: var(--brown); margin-bottom: 8px; }
+    .contact-card > p { font-family: 'Segoe UI', system-ui, sans-serif; color: var(--gray); font-size: 14px; margin-bottom: 24px; }
+    .contact-form { max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .contact-form input {
+      padding: 12px 16px; border: 1px solid #E7E5E4; border-radius: 10px;
+      font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
+    }
+    .contact-form input:focus { border-color: var(--brown-light); }
+    .btn-warm {
+      display: inline-block; background: var(--brown); color: white; padding: 14px 32px;
+      border-radius: 100px; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px;
+      font-weight: 600; text-decoration: none; transition: all 0.3s; border: none; cursor: pointer;
+    }
+    .btn-warm:hover { background: #78350F; }
+
+    /* Map */
+    .map-placeholder {
+      background: white; border: 1px solid #E7E5E4; border-radius: 16px;
+      height: 120px; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 4px; margin-bottom: 40px;
+    }
+    .map-placeholder strong { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; }
+    .map-placeholder p { font-family: 'Segoe UI', system-ui, sans-serif; font-size: 14px; color: var(--gray); }
+
+    /* Footer */
+    .footer {
+      padding: 24px 0; text-align: center; font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px; color: var(--gray); border-top: 1px solid #E7E5E4;
+    }
+    .footer a { color: var(--brown); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .info-bar { flex-direction: column; }
+      .hero-img { height: 280px; border-radius: 0; }
+      .menu-columns { grid-template-columns: 1fr; }
+      .photo-row { grid-template-columns: 1fr; }
+      .photo-row img { height: 200px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="#" class="nav-brand">Brew & Co.<span>specialty coffee</span></a>
+    <div class="nav-links">
+      <a href="#menu">Меню</a>
+      <a href="#about">О нас</a>
+      <a href="#contact">Контакты</a>
+    </div>
+  </nav>
+
+  <!-- Hero image -->
+  <section class="hero-img">
+    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&h=600&fit=crop" alt="Brew & Co. Latte Art">
+    <div class="hero-img-overlay">
+      <div class="hero-img-text">
+        <h1>Кофе, созданный с любовью</h1>
+        <p>Кофейня третьей волны в центре Москвы. Обжариваем сами, варим с любовью.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <div class="info-bar">
+      <div class="info-item"><h3>Пн-Пт 7:30 — 22:00</h3><p>Сб-Вс 9:00 — 22:00</p></div>
+      <div class="info-item"><h3>ул. Малая Бронная, 15</h3><p>Патриаршие пруды</p></div>
+      <div class="info-item"><h3>+7 (495) 123-45-67</h3><p>Бронь и доставка</p></div>
+    </div>
+
+    <!-- Photos -->
+    <div class="photo-row">
+      <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=600&fit=crop" alt="Интерьер кофейни">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=800&h=600&fit=crop" alt="Кофе крупным планом">
+    </div>
+
+    <!-- Extra photos: barista & beans -->
+    <div class="photo-row">
+      <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&h=600&fit=crop" alt="Бариста за работой">
+      <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=800&h=600&fit=crop" alt="Кофейные зёрна">
+    </div>
+
+    <!-- Menu -->
+    <section class="menu" id="menu">
+      <h2>Наше меню</h2>
+      <div class="menu-columns">
+        <div class="menu-col">
+          <h3>Эспрессо-бар</h3>
+          <div class="menu-item"><span class="menu-item-name">Эспрессо</span><span class="menu-item-price">180 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Американо</span><span class="menu-item-price">220 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Капучино</span><span class="menu-item-price">290 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Флэт Уайт</span><span class="menu-item-price">320 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Латте</span><span class="menu-item-price">300 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Раф</span><span class="menu-item-price">340 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">V60 (воронка)</span><span class="menu-item-price">350 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Кемекс</span><span class="menu-item-price">400 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Колд брю</span><span class="menu-item-price">280 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Матча латте</span><span class="menu-item-price">350 &#8381;</span></div>
+        </div>
+        <div class="menu-col">
+          <h3>Еда</h3>
+          <div class="menu-item"><span class="menu-item-name">Круассан с миндальным кремом</span><span class="menu-item-price">250 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Сэндвич с лососем</span><span class="menu-item-price">420 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Чизкейк</span><span class="menu-item-price">350 &#8381;</span></div>
+          <div class="menu-item"><span class="menu-item-name">Гранола с йогуртом</span><span class="menu-item-price">320 &#8381;</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+      <h2>О нашем кофе</h2>
+      <p>Зёрна из Эфиопии, Колумбии, Кении — обжарка каждую неделю в собственном ростерии. Бариста — чемпион Москвы по латте-арту 2025. Q-грейдер в команде.</p>
+      <div class="about-features">
+        <div class="about-feat"><h4>Specialty зёрна</h4><p>Оценка от 85+ SCA</p></div>
+        <div class="about-feat"><h4>Свой ростерий</h4><p>Обжарка каждую неделю</p></div>
+        <div class="about-feat"><h4>Своя выпечка</h4><p>Свежая каждое утро</p></div>
+        <div class="about-feat"><h4>Доставка</h4><p>Яндекс Еда и Деливери</p></div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews">
+      <h2>Отзывы гостей</h2>
+      <div class="reviews-grid">
+        <div class="review">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>Лучший flat white в Москве. Хожу сюда каждое утро перед работой.</p>
+          <span class="review-author">— Мария К., Яндекс Карты</span>
+        </div>
+        <div class="review">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>Очень уютное место с отличным Wi-Fi. Идеально для удалённой работы.</p>
+          <span class="review-author">— Артём С., Google Maps</span>
+        </div>
+        <div class="review">
+          <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <p>V60 здесь — космос. Чувствуется, что ребята разбираются в кофе.</p>
+          <span class="review-author">— Ольга В., 2ГИС</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section class="contact-section" id="contact">
+      <div class="contact-card">
+        <h2>Забронировать стол</h2>
+        <p>Оставьте заявку, и мы подтвердим бронь в Telegram</p>
+        <form class="contact-form" data-vibe-form="booking">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="tel" name="phone" placeholder="Телефон" required>
+          <input type="text" name="guests" placeholder="Количество гостей">
+          <input type="text" name="datetime" placeholder="Дата и время (напр. 20 марта, 19:00)">
+          <button type="submit" class="btn-warm" style="width:100%;">Забронировать</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- Map -->
+    <div class="map-placeholder">
+      <strong>ул. Малая Бронная, 15, Москва</strong>
+      <p>5 минут от м. Пушкинская / Тверская</p>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>Brew & Co. &copy; 2026 &mdash; Сайт сделан на <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></p>
+  </footer>
+
+</body>
+</html>

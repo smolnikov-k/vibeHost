@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>НутриПро — научись питаться осознанно</title>
+<meta name="description" content="НутриПро: 8 модулей, 40+ видеоуроков, сертификат нутрициолога. Старт потока — 15 апреля.">
+<style>
+:root{--g:#16a34a;--g2:#15803d;--glight:#bbf7d0;--bg:#fdfdf8;--ink:#1a2e1a;--m:#5d7462;--line:#d4e8d0;--soft:#eef7ec;--cream:#f6f0dc}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{font:16px/1.6 'Segoe UI',system-ui,sans-serif;color:var(--ink);background:var(--bg)}a{text-decoration:none;color:inherit}
+.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 64px}
+.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0;flex-wrap:wrap;gap:12px}
+.brand{font-weight:800;letter-spacing:.1em;color:var(--g2)}
+.nav{display:flex;gap:22px;color:var(--m);font-size:14px;font-weight:500}
+.nav a:hover{color:var(--g)}
+.pill{display:inline-block;padding:8px 16px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:var(--g);font-weight:700;font-size:14px}
+.btn,.btn2{display:inline-block;padding:14px 24px;border-radius:14px;font-weight:700;font-size:14px;transition:all .2s}
+.btn{background:linear-gradient(135deg,var(--g),var(--g2));color:#fff;box-shadow:0 12px 28px rgba(22,163,74,.2)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(22,163,74,.28)}
+.btn2{border:1px solid var(--line);background:#fff}
+.btn2:hover{border-color:var(--glight)}
+
+.hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:40px;padding:32px 0 72px}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.05;margin-bottom:16px;color:var(--g2)}
+.hero-text p{color:var(--m);font-size:17px;max-width:500px}
+.hero-img{border-radius:22px;overflow:hidden;aspect-ratio:4/3}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+h2{font-size:30px;margin-bottom:20px;color:var(--g2)}
+
+.speaker{display:grid;grid-template-columns:auto 1fr;gap:28px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;align-items:center}
+.speaker-photo{width:140px;height:140px;border-radius:24px;overflow:hidden;flex-shrink:0}
+.speaker-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.speaker-name{font-size:26px;font-weight:800;margin-bottom:4px}
+.speaker-role{color:var(--g);font-weight:700;margin-bottom:8px}
+.speaker-text{color:var(--m);font-size:15px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.chip{padding:5px 12px;background:var(--soft);border:1px solid var(--line);border-radius:999px;font-size:13px}
+
+.modules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.mod{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px;transition:all .2s}
+.mod:hover{box-shadow:0 6px 20px rgba(22,163,74,.06);transform:translateY(-2px)}
+.mod b{display:block;margin-bottom:4px;color:var(--g2)}
+.mod p{color:var(--m);font-size:15px}
+.mod-num{font-size:12px;font-weight:800;color:var(--g);margin-bottom:8px;letter-spacing:.08em}
+.prog-img{border-radius:20px;overflow:hidden;margin-top:24px;max-height:320px}
+.prog-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{background:#fff;border:1px solid var(--line);border-radius:20px;padding:26px;display:flex;flex-direction:column}
+.plan b.plan-name{font-size:20px;display:block;margin-bottom:4px}
+.plan .plan-desc{color:var(--m);font-size:14px}
+.sum{font-size:36px;font-weight:800;line-height:1;margin:12px 0 16px;color:var(--g2)}
+.plan ul{margin:0 0 20px;padding:0 0 0 18px;flex:1;color:var(--m);font-size:14px;line-height:1.9}
+.plan.pro{background:linear-gradient(180deg,#fff,var(--soft));border-color:var(--glight)}
+
+.results{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.result{background:#fff;border:1px solid var(--line);border-radius:20px;padding:22px}
+.result p{color:var(--m);font-size:15px;font-style:italic;margin-bottom:10px}
+.result .author{font-weight:700;font-size:14px}
+
+.extra-img{border-radius:20px;overflow:hidden;margin-top:24px;max-height:320px}
+.extra-img img{width:100%;height:100%;object-fit:cover;display:block}
+
+.foot{padding:24px 0 40px;text-align:center;color:var(--m);font-size:13px}
+.foot a{color:var(--g)}
+.foot-legal{margin-bottom:6px}
+
+@media(max-width:980px){.hero,.modules,.results,.plans{grid-template-columns:1fr 1fr}.speaker{grid-template-columns:1fr}.top .nav{display:none}}
+@media(max-width:680px){.hero,.modules,.results,.plans,.speaker{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="w">
+  <nav class="top">
+    <div class="brand">NUTRIPRO</div>
+    <div class="nav"><a href="#speaker">Спикер</a><a href="#program">Программа</a><a href="#pricing">Тарифы</a><a href="#results">Результаты</a></div>
+    <div class="pill">Старт 15 апреля</div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Научись питаться осознанно</h1>
+      <p>8 модулей, 40+ видеоуроков, сертификат нутрициолога. Старт потока -- 15 апреля. Присоединяйтесь к тысячам учеников, которые уже изменили свой подход к питанию.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+        <a class="btn" href="#pricing">Записаться на курс</a>
+        <a class="btn2" href="#program">Смотреть программу</a>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=600&fit=crop" alt="Здоровая еда, овощи и фрукты" width="800" height="600" loading="eager">
+    </div>
+  </div>
+</div>
+
+<section class="w" id="speaker">
+  <h2>Спикер курса</h2>
+  <div class="speaker">
+    <div class="speaker-photo">
+      <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=280&h=280&fit=crop&q=70" alt="Елена Соколова" width="140" height="140" loading="lazy">
+    </div>
+    <div>
+      <div class="speaker-name">Елена Соколова</div>
+      <div class="speaker-role">Нутрициолог, диетолог, к.м.н.</div>
+      <div class="speaker-text">12 лет практики, 3 000+ клиентов, автор книги &laquo;Еда без мифов&raquo;. Елена помогает людям выстроить осознанные отношения с едой на основе науки, а не трендов.</div>
+      <div class="chips">
+        <span class="chip">12 лет практики</span>
+        <span class="chip">3 000+ клиентов</span>
+        <span class="chip">Автор книги</span>
+        <span class="chip">к.м.н.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="w" id="program">
+  <h2>Программа курса &mdash; 8 модулей</h2>
+  <div class="modules">
+    <div class="mod"><div class="mod-num">МОДУЛЬ 1</div><b>Основы нутрициологии</b><p>Макро- и микронутриенты, энергетический баланс, базовые принципы.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 2</div><b>Пищеварительная система</b><p>Как работает ЖКТ, ферменты, процессы всасывания питательных веществ.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 3</div><b>Белки, жиры, углеводы</b><p>Нормы, источники, мифы о БЖУ. Как считать и зачем.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 4</div><b>Витамины и минералы</b><p>Дефициты, анализы, дозировки. Что реально нужно принимать.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 5</div><b>Питание и гормоны</b><p>Инсулин, кортизол, лептин, грелин. Связь еды и гормональной системы.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 6</div><b>Спортивное питание</b><p>Рацион для тренировок, восстановление, добавки и периодизация.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 7</div><b>Составление рационов</b><p>Практика: меню на неделю для разных целей, шаблоны и алгоритмы.</p></div>
+    <div class="mod"><div class="mod-num">МОДУЛЬ 8</div><b>Работа с клиентами</b><p>Консультации, ведение дневника питания, кейсы, этика специалиста.</p></div>
+  </div>
+  <div class="prog-img">
+    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=800&h=600&fit=crop" alt="Свежие овощи и салат" width="800" height="600" loading="lazy">
+  </div>
+</section>
+
+<section class="w" id="pricing">
+  <h2>Тарифы</h2>
+  <div class="plans">
+    <div class="plan">
+      <b class="plan-name">Базовый</b>
+      <div class="plan-desc">Самостоятельное прохождение программы</div>
+      <div class="sum">14 900 &#8381;</div>
+      <ul>
+        <li>Все 8 модулей</li>
+        <li>Домашние задания</li>
+        <li>Электронный сертификат</li>
+        <li>Доступ 6 месяцев</li>
+      </ul>
+      <a class="btn2" href="#">Выбрать Базовый</a>
+    </div>
+    <div class="plan pro">
+      <b class="plan-name">Продвинутый</b>
+      <div class="plan-desc">С проверкой заданий и поддержкой куратора</div>
+      <div class="sum">24 900 &#8381;</div>
+      <ul>
+        <li>Все 8 модулей</li>
+        <li>Проверка домашних заданий</li>
+        <li>Чат с куратором</li>
+        <li>2 личные консультации</li>
+        <li>Электронный + печатный сертификат</li>
+        <li>Доступ 12 месяцев</li>
+      </ul>
+      <a class="btn" href="#">Выбрать Продвинутый</a>
+    </div>
+    <div class="plan">
+      <b class="plan-name">VIP</b>
+      <div class="plan-desc">Максимум поддержки и персональная работа</div>
+      <div class="sum">49 900 &#8381;</div>
+      <ul>
+        <li>Все 8 модулей</li>
+        <li>Проверка домашних заданий</li>
+        <li>Чат с куратором</li>
+        <li>8 личных консультаций</li>
+        <li>Электронный + печатный сертификат</li>
+        <li>Доступ навсегда</li>
+      </ul>
+      <a class="btn2" href="#">Записаться в VIP</a>
+    </div>
+  </div>
+</section>
+
+<section class="w" id="results">
+  <h2>Результаты учеников</h2>
+  <div class="results">
+    <div class="result">
+      <p>&#171;За 2 месяца после курса набрала 15 клиентов на консультации.&#187;</p>
+      <div class="author">Марина, 28 лет</div>
+    </div>
+    <div class="result">
+      <p>&#171;Похудела на 8 кг без диет -- просто поняла, как работает мой организм.&#187;</p>
+      <div class="author">Ольга, 35 лет</div>
+    </div>
+    <div class="result">
+      <p>&#171;Сменила профессию. Теперь я нутрициолог с очередью клиентов на месяц вперёд.&#187;</p>
+      <div class="author">Анна, 31 год</div>
+    </div>
+  </div>
+  <div class="extra-img">
+    <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=800&h=600&fit=crop" alt="Тарелка со здоровой едой" width="800" height="600" loading="lazy">
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="foot-legal">НутриПро 2026 | ИП Соколова Е.В. | ИНН 770312345678 | info@nutripro.ru</div>
+  <p>Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></p>
+</footer>
+</body>
+</html>

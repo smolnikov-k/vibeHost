@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Берег — ресторан авторской кухни в Санкт-Петербурге</title>
+<meta name="description" content="Берег — ресторан авторской кухни на набережной Невы. Северная и средиземноморская кухня, панорамный вид на воду, романтические ужины.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#0f1520;color:#eae6df;font:16px/1.6 Georgia,'Times New Roman',serif}
+a{color:inherit;text-decoration:none}
+img{display:block;width:100%;height:100%;object-fit:cover}
+
+.header{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:background .3s}
+.header.scrolled{background:rgba(15,21,32,.96);backdrop-filter:blur(12px);border-bottom:1px solid #2a3040}
+.header .wrap{max-width:1200px;margin:auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:28px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+.logo span{color:#c9a84c}
+nav{display:flex;gap:28px;align-items:center}
+nav a{font-size:14px;font-family:Arial,sans-serif;color:#8c9aaa;letter-spacing:.04em;transition:color .2s}
+nav a:hover{color:#c9a84c}
+.nav-btn{background:linear-gradient(135deg,#c9a84c,#a8882e);color:#fff;padding:10px 22px;border-radius:10px;font-weight:700;font-family:Arial,sans-serif;font-size:14px}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:#eae6df}
+
+.hero{position:relative;height:100vh;min-height:600px;display:flex;align-items:flex-end;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,21,32,.94) 0%,rgba(15,21,32,.45) 40%,rgba(15,21,32,.25) 100%)}
+.hero-content{position:relative;z-index:2;max-width:1200px;margin:auto;padding:0 24px 80px;width:100%}
+.hero h1{font-size:clamp(40px,7vw,74px);line-height:.92;margin-bottom:16px;font-weight:400}
+.hero h1 em{font-style:normal;color:#c9a84c}
+.hero-sub{font-size:20px;color:#c9a84c;font-style:italic;margin-bottom:12px}
+.hero p{max-width:540px;color:#8c9aaa;font-size:17px;line-height:1.6;font-family:Arial,sans-serif;margin-bottom:28px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-block;padding:15px 28px;border-radius:12px;font-weight:700;font-family:Arial,sans-serif;font-size:15px;transition:transform .2s,box-shadow .2s}
+.btn-gold{background:linear-gradient(135deg,#c9a84c,#a8882e);color:#fff;box-shadow:0 8px 30px rgba(201,168,76,.25)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,.35)}
+.btn-outline{border:1px solid #2a3040;background:rgba(17,22,32,.8);color:#eae6df}
+.btn-outline:hover{border-color:#c9a84c;color:#c9a84c}
+
+.wrap{max-width:1200px;margin:auto;padding:0 24px}
+section{padding:80px 0}
+.section-label{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#c9a84c;margin-bottom:8px}
+h2{font-size:clamp(28px,4vw,44px);font-weight:400;margin-bottom:40px;line-height:1.1}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.about-img{border-radius:20px;overflow:hidden;height:400px}
+.about-text p{color:#8c9aaa;font-family:Arial,sans-serif;font-size:16px;line-height:1.7}
+
+.stats{background:#111824;border-top:1px solid #1e2530;border-bottom:1px solid #1e2530}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;gap:20px}
+.stats-grid .num{font-size:36px;font-weight:700;color:#c9a84c;display:block;font-family:Arial,sans-serif}
+.stats-grid .label{color:#8c9aaa;font-size:14px;font-family:Arial,sans-serif;margin-top:4px}
+
+.menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.dish{border-radius:18px;overflow:hidden;background:#141c28;border:1px solid #1e2530;transition:transform .25s,box-shadow .25s}
+.dish:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.dish-img{height:200px;overflow:hidden}
+.dish-img img{transition:transform .4s}
+.dish:hover .dish-img img{transform:scale(1.05)}
+.dish-body{padding:20px}
+.dish-name{font-size:18px;margin-bottom:6px;display:block}
+.dish-desc{color:#8c9aaa;font-size:14px;font-family:Arial,sans-serif;margin-bottom:10px}
+.dish-price{color:#c9a84c;font-weight:700;font-size:16px;font-family:Arial,sans-serif}
+.menu-extra{margin-top:16px;text-align:center;padding:20px;background:#141c28;border:1px solid #1e2530;border-radius:14px}
+.menu-extra b{color:#c9a84c;font-family:Arial,sans-serif}
+.menu-extra span{color:#8c9aaa;font-family:Arial,sans-serif;font-size:15px}
+
+.reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.review{padding:28px;border:1px solid #1e2530;border-radius:18px;background:#141c28}
+.review-stars{color:#c9a84c;margin-bottom:12px;font-size:16px;letter-spacing:2px}
+.review-name{font-weight:700;margin-bottom:8px;display:block;font-family:Arial,sans-serif}
+.review-text{color:#8c9aaa;font-family:Arial,sans-serif;font-size:15px;font-style:italic}
+
+.gallery{background:#111824;border-top:1px solid #1e2530;border-bottom:1px solid #1e2530}
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.gallery-item{border-radius:14px;overflow:hidden;height:240px}
+.gallery-item img{transition:transform .4s}
+.gallery-item:hover img{transform:scale(1.08)}
+
+.booking{background:linear-gradient(160deg,#1a1e2e,#252a3a);border:1px solid #2a3040;border-radius:24px;padding:50px;text-align:center;margin:0 24px}
+.booking h2{margin-bottom:12px}
+.booking p{color:#8c9aaa;max-width:520px;margin:0 auto 28px;font-family:Arial,sans-serif}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:640px;margin:0 auto}
+input,select,textarea{width:100%;padding:14px 18px;background:rgba(15,21,32,.7);border:1px solid #2a3040;border-radius:12px;color:#eae6df;font-size:15px;font-family:Arial,sans-serif;outline:none;transition:border-color .2s}
+input:focus,select:focus,textarea:focus{border-color:#c9a84c}
+input::placeholder,textarea::placeholder{color:#5a6a7a}
+select option{background:#0f1520}
+.full{grid-column:1/-1}
+
+.contacts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.contact-card{padding:28px;border:1px solid #1e2530;border-radius:18px;background:#141c28}
+.contact-card b{font-size:16px;display:block;margin-bottom:8px;color:#c9a84c;font-family:Arial,sans-serif}
+.contact-card p{color:#8c9aaa;font-family:Arial,sans-serif;font-size:15px}
+
+.footer{padding:24px 0 40px;text-align:center;color:#5a6a7a;font-size:14px;font-family:Arial,sans-serif}
+.footer a{color:#c9a84c;font-weight:700}
+
+@media(max-width:1200px){.menu-grid,.gallery-grid{grid-template-columns:repeat(2,1fr)}.about-grid{grid-template-columns:1fr}}
+@media(max-width:768px){nav{display:none}.hamburger{display:flex}.hero{min-height:500px}.hero h1{font-size:36px}.stats-grid{grid-template-columns:repeat(2,1fr)}.menu-grid,.reviews-grid,.contacts-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.booking{padding:32px 20px;margin:0 12px}section{padding:60px 0}.about-img{height:280px}}
+@media(max-width:480px){.stats-grid,.gallery-grid{grid-template-columns:1fr 1fr}.hero h1{font-size:30px}.hero-content{padding-bottom:50px}}
+</style>
+</head>
+<body>
+
+<header class="header" id="header">
+  <div class="wrap">
+    <div class="logo">БЕ<span>РЕГ</span></div>
+    <nav>
+      <a href="#menu">Меню</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#gallery">Галерея</a>
+      <a href="#contacts">Контакты</a>
+      <a class="nav-btn" href="#booking">Забронировать</a>
+    </nav>
+    <button class="hamburger" onclick="document.querySelector('nav').classList.toggle('open')" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80" alt="Ресторан Берег" loading="eager"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-sub">Там, где вкус встречает Неву</div>
+    <h1>Авторская кухня <em>на набережной</em></h1>
+    <p>Шеф-повар создаёт блюда из свежих локальных продуктов с элементами северной и средиземноморской кухни. Панорамные окна с видом на воду, романтические ужины и деловые встречи.</p>
+    <div class="hero-btns">
+      <a class="btn btn-gold" href="#booking">Забронировать стол</a>
+      <a class="btn btn-outline" href="#menu">Смотреть меню</a>
+    </div>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="wrap" style="padding-top:48px;padding-bottom:48px">
+    <div class="stats-grid">
+      <div><span class="num">С 2015</span><span class="label">года на набережной</span></div>
+      <div><span class="num">120 мест</span><span class="label">зал и летняя терраса</span></div>
+      <div><span class="num">4.9</span><span class="label">рейтинг на Tripadvisor</span></div>
+      <div><span class="num">690 &#8381;</span><span class="label">сет-ланч по будням</span></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="about-img"><img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=800&q=75" alt="Интерьер ресторана" loading="lazy"></div>
+      <div class="about-text">
+        <div class="section-label">О ресторане</div>
+        <h2>Место, куда хочется возвращаться</h2>
+        <p>Ресторан авторской кухни на набережной Лейтенанта Шмидта с панорамным видом на Неву. Наш шеф-повар создаёт блюда из свежих локальных продуктов, сочетая традиции северной и средиземноморской кухни. Уютная атмосфера для романтических ужинов и деловых встреч.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="section-label">Кухня</div>
+    <h2>Избранное из меню</h2>
+    <div class="menu-grid">
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=75" alt="Тартар из оленины" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Тартар из северной оленины</span><span class="dish-desc">С маринованными лисичками и горчичным соусом</span><span class="dish-price">890 &#8381;</span></div>
+      </div>
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&q=75" alt="Палтус на гриле" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Палтус на гриле</span><span class="dish-desc">Пюре из цветной капусты, трюфельное масло</span><span class="dish-price">1 680 &#8381;</span></div>
+      </div>
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1546833998-877b37c2e5c6?w=600&q=75" alt="Стейк рибай" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Стейк рибай 300г</span><span class="dish-desc">Мраморная говядина, овощи гриль</span><span class="dish-price">2 450 &#8381;</span></div>
+      </div>
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1534604973900-c43ab4c2e0ab?w=600&q=70" alt="Том-ям с крабом" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Том-ям с камчатским крабом</span><span class="dish-desc">Кокосовое молоко, лемонграсс, креветки</span><span class="dish-price">1 250 &#8381;</span></div>
+      </div>
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=70" alt="Утиная грудка" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Утиная грудка су-вид</span><span class="dish-desc">С вишнёвым соусом и микс-салатом</span><span class="dish-price">1 390 &#8381;</span></div>
+      </div>
+      <div class="dish">
+        <div class="dish-img"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=75" alt="Невский берег" loading="lazy"></div>
+        <div class="dish-body"><span class="dish-name">Десерт &laquo;Невский берег&raquo;</span><span class="dish-desc">Шоколадный фондан, мороженое из облепихи</span><span class="dish-price">590 &#8381;</span></div>
+      </div>
+    </div>
+    <div class="menu-extra"><b>Сет-ланч</b> <span>&mdash; будни 12:00&ndash;15:00 &mdash; <b>690 &#8381;</b></span></div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="section-label">Гости о нас</div>
+    <h2>Отзывы</h2>
+    <div class="reviews-grid">
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Анна М.</span>
+        <span class="review-text">&laquo;Лучший палтус, что я пробовала в Петербурге. Атмосфера невероятная, особенно вечером с видом на Неву.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Дмитрий К.</span>
+        <span class="review-text">&laquo;Великолепная кухня и внимательный сервис. Ризотто с белыми грибами &mdash; просто шедевр.&raquo;</span>
+      </div>
+      <div class="review">
+        <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <span class="review-name">Екатерина С.</span>
+        <span class="review-text">&laquo;Праздновали годовщину. Романтическая атмосфера, свечи, панорама реки. Еда выше всяких похвал.&raquo;</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="gallery" id="gallery">
+  <div class="wrap" style="padding-top:80px;padding-bottom:80px">
+    <div class="section-label">Фото</div>
+    <h2>Атмосфера ресторана</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=500&q=75" alt="Интерьер ресторана" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=500&q=75" alt="Бокалы вина" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=500&q=75" alt="Панорамные окна" loading="lazy"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=75" alt="Десерт" loading="lazy"></div>
+    </div>
+  </div>
+</section>
+
+<section id="booking">
+  <div class="wrap">
+    <div class="booking">
+      <div class="section-label">Бронирование</div>
+      <h2>Забронируйте стол</h2>
+      <p>Онлайн-бронирование или по телефону. Подтвердим в течение 15 минут.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <input type="date">
+        <select><option>Количество гостей</option><option>1&ndash;2 человека</option><option>3&ndash;4 человека</option><option>5&ndash;8 человек</option><option>9+ / приватное</option></select>
+        <textarea class="full" placeholder="Особые пожелания (необязательно)" style="resize:vertical;min-height:80px"></textarea>
+        <a class="btn btn-gold full" href="#" style="text-align:center">Забронировать</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacts">
+  <div class="wrap">
+    <div class="section-label">Где нас найти</div>
+    <h2>Контакты</h2>
+    <div class="contacts-grid">
+      <div class="contact-card"><b>Адрес</b><p>Санкт-Петербург<br>наб. Лейтенанта Шмидта, 17</p></div>
+      <div class="contact-card"><b>Часы работы</b><p>Пн&ndash;Чт: 12:00&ndash;23:00<br>Пт&ndash;Сб: 12:00&ndash;01:00<br>Вс: 12:00&ndash;22:00</p></div>
+      <div class="contact-card"><b>Телефон</b><p>+7 (812) 555-12-34</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">Берег &copy; 2026 &mdash; Сделано на <a href="https://hostingvibe.ru">VibeHosting</a></div>
+</footer>
+
+<script>window.addEventListener('scroll',function(){document.getElementById('header').classList.toggle('scrolled',window.scrollY>60)})</script>
+</body>
+</html>

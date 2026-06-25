@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как опубликовать сайт в интернете если у тебя только HTML-файл | VibeHosting</title>
+    <meta name="description" content="Полный гайд: как выложить HTML-сайт в интернет. Все способы публикации — от бесплатного хостинга VibeHosting до GitHub Pages и VPS. Пошаговые инструкции для новичков.">
+    <meta name="keywords" content="опубликовать HTML сайт, выложить сайт в интернет, хостинг для HTML, бесплатный хостинг, VibeHosting, загрузить сайт">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .tag { display: inline-block; background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin-right: 8px; margin-bottom: 8px; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .danger { background: #fef2f2; border-left: 4px solid #ef4444; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { border: 1px solid #e5e7eb; padding: 12px; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        .method-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .method-card h3 { margin-top: 0; }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.8em; font-weight: 600; margin-left: 8px; }
+        .badge-easy { background: #ecfdf5; color: #059669; }
+        .badge-medium { background: #fffbeb; color: #d97706; }
+        .badge-hard { background: #fef2f2; color: #dc2626; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <div style="margin-bottom: 24px;">
+            <span class="tag">Для начинающих</span>
+            <span class="tag">Хостинг</span>
+            <span class="tag">HTML</span>
+        </div>
+
+        <h1>Как опубликовать сайт в интернете, если у тебя только HTML-файл</h1>
+
+        <p style="font-size: 1.1em; color: #4b5563;">У вас есть <code>index.html</code> — может быть, вы прошли курс по вёрстке, сделали лендинг для друга или создали портфолио. Файл отлично открывается в браузере на вашем компьютере. Но как сделать так, чтобы его увидел весь мир? В этом гайде — все способы публикации HTML-сайта, от самого простого до продвинутого.</p>
+
+        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?w=800&q=80" alt="Экран с HTML-кодом — создание веб-сайта">
+
+        <h2>Как работает публикация сайта: краткая теория</h2>
+
+        <p>Когда вы открываете <code>index.html</code> двойным кликом, браузер читает файл с вашего жёсткого диска. URL выглядит примерно так: <code>file:///C:/Users/name/site/index.html</code>. Этот файл видите только вы.</p>
+
+        <p>Чтобы сайт стал доступен другим людям, нужно поместить ваши файлы на <strong>сервер</strong> — компьютер, который работает 24/7 и подключён к интернету. Когда кто-то вводит адрес вашего сайта, его браузер обращается к серверу и получает ваш <code>index.html</code>.</p>
+
+        <p>Этот процесс называется <strong>хостинг</strong> (от англ. hosting — размещение). Существует множество хостинг-сервисов, и для простого HTML-сайта большинство из них бесплатны.</p>
+
+        <div class="highlight">
+            <strong>Хорошая новость:</strong> для статического HTML-сайта (без PHP, баз данных и серверной логики) не нужны дорогие серверы. Бесплатных вариантов более чем достаточно.
+        </div>
+
+        <h2>Что такое «статический сайт»</h2>
+
+        <p>Ваш HTML-файл — это <strong>статический сайт</strong>. Это значит, что сервер просто отдаёт файлы «как есть», без обработки на стороне сервера. В противоположность динамическим сайтам (WordPress, Django, Laravel), которые генерируют страницы на лету.</p>
+
+        <p>Статический сайт может включать:</p>
+
+        <ul>
+            <li><strong>HTML-файлы</strong> — структура и контент страниц</li>
+            <li><strong>CSS-файлы</strong> — стили и оформление</li>
+            <li><strong>JavaScript-файлы</strong> — интерактивность (слайдеры, формы, анимации)</li>
+            <li><strong>Изображения</strong> — фото, иконки, SVG</li>
+            <li><strong>Шрифты</strong> — пользовательские шрифты</li>
+            <li><strong>Любые другие файлы</strong> — PDF, видео и т.д.</li>
+        </ul>
+
+        <p>Всё это можно хостить бесплатно. Давайте разберём все способы.</p>
+
+        <h2>Сравнение способов публикации</h2>
+
+        <p>Прежде чем углубляться в каждый способ, вот сводная таблица:</p>
+
+        <table>
+            <tr>
+                <th>Способ</th>
+                <th>Сложность</th>
+                <th>Время</th>
+                <th>Для кого</th>
+            </tr>
+            <tr>
+                <td><strong>VibeHosting</strong></td>
+                <td>Очень просто</td>
+                <td>1 минута</td>
+                <td>Все, кто хочет быстро</td>
+            </tr>
+            <tr>
+                <td><strong>GitHub Pages</strong></td>
+                <td>Средне</td>
+                <td>10-15 минут</td>
+                <td>Разработчики с GitHub</td>
+            </tr>
+            <tr>
+                <td><strong>Netlify</strong></td>
+                <td>Просто</td>
+                <td>5 минут</td>
+                <td>Разработчики, маркетологи</td>
+            </tr>
+            <tr>
+                <td><strong>Vercel</strong></td>
+                <td>Средне</td>
+                <td>5-10 минут</td>
+                <td>Frontend-разработчики</td>
+            </tr>
+            <tr>
+                <td><strong>VPS-сервер</strong></td>
+                <td>Сложно</td>
+                <td>30-60 минут</td>
+                <td>DevOps, бэкендеры</td>
+            </tr>
+        </table>
+
+        <h2>Способ 1. VibeHosting — самый быстрый</h2>
+
+        <div class="method-card">
+            <h3>VibeHosting <span class="badge badge-easy">Легко</span></h3>
+            <p>ZIP-архив → сайт за 1 минуту. Без Git, без терминала, без настройки.</p>
+        </div>
+
+        <p>Это самый быстрый способ опубликовать HTML-сайт. Вот что нужно сделать:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Подготовьте файлы</strong></p>
+            <p>Убедитесь, что главный файл называется <code>index.html</code> и лежит в корне папки (не во вложенной папке).</p>
+        </div>
+
+        <pre><code>my-site/
+├── index.html      ← главный файл
+├── style.css       ← стили (если отдельным файлом)
+├── script.js       ← скрипты (если есть)
+└── images/
+    ├── logo.png
+    └── photo.jpg</code></pre>
+
+        <div class="warning">
+            <strong>Важно:</strong> файл должен называться именно <code>index.html</code>, а не <code>Index.html</code>, <code>main.html</code> или <code>сайт.html</code>. Серверы регистрозависимы и ищут именно <code>index.html</code> как главную страницу.
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создайте ZIP-архив</strong></p>
+        </div>
+
+        <p><strong>На Windows:</strong></p>
+        <ol>
+            <li>Выделите все файлы и папки внутри <code>my-site</code></li>
+            <li>Правый клик → «Отправить» → «Сжатая ZIP-папка»</li>
+        </ol>
+
+        <p><strong>На macOS:</strong></p>
+        <ol>
+            <li>Выделите все файлы и папки внутри <code>my-site</code></li>
+            <li>Правый клик → «Сжать»</li>
+        </ol>
+
+        <p><strong>Через терминал (любая ОС):</strong></p>
+
+        <pre><code>cd my-site
+zip -r ../my-site.zip .</code></pre>
+
+        <div class="danger">
+            <strong>Частая ошибка:</strong> не сжимайте саму папку <code>my-site</code>! Нужно выделить файлы <em>внутри</em> папки и сжать их. Иначе внутри ZIP будет ещё одна папка, и сервер не найдёт <code>index.html</code> в корне.
+        </div>
+
+        <p>Вот как проверить правильность: откройте ZIP — вы должны сразу видеть <code>index.html</code>, а не папку.</p>
+
+        <pre><code>✅ Правильно:
+archive.zip
+├── index.html
+├── style.css
+└── images/
+
+❌ Неправильно:
+archive.zip
+└── my-site/
+    ├── index.html
+    ├── style.css
+    └── images/</code></pre>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Загрузите на VibeHosting</strong></p>
+        </div>
+
+        <ol>
+            <li>Откройте <a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru</a></li>
+            <li>Зарегистрируйтесь — введите email и пароль</li>
+            <li>Нажмите «Загрузить сайт» или перетащите ZIP в область загрузки</li>
+            <li>Введите slug — короткое имя для вашего сайта (латиницей, без пробелов). Например: <code>my-portfolio</code>, <code>landing-cafe</code>, <code>ivan-resume</code></li>
+            <li>Нажмите «Опубликовать»</li>
+        </ol>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Готово!</strong></p>
+            <p>Ваш сайт доступен по адресу <code>your-slug.hostingvibe.ru</code>. Откройте его в браузере, отправьте ссылку друзьям, поделитесь в соцсетях.</p>
+        </div>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Попробуйте прямо сейчас</h3>
+            <p style="margin-bottom: 16px;">Бесплатный план: 1 сайт, 50 МБ, 30 дней. Этого достаточно для лендинга, портфолио или учебного проекта.</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить сайт на VibeHosting →</a>
+        </div>
+
+        <h3>Что ещё умеет VibeHosting</h3>
+
+        <ul>
+            <li><strong>Визуальный редактор</strong> — правьте тексты и стили прямо в браузере, без кода</li>
+            <li><strong>QR-код</strong> — генерируется автоматически для каждого сайта</li>
+            <li><strong>Защита паролем</strong> — можно закрыть сайт паролем для приватного доступа</li>
+            <li><strong>Кастомный домен</strong> — подключите свой домен (на PRO-плане)</li>
+            <li><strong>HTTPS</strong> — SSL-сертификат включён автоматически</li>
+            <li><strong>Обновление</strong> — просто загрузите новый ZIP, ссылка останется прежней</li>
+        </ul>
+
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80" alt="Код на экране ноутбука — веб-разработка и деплой">
+
+        <h2>Способ 2. GitHub Pages</h2>
+
+        <div class="method-card">
+            <h3>GitHub Pages <span class="badge badge-medium">Средне</span></h3>
+            <p>Бесплатный хостинг от GitHub. Нужен аккаунт GitHub и базовые знания Git.</p>
+        </div>
+
+        <p>GitHub Pages — отличный вариант, если вы уже используете GitHub для хранения кода. Вот как это работает:</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Создайте репозиторий на GitHub</strong></p>
+            <p>Назовите его как угодно, например <code>my-site</code>. Поставьте галочку «Public».</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Загрузите файлы</strong></p>
+            <p>Можно через веб-интерфейс GitHub (кнопка «Add file» → «Upload files») или через Git:</p>
+        </div>
+
+        <pre><code>cd my-site
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/USERNAME/my-site.git
+git push -u origin main</code></pre>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Включите GitHub Pages</strong></p>
+            <p>Откройте Settings → Pages → Source → выберите ветку <code>main</code> → нажмите Save.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Подождите 1-2 минуты</strong></p>
+            <p>Сайт будет доступен по адресу <code>username.github.io/my-site</code>.</p>
+        </div>
+
+        <h3>Плюсы и минусы GitHub Pages</h3>
+
+        <ul>
+            <li>✅ Бесплатно без ограничений по времени</li>
+            <li>✅ Автоматическое обновление при push</li>
+            <li>✅ Поддержка кастомных доменов</li>
+            <li>✅ HTTPS из коробки</li>
+            <li>❌ Нужен аккаунт GitHub и знание Git</li>
+            <li>❌ Репозиторий должен быть публичным (для бесплатного плана)</li>
+            <li>❌ Нет визуального редактора</li>
+            <li>❌ Обновление через Git (не все умеют)</li>
+        </ul>
+
+        <h2>Способ 3. Netlify</h2>
+
+        <div class="method-card">
+            <h3>Netlify <span class="badge badge-easy">Легко</span></h3>
+            <p>Drag & drop публикация с автодеплоем из Git. Бесплатный план без ограничения по времени.</p>
+        </div>
+
+        <p>Netlify — популярный хостинг для статических сайтов с очень простым интерфейсом.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Зарегистрируйтесь на <code>netlify.com</code></strong></p>
+            <p>Можно через GitHub, GitLab или email.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Перетащите папку</strong></p>
+            <p>На главной странице Netlify есть область для drag & drop. Перетащите туда всю папку с сайтом (не ZIP, а именно папку).</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Готово!</strong></p>
+            <p>Сайт доступен по случайному адресу вида <code>random-name-12345.netlify.app</code>. Можно переименовать в настройках.</p>
+        </div>
+
+        <h3>Плюсы и минусы Netlify</h3>
+
+        <ul>
+            <li>✅ Drag & drop загрузка (без Git)</li>
+            <li>✅ Бесплатно без ограничения по времени</li>
+            <li>✅ Автодеплой из GitHub/GitLab</li>
+            <li>✅ Формы, редиректы, серверные функции</li>
+            <li>❌ Интерфейс на английском</li>
+            <li>❌ Для кастомного домена нужна настройка DNS</li>
+            <li>❌ Случайный URL по умолчанию</li>
+        </ul>
+
+        <h2>Способ 4. Vercel</h2>
+
+        <div class="method-card">
+            <h3>Vercel <span class="badge badge-medium">Средне</span></h3>
+            <p>Платформа от создателей Next.js. Идеальна для React/Next.js, но работает и с обычным HTML.</p>
+        </div>
+
+        <p>Vercel больше ориентирован на JavaScript-фреймворки, но отлично хостит и простой HTML.</p>
+
+        <ol>
+            <li>Зарегистрируйтесь на <code>vercel.com</code> через GitHub</li>
+            <li>Нажмите «New Project» → импортируйте репозиторий с GitHub</li>
+            <li>Vercel автоматически определит, что это статический сайт, и опубликует его</li>
+            <li>Сайт будет доступен по адресу <code>project-name.vercel.app</code></li>
+        </ol>
+
+        <h3>Плюсы и минусы Vercel</h3>
+
+        <ul>
+            <li>✅ Быстрый CDN по всему миру</li>
+            <li>✅ Автодеплой при каждом push</li>
+            <li>✅ Preview-деплои для каждой ветки</li>
+            <li>❌ Требует GitHub/GitLab аккаунт</li>
+            <li>❌ Нет drag & drop загрузки</li>
+            <li>❌ Интерфейс на английском</li>
+        </ul>
+
+        <h2>Способ 5. VPS-сервер (для продвинутых)</h2>
+
+        <div class="method-card">
+            <h3>VPS-сервер <span class="badge badge-hard">Сложно</span></h3>
+            <p>Арендуете виртуальный сервер и настраиваете всё сами. Максимум контроля, максимум работы.</p>
+        </div>
+
+        <p>Это путь для тех, кто хочет полный контроль или планирует запускать что-то сложнее статического сайта.</p>
+
+        <div class="warning">
+            <strong>Для простого HTML-сайта VPS — избыточное решение.</strong> Это всё равно что арендовать грузовик, чтобы перевезти один рюкзак. Но если вам нужен сервер для других целей (бэкенд, база данных) — почему бы заодно не захостить на нём и сайт.
+        </div>
+
+        <p>Краткий план:</p>
+
+        <ol>
+            <li>Арендуйте VPS (Timeweb, Selectel, DigitalOcean — от 150-300₽/мес)</li>
+            <li>Подключитесь по SSH: <code>ssh root@your-ip</code></li>
+            <li>Установите Nginx: <code>apt install nginx</code></li>
+            <li>Положите файлы в <code>/var/www/html/</code></li>
+            <li>Настройте домен (DNS A-запись → IP сервера)</li>
+            <li>Настройте HTTPS через Let's Encrypt</li>
+        </ol>
+
+        <pre><code># Установка Nginx на Ubuntu/Debian
+sudo apt update
+sudo apt install nginx
+
+# Копирование файлов на сервер
+scp -r ./my-site/* root@your-ip:/var/www/html/
+
+# Перезапуск Nginx
+sudo systemctl restart nginx</code></pre>
+
+        <p>После этого сайт будет доступен по IP-адресу сервера. Для красивого URL нужно купить домен и настроить DNS.</p>
+
+        <h2>Подробнее о доменах</h2>
+
+        <p>Домен — это адрес вашего сайта в интернете: <code>example.com</code>, <code>my-portfolio.ru</code> и т.д. Вот что важно знать:</p>
+
+        <h3>Нужен ли вам домен?</h3>
+
+        <p>Для начала — нет. Все перечисленные хостинги дают бесплатный поддомен:</p>
+
+        <ul>
+            <li>VibeHosting: <code>your-name.hostingvibe.ru</code></li>
+            <li>GitHub Pages: <code>username.github.io/repo</code></li>
+            <li>Netlify: <code>your-name.netlify.app</code></li>
+            <li>Vercel: <code>your-project.vercel.app</code></li>
+        </ul>
+
+        <p>Этого достаточно для портфолио, учебных проектов и тестирования. Свой домен понадобится, когда вы запускаете что-то серьёзное: бизнес-сайт, магазин, блог.</p>
+
+        <h3>Где купить домен</h3>
+
+        <table>
+            <tr>
+                <th>Регистратор</th>
+                <th>Зона .ru</th>
+                <th>Зона .com</th>
+                <th>Особенности</th>
+            </tr>
+            <tr>
+                <td>reg.ru</td>
+                <td>от 199₽/год</td>
+                <td>от 899₽/год</td>
+                <td>Крупнейший в РФ</td>
+            </tr>
+            <tr>
+                <td>Timeweb</td>
+                <td>от 179₽/год</td>
+                <td>от 849₽/год</td>
+                <td>Часто акции для новых клиентов</td>
+            </tr>
+            <tr>
+                <td>Namecheap</td>
+                <td>—</td>
+                <td>от $8.88/год</td>
+                <td>Международный, удобный интерфейс</td>
+            </tr>
+        </table>
+
+        <h2>Подготовка сайта к публикации: чек-лист</h2>
+
+        <p>Прежде чем загружать сайт на хостинг, проверьте эти пункты:</p>
+
+        <h3>Файлы и структура</h3>
+
+        <ul>
+            <li>☐ Главный файл называется <code>index.html</code> (не <code>Index.html</code>, не <code>main.html</code>)</li>
+            <li>☐ Все пути к файлам — <strong>относительные</strong>, не абсолютные</li>
+            <li>☐ Нет русских букв в именах файлов и папок</li>
+            <li>☐ Нет пробелов в именах файлов (используйте дефис: <code>my-photo.jpg</code>)</li>
+            <li>☐ Изображения сжаты (через <a href="https://squoosh.app" target="_blank" rel="noopener">squoosh.app</a>)</li>
+        </ul>
+
+        <h3>Что такое «относительные пути» и почему это важно</h3>
+
+        <p>Это одна из самых частых причин, почему сайт работает локально, но ломается на хостинге:</p>
+
+        <pre><code>&lt;!-- ❌ Абсолютный путь — НЕ РАБОТАЕТ на хостинге --&gt;
+&lt;img src="C:\Users\Ivan\Desktop\site\images\photo.jpg"&gt;
+&lt;link rel="stylesheet" href="/Users/ivan/site/style.css"&gt;
+
+&lt;!-- ✅ Относительный путь — РАБОТАЕТ везде --&gt;
+&lt;img src="images/photo.jpg"&gt;
+&lt;link rel="stylesheet" href="style.css"&gt;</code></pre>
+
+        <p>Относительный путь указывает расположение файла <em>относительно текущего HTML-файла</em>. Если <code>index.html</code> и папка <code>images</code> лежат рядом, то путь к фото будет <code>images/photo.jpg</code> — без слэша в начале, без полного пути от диска.</p>
+
+        <div class="danger">
+            <strong>Проверьте прямо сейчас:</strong> откройте ваш <code>index.html</code> в редакторе и поищите <code>C:\</code>, <code>/Users/</code> или <code>file:///</code>. Если нашли — замените на относительные пути. Это причина номер один, почему сайт «ломается» при загрузке на хостинг.
+        </div>
+
+        <h3>Кодировка</h3>
+
+        <ul>
+            <li>☐ В <code>&lt;head&gt;</code> есть <code>&lt;meta charset="UTF-8"&gt;</code></li>
+            <li>☐ Файл сохранён в кодировке UTF-8 (в VS Code: внизу справа написано «UTF-8»)</li>
+        </ul>
+
+        <p>Без правильной кодировки русский текст превратится в «кракозябры» — нечитаемые символы.</p>
+
+        <h3>Мета-теги</h3>
+
+        <pre><code>&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta name="viewport"
+        content="width=device-width, initial-scale=1.0"&gt;
+    &lt;title&gt;Название вашего сайта&lt;/title&gt;
+    &lt;meta name="description"
+        content="Краткое описание для поисковиков"&gt;
+&lt;/head&gt;</code></pre>
+
+        <ul>
+            <li><code>charset="UTF-8"</code> — правильная кодировка</li>
+            <li><code>viewport</code> — адаптивность на мобильных</li>
+            <li><code>title</code> — заголовок во вкладке браузера и в поисковой выдаче</li>
+            <li><code>description</code> — описание, которое показывают Google и Яндекс</li>
+        </ul>
+
+        <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&q=80" alt="Экран монитора с кодом — проверка сайта перед публикацией">
+
+        <h2>Что делать, если сайт сломался после загрузки</h2>
+
+        <p>Сайт работал локально, но после загрузки на хостинг что-то пошло не так? Вот самые частые проблемы и их решения:</p>
+
+        <h3>Проблема: белая страница</h3>
+        <ul>
+            <li><strong>Причина:</strong> файл называется не <code>index.html</code></li>
+            <li><strong>Решение:</strong> переименуйте главный файл в <code>index.html</code></li>
+        </ul>
+
+        <h3>Проблема: страница без стилей (голый текст)</h3>
+        <ul>
+            <li><strong>Причина:</strong> неправильный путь к CSS-файлу</li>
+            <li><strong>Решение:</strong> проверьте, что путь относительный: <code>style.css</code> или <code>css/style.css</code></li>
+        </ul>
+
+        <h3>Проблема: картинки не загружаются (иконки «сломанной» картинки)</h3>
+        <ul>
+            <li><strong>Причина 1:</strong> абсолютные пути к изображениям (<code>C:\Users\...</code>)</li>
+            <li><strong>Причина 2:</strong> регистр букв не совпадает (<code>Photo.JPG</code> vs <code>photo.jpg</code>)</li>
+            <li><strong>Причина 3:</strong> пробелы в именах файлов (<code>моё фото.jpg</code>)</li>
+            <li><strong>Решение:</strong> используйте относительные пути, латинские имена без пробелов, единый регистр</li>
+        </ul>
+
+        <h3>Проблема: кракозябры вместо русского текста</h3>
+        <ul>
+            <li><strong>Причина:</strong> нет <code>&lt;meta charset="UTF-8"&gt;</code> или файл сохранён не в UTF-8</li>
+            <li><strong>Решение:</strong> добавьте мета-тег и пересохраните файл в UTF-8</li>
+        </ul>
+
+        <h3>Проблема: JavaScript не работает</h3>
+        <ul>
+            <li><strong>Причина:</strong> скрипт подключён с абсолютным путём или есть ошибки в коде</li>
+            <li><strong>Решение:</strong> откройте DevTools в браузере (F12) → вкладка Console. Там будут ошибки с описанием проблемы</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Универсальный способ диагностики:</strong> откройте сайт в браузере, нажмите F12, перейдите на вкладку Console и Network. Красные строки — это ошибки. Они обычно прямо говорят, какой файл не найден или что пошло не так.
+        </div>
+
+        <h2>Оптимизация перед публикацией</h2>
+
+        <h3>Сжатие изображений</h3>
+
+        <p>Изображения — главный «тяжеловес» любого сайта. Одна несжатая фотография может весить 5-10 МБ. Вот как сжать:</p>
+
+        <ol>
+            <li>Откройте <a href="https://squoosh.app" target="_blank" rel="noopener">squoosh.app</a> (бесплатный инструмент от Google)</li>
+            <li>Перетащите фото</li>
+            <li>Выберите формат WebP или MozJPEG</li>
+            <li>Настройте качество (80% обычно оптимально)</li>
+            <li>Скачайте сжатый файл</li>
+        </ol>
+
+        <p>Результат: фото 5 МБ → 200 КБ без заметной потери качества. Сайт будет загружаться в 25 раз быстрее.</p>
+
+        <h3>Минификация HTML и CSS</h3>
+
+        <p>Для продвинутых: можно сжать HTML и CSS, удалив пробелы и комментарии. Это ускоряет загрузку на 10-20%. Но для небольших сайтов это необязательно.</p>
+
+        <h2>Что дальше после публикации</h2>
+
+        <p>Сайт опубликован — отлично! Вот что можно сделать дальше:</p>
+
+        <h3>1. Подключите аналитику</h3>
+        <p>Яндекс.Метрика (бесплатно) покажет, сколько людей посещают ваш сайт, откуда приходят и что делают. Зарегистрируйтесь на <code>metrika.yandex.ru</code>, создайте счётчик и вставьте код перед <code>&lt;/body&gt;</code>.</p>
+
+        <h3>2. Добавьте сайт в поисковики</h3>
+        <p>Чтобы сайт появился в Google и Яндексе:</p>
+        <ul>
+            <li><strong>Яндекс.Вебмастер</strong> — <code>webmaster.yandex.ru</code>, добавьте сайт и подтвердите владение</li>
+            <li><strong>Google Search Console</strong> — <code>search.google.com/search-console</code>, аналогично</li>
+        </ul>
+        <p>Без этого сайт тоже проиндексируется, но медленнее — за недели вместо дней.</p>
+
+        <h3>3. Поделитесь ссылкой</h3>
+        <p>Отправьте ссылку в соцсети, мессенджеры, добавьте в email-подпись. Чем больше людей перейдут по ссылке — тем выше сайт поднимется в поисковиках.</p>
+
+        <h3>4. Обновляйте контент</h3>
+        <p>На VibeHosting обновление — это просто загрузка нового ZIP. Ссылка остаётся прежней. Регулярно обновляемые сайты лучше индексируются поисковиками.</p>
+
+        <img src="https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80" alt="Аналитика сайта на экране — отслеживание посещаемости">
+
+        <h2>Безопасность: о чём нужно помнить</h2>
+
+        <p>Статические сайты по своей природе безопаснее динамических (нет бэкенда = нечего взламывать). Но есть нюансы:</p>
+
+        <ul>
+            <li><strong>HTTPS обязателен</strong> — все перечисленные хостинги предоставляют SSL-сертификат бесплатно. Если видите <code>http://</code> вместо <code>https://</code> — это проблема</li>
+            <li><strong>Не публикуйте секреты</strong> — API-ключи, токены, пароли не должны быть в HTML/JS файлах. Если используете Telegram Bot API — помните, что токен виден в исходном коде</li>
+            <li><strong>Не подключайте скрипты с ненадёжных источников</strong> — подключайте CSS и JS только из проверенных CDN (cdnjs, unpkg, jsdelivr)</li>
+        </ul>
+
+        <h2>FAQ — Часто задаваемые вопросы</h2>
+
+        <h3>Можно ли опубликовать сайт бесплатно?</h3>
+        <p>Да. VibeHosting, GitHub Pages, Netlify, Vercel — все предлагают бесплатные планы для статических сайтов. Для простого HTML-сайта платить не нужно.</p>
+
+        <h3>Нужно ли мне покупать домен?</h3>
+        <p>Для начала — нет. Все хостинги дают бесплатный поддомен. Свой домен нужен, когда запускаете коммерческий проект.</p>
+
+        <h3>Мой сайт будет виден в Google и Яндексе?</h3>
+        <p>Да, но не сразу. Поисковики сами найдут ваш сайт за 1-4 недели. Можно ускорить, добавив сайт в Яндекс.Вебмастер и Google Search Console.</p>
+
+        <h3>Можно ли захостить сайт на WordPress?</h3>
+        <p>Нет, WordPress — это динамический сайт, ему нужен PHP и MySQL. Для WordPress нужен другой тип хостинга. Гайды в этой статье — для статических HTML-сайтов.</p>
+
+        <h3>Как обновить сайт после публикации?</h3>
+        <p>На VibeHosting — загрузите новый ZIP. На GitHub Pages — сделайте push. На Netlify — перетащите новую папку или настройте автодеплой из Git.</p>
+
+        <h3>Какой максимальный размер сайта?</h3>
+        <p>На бесплатных планах обычно 50-100 МБ. Для HTML-сайта с оптимизированными картинками этого более чем достаточно. Если нужно больше — посмотрите платные планы.</p>
+
+        <h2>Итоги</h2>
+
+        <p>Опубликовать HTML-сайт в интернете — проще, чем кажется. Вот основные выводы:</p>
+
+        <ul>
+            <li><strong>Самый быстрый способ</strong> — VibeHosting: ZIP → сайт за 1 минуту, бесплатно</li>
+            <li><strong>Для разработчиков</strong> — GitHub Pages или Netlify с автодеплоем из Git</li>
+            <li><strong>Перед публикацией</strong> — проверьте относительные пути, кодировку UTF-8, мета-теги</li>
+            <li><strong>Сожмите картинки</strong> через squoosh.app — это ускорит загрузку в разы</li>
+            <li><strong>Домен не обязателен</strong> для начала — используйте бесплатный поддомен</li>
+        </ul>
+
+        <p>Не откладывайте: возьмите свой <code>index.html</code>, упакуйте в ZIP и загрузите на хостинг прямо сейчас. Через минуту у вас будет собственный сайт в интернете с реальной ссылкой, которой можно поделиться.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 8px;">Готовы опубликовать свой сайт?</h3>
+            <p style="margin-bottom: 16px;">ZIP-архив → ваш-сайт.hostingvibe.ru за 1 минуту. Бесплатно, без настройки серверов, без Git.</p>
+            <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Загрузить сайт на VibeHosting →</a>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>VibeHosting</strong> — хостинг для тех, кто делает. Загрузил ZIP — сайт онлайн.</p>
+                <p>Опубликовано: март 2026</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

@@ -1,0 +1,2 @@
+# VibeHosting — nightly PostgreSQL backup at 03:00
+0 3 * * * /root/vibecode/vibe-hosting/scripts/backup-db.sh >> /var/log/vibe-backup.log 2>&1

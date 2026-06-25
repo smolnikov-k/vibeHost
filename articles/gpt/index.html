@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать свой сайт с помощью нейросети GPT | VibeHosting</title>
+    <meta name="description" content="Пошаговая инструкция: создаём сайт с нуля при помощи ChatGPT. От первого промпта до публикации на хостинге. Подробный гайд для тех, кто никогда не писал код.">
+    <meta name="keywords" content="ChatGPT сайт, создать сайт нейросеть, GPT код, сайт без программирования, VibeHosting, ChatGPT HTML">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; }
+        img { max-width: 100%; height: auto; border-radius: 12px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 24px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta a { color: white; font-weight: bold; text-decoration: underline; }
+        code { background: #f3f4f6; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; }
+        ol, ul { margin: 16px 0; padding-left: 24px; }
+        li { margin-bottom: 8px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-number { display: inline-block; background: #10b981; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; font-weight: bold; margin-right: 12px; }
+        .author { display: flex; align-items: center; gap: 12px; padding: 20px 0; border-top: 1px solid #e5e7eb; margin-top: 40px; color: #6b7280; }
+        .tag { display: inline-block; background: #ecfdf5; color: #059669; padding: 4px 12px; border-radius: 20px; font-size: 0.85em; margin-right: 8px; margin-bottom: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 12px 16px; border: 1px solid #e5e7eb; text-align: left; }
+        th { background: #f9fafb; font-weight: 600; }
+        .warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 8px; margin: 24px 0; }
+        .prompt-example { background: #f0fdf4; border: 2px dashed #10b981; padding: 20px; border-radius: 12px; margin: 20px 0; }
+        .prompt-example .label { font-size: 0.85em; color: #059669; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <div style="margin-bottom: 24px;">
+            <span class="tag">ChatGPT</span>
+            <span class="tag">Создание сайтов</span>
+            <span class="tag">Для новичков</span>
+        </div>
+
+        <h1>Как сделать свой сайт с помощью нейросети GPT</h1>
+
+        <p style="font-size: 1.15em; color: #4b5563; margin-bottom: 32px;">
+            Подробный гайд для тех, кто хочет создать сайт, но не умеет программировать. ChatGPT напишет весь код за вас &mdash; от HTML-структуры до анимаций на JavaScript. Вам останется только загрузить результат на хостинг.
+        </p>
+
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230517145052/How-to-make-a-website-using-ChatGPT-copy.webp" alt="Как сделать сайт с помощью ChatGPT — пошаговый процесс" loading="lazy">
+
+        <h2>Введение: почему ChatGPT меняет правила игры</h2>
+
+        <p>ChatGPT &mdash; это самая популярная нейросеть в мире, которой пользуются более 200 миллионов человек. Большинство знает её как "умного собеседника", но мало кто использует её главную суперсилу &mdash; <strong>генерацию кода</strong>.</p>
+
+        <p>ChatGPT умеет писать на десятках языков программирования. Для создания сайтов нас интересуют три: HTML (структура), CSS (дизайн) и JavaScript (интерактивность). Вы описываете словами, что хотите, &mdash; ChatGPT выдаёт готовый код.</p>
+
+        <p>Это работает даже если вы никогда в жизни не видели ни строчки кода. Серьёзно.</p>
+
+        <div class="highlight">
+            <strong>Что понадобится:</strong> аккаунт ChatGPT (бесплатный или Plus за $20/мес), текстовый редактор (подойдёт даже Блокнот), браузер для проверки и 30-60 минут свободного времени.
+        </div>
+
+        <h2>Что такое ChatGPT и как он создаёт сайты</h2>
+
+        <p>ChatGPT &mdash; это большая языковая модель от компании OpenAI. Вы общаетесь с ней текстом в окне чата, а она отвечает. Когда вы просите написать код, ChatGPT генерирует его прямо в чате &mdash; вам нужно только скопировать результат в файл.</p>
+
+        <h3>Бесплатная версия vs ChatGPT Plus</h3>
+
+        <table>
+            <tr>
+                <th>Возможность</th>
+                <th>Бесплатно</th>
+                <th>Plus ($20/мес)</th>
+            </tr>
+            <tr>
+                <td>Генерация кода</td>
+                <td>Да (GPT-4o mini)</td>
+                <td>Да (GPT-4o, o1)</td>
+            </tr>
+            <tr>
+                <td>Canvas (визуальный редактор)</td>
+                <td>Ограниченно</td>
+                <td>Полный доступ</td>
+            </tr>
+            <tr>
+                <td>Длина ответа</td>
+                <td>Короче</td>
+                <td>Длиннее, детальнее</td>
+            </tr>
+            <tr>
+                <td>Скорость</td>
+                <td>Обычная</td>
+                <td>Приоритет</td>
+            </tr>
+            <tr>
+                <td>Лимит сообщений</td>
+                <td>Есть ограничение</td>
+                <td>Значительно выше</td>
+            </tr>
+        </table>
+
+        <p>Для создания простого сайта бесплатной версии достаточно. Если планируете сложный проект с множеством страниц, Plus даст лучшее качество и длинные ответы без обрезки.</p>
+
+        <h3>Canvas &mdash; встроенный редактор кода</h3>
+
+        <p>OpenAI добавила в ChatGPT функцию <strong>Canvas</strong> &mdash; боковую панель для работы с кодом. Вместо копирования из чата вы видите код в полноценном редакторе, можете выделять фрагменты и просить AI изменить конкретные части. Это удобнее, чем простой чат, хотя и не заменяет полноценную IDE.</p>
+
+        <img src="https://cdn.wedevs.com/uploads/2024/10/About-page-1024x553.png" alt="ChatGPT генерирует контент для сайта — пример выдачи" loading="lazy">
+
+        <h2>Шаг 1. Создаём аккаунт и начинаем чат</h2>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Регистрация</strong></p>
+            <p>Откройте <a href="https://chat.openai.com" target="_blank">chat.openai.com</a> и зарегистрируйтесь через Google, Apple или email. Процесс займёт меньше минуты.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создаём новый чат</strong></p>
+            <p>Нажмите "New chat" в левой панели. Рекомендую дать чату понятное название, например "Мой сайт-портфолио" &mdash; так будет легче найти его позже.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Задаём контекст</strong></p>
+            <p>Первое сообщение &mdash; самое важное. Оно задаёт контекст для всего разговора. Не спешите писать "сделай сайт" &mdash; сначала расскажите ChatGPT, кто вы и что вам нужно.</p>
+        </div>
+
+        <div class="prompt-example">
+            <div class="label">Промпт-шаблон: задаём контекст</div>
+            <pre><code>Ты — опытный фронтенд-разработчик. Я хочу создать сайт,
+но не умею программировать. Помоги мне пошагово.
+
+Мне нужен: одностраничный сайт-портфолио для SMM-специалиста.
+Имя: Ольга Смирнова.
+
+Требования:
+- Чистый HTML + CSS + JavaScript (без фреймворков)
+- Адаптивный дизайн (мобильные + десктоп)
+- Современный минималистичный стиль
+- Весь код в одном файле index.html (для удобства)
+
+Начни с полной структуры сайта. Я буду просить доработки
+в следующих сообщениях.</code></pre>
+        </div>
+
+        <h2>Шаг 2. Генерируем основу сайта</h2>
+
+        <figure>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230503111941/Screenshot-2023-05-03-111237.png" alt="Скриншот ChatGPT — генерация HTML-кода для сайта" loading="lazy">
+        <figcaption>Просим ChatGPT сгенерировать HTML-код — нейросеть выдаёт готовый файл</figcaption>
+        </figure>
+
+        <p>После первого промпта ChatGPT выдаст полный HTML-файл. Это будет основа вашего сайта.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Копируем код</strong></p>
+            <p>В блоке кода ChatGPT есть кнопка "Copy code" (иконка копирования в правом верхнем углу блока). Нажмите её &mdash; весь код скопируется в буфер обмена.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Создаём файл</strong></p>
+            <p>Откройте любой текстовый редактор:</p>
+            <ul>
+                <li><strong>Windows:</strong> Блокнот (Notepad) или скачайте бесплатный VS Code</li>
+                <li><strong>macOS:</strong> TextEdit (переключите в "Формат &rarr; Простой текст") или VS Code</li>
+            </ul>
+            <p>Вставьте скопированный код (Ctrl+V / Cmd+V).</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Сохраняем как index.html</strong></p>
+            <p>Сохраните файл с именем <code>index.html</code>. Важно: расширение должно быть именно <code>.html</code>, не <code>.txt</code>. В Блокноте при сохранении выберите "Тип файла: Все файлы" и впишите имя <code>index.html</code>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Открываем в браузере</strong></p>
+            <p>Найдите файл index.html в проводнике и дважды кликните на него. Он откроется в браузере &mdash; вы увидите свой сайт!</p>
+        </div>
+
+        <h2>Шаг 3. Прокачиваем дизайн через промпты</h2>
+
+        <figure>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230503112831/Screenshot-2023-05-03-112813.png" alt="ChatGPT генерирует CSS-стили для улучшения дизайна сайта" loading="lazy">
+        <figcaption>Просим ChatGPT добавить стили — нейросеть дорабатывает дизайн</figcaption>
+        </figure>
+
+        <p>Основа есть. Теперь пошагово просим ChatGPT улучшать сайт. Ключевое правило: <strong>один промпт = одна задача</strong>. Не просите всё сразу.</p>
+
+        <h3>Улучшаем Hero-секцию</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Улучши hero-секцию:
+- Градиентный фон от #667eea к #764ba2
+- Крупный заголовок с тенью
+- Подзаголовок белым цветом с прозрачностью 80%
+- Кнопка "Обсудить проект" с эффектом свечения при наведении
+- Плавная анимация появления текста (fadeIn снизу вверх)
+- На мобильных: шрифт заголовка 1.8rem вместо 3rem</code></pre>
+        </div>
+
+        <h3>Добавляем секцию услуг</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь секцию "Мои услуги" после hero. 4 карточки в ряд:
+
+1. "Стратегия SMM" — Анализ ЦА, контент-план, KPI
+2. "Ведение соцсетей" — Посты, сторис, reels, модерация
+3. "Таргетированная реклама" — Настройка и ведение рекламы
+4. "Аналитика" — Отчёты, метрики, оптимизация
+
+Стиль карточек: белый фон, лёгкая тень, скругление 16px,
+при наведении — поднимается и тень увеличивается.
+На мобильных: карточки в 1 колонку.</code></pre>
+        </div>
+
+        <h3>Контактная форма</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь секцию "Связаться со мной" с контактной формой.
+Поля: имя (text), email, сообщение (textarea).
+Кнопка "Отправить" в стиле hero-кнопки.
+Валидация: все поля обязательные, email проверка формата.
+Под формой: ссылки на Telegram, WhatsApp, Instagram.</code></pre>
+        </div>
+
+        <div class="warning">
+            <strong>Важно:</strong> ChatGPT часто выдаёт не полный код, а только изменённые фрагменты. Просите: "Выдай мне полный обновлённый файл index.html целиком, без пропусков". Так вы не потеряете уже сделанные части.
+        </div>
+
+        <h2>Шаг 4. Добавляем интерактивность</h2>
+
+        <p>Статичный сайт &mdash; это хорошо, но интерактивные элементы делают его профессиональнее.</p>
+
+        <h3>Анимации при скролле</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь анимации появления элементов при скролле.
+Используй Intersection Observer API (без библиотек).
+Каждая секция плавно появляется снизу с задержкой 0.1s.
+Анимация: opacity 0 к 1, translateY 30px к 0, duration 0.6s.</code></pre>
+        </div>
+
+        <h3>Мобильное меню</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь гамбургер-меню для мобильных (ширина менее 768px).
+На десктопе: горизонтальная навигация.
+На мобильных: иконка-гамбургер справа, при клике —
+выдвижное меню с плавной анимацией.
+При клике на пункт: меню закрывается, плавный скролл.</code></pre>
+        </div>
+
+        <h3>Тёмная тема</h3>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь переключатель тёмной/светлой темы в хедер.
+Тёмная тема: фон #0f172a, текст #e2e8f0, карточки #1e293b.
+Запоминай выбор пользователя в localStorage.
+Плавная анимация перехода (transition 0.3s).</code></pre>
+        </div>
+
+        <h2>Шаг 5. Работаем с изображениями</h2>
+
+        <figure>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230503113618/Screenshot-2023-05-03-113603.png" alt="ChatGPT помогает с финальными штрихами кода" loading="lazy">
+        <figcaption>ChatGPT может генерировать SVG-иконки и оптимизировать изображения прямо в коде</figcaption>
+        </figure>
+
+        <p>Сайт без картинок выглядит незавершённым. Три способа добавить изображения:</p>
+
+        <h3>Способ 1: Бесплатные стоковые фото</h3>
+        <p>Скачайте фото с <a href="https://unsplash.com" target="_blank">Unsplash</a> или <a href="https://pexels.com" target="_blank">Pexels</a>. Сохраните в папку <code>images/</code> рядом с index.html. Попросите ChatGPT обновить пути к картинкам:</p>
+        <pre><code>Замени все placeholder-изображения на реальные файлы из папки images/.
+Добавь lazy loading и alt-теги для SEO.</code></pre>
+
+        <h3>Способ 2: AI-генерация через DALL-E</h3>
+        <p>Если у вас ChatGPT Plus, используйте встроенный генератор изображений DALL-E. Попросите создать иконки, иллюстрации или фоны. Скачайте и положите в папку проекта.</p>
+
+        <h3>Способ 3: SVG-графика прямо в коде</h3>
+        <p>Для иконок попросите ChatGPT создать SVG-код внутри HTML:</p>
+        <pre><code>Замени emoji-иконки в карточках услуг на SVG-иконки
+в стиле outline, цвет #10b981, размер 48x48.</code></pre>
+
+        <h2>Шаг 6. SEO-оптимизация</h2>
+
+        <p>Хотите, чтобы сайт находили в Google и Яндекс?</p>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Добавь полную SEO-оптимизацию:
+1. Meta title и description
+2. Open Graph теги для красивого шаринга в соцсетях
+3. Правильная структура заголовков (один h1, h2 для секций)
+4. Alt-теги для всех изображений
+5. Schema.org микроразметка
+6. Canonical URL
+7. Favicon</code></pre>
+        </div>
+
+        <h2>Шаг 7. Финальная проверка</h2>
+
+        <div class="prompt-example">
+            <div class="label">Промпт</div>
+            <pre><code>Проведи финальный аудит и исправь все проблемы:
+1. Валидность HTML
+2. Адаптивность на экранах 320px, 768px, 1920px
+3. Производительность: минимизируй CSS и JS
+4. Доступность: контрастность текста, навигация с клавиатуры
+5. Кросс-браузерность
+6. Проверь все ссылки
+Выдай финальную версию целиком.</code></pre>
+        </div>
+
+        <h2>Шаг 8. Публикуем на VibeHosting</h2>
+
+        <figure>
+        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20230503114717/website-chttt.gif" alt="Готовый сайт, созданный с помощью ChatGPT — демонстрация результата" loading="lazy">
+        <figcaption>Результат: готовый сайт, созданный полностью через ChatGPT</figcaption>
+        </figure>
+
+        <p>Код готов. Осталось опубликовать сайт.</p>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Собираем файлы в ZIP-архив</strong></p>
+            <pre><code>my-site/
+  index.html
+  images/
+    hero-bg.jpg
+    project1.jpg
+    ...</code></pre>
+            <p>Если весь код в одном файле без картинок &mdash; можно загрузить просто index.html. Если есть картинки &mdash; соберите в ZIP.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Регистрируемся на VibeHosting</strong></p>
+            <p>Откройте <a href="https://hostingvibe.ru" target="_blank">hostingvibe.ru</a> и создайте аккаунт. Бесплатно, без привязки карты.</p>
+
+            <figure>
+            <img src="https://cdn.wedevs.com/uploads/2024/10/How-to-Build-a-Website-with-ChatGPT.png" alt="Публикация сайта на хостинге — итоговый процесс" loading="lazy">
+            <figcaption>Весь путь: от промпта в ChatGPT до сайта на VibeHosting</figcaption>
+            </figure>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Загружаем архив</strong></p>
+            <p>В личном кабинете нажмите "Загрузить сайт". Перетащите ZIP-архив. VibeHosting автоматически распакует файлы и создаст сайт.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">4</span><strong>Выбираем адрес</strong></p>
+            <p>Придумайте slug: <code>olga-smm</code> &rarr; сайт будет на <strong>olga-smm.hostingvibe.ru</strong>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">5</span><strong>Сайт онлайн!</strong></p>
+            <p>Через несколько секунд сайт доступен по адресу slug.hostingvibe.ru. Отправляйте ссылку клиентам, добавляйте в соцсети, печатайте QR-код на визитках.</p>
+        </div>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 12px; font-size: 1.4rem;">Загрузи свой сайт на VibeHosting</h3>
+            <p style="margin-bottom: 16px;">Бесплатный тариф: 1 сайт, 50 МБ. PRO: 3 сайта, 500 МБ, свой домен &mdash; 251₽/мес.</p>
+            <a href="https://hostingvibe.ru" target="_blank" style="font-size: 1.1em;">hostingvibe.ru &rarr;</a>
+        </div>
+
+        <h2>Продвинутые техники работы с ChatGPT</h2>
+
+        <h3>Техника "Итеративного улучшения"</h3>
+        <p>Не пытайтесь получить идеальный результат с первого промпта. Работайте итерациями:</p>
+        <ol>
+            <li>Первый промпт &mdash; базовая структура</li>
+            <li>Серия коротких промптов &mdash; улучшаем каждую секцию</li>
+            <li>Финальный промпт &mdash; полировка и оптимизация</li>
+        </ol>
+
+        <h3>Техника "Эталонного сайта"</h3>
+        <p>Нашли сайт с дизайном, который нравится? Опишите его стиль ChatGPT:</p>
+        <pre><code>Основные элементы сайта-эталона: крупная типографика,
+много воздуха, gradient-кнопки, чередующийся фон секций.
+Создай мой сайт в похожем стиле, но с моим контентом.</code></pre>
+
+        <p>С ChatGPT Plus можно загрузить скриншот сайта-эталона &mdash; AI проанализирует его визуально.</p>
+
+        <h3>Техника "Множественных файлов"</h3>
+        <p>Для сложных проектов разделите код:</p>
+        <pre><code>Перенеси стили в отдельный файл style.css,
+скрипты в script.js. В index.html оставь только HTML.</code></pre>
+        <p>Это упрощает редактирование и снижает шанс потерять часть кода при обновлении.</p>
+
+        <h2>Частые ошибки и как их избежать</h2>
+
+        <ol>
+            <li>
+                <strong>ChatGPT обрезает код.</strong> Просите "Выдай полный файл без пропусков. Не сокращай никакие секции."
+            </li>
+            <li>
+                <strong>Код не работает.</strong> Проверьте, что скопировали весь код от <code>&lt;!DOCTYPE html&gt;</code> до <code>&lt;/html&gt;</code>. Файл &mdash; <code>.html</code>, не <code>.txt</code>.
+            </li>
+            <li>
+                <strong>Картинки не отображаются.</strong> Проверьте пути. Если в HTML <code>src="images/photo.jpg"</code>, файл должен лежать в папке images рядом с index.html.
+            </li>
+            <li>
+                <strong>Сайт ломается на мобильных.</strong> Всегда просите адаптивный дизайн. Финальный аудит на ширине 320px обязателен.
+            </li>
+            <li>
+                <strong>ChatGPT "забывает" контекст.</strong> В длинных чатах модель теряет начало разговора. Скопируйте текущий код и начните новый чат.
+            </li>
+        </ol>
+
+        <h2>Когда одного HTML недостаточно</h2>
+
+        <ul>
+            <li><strong>Многостраничный сайт</strong> &mdash; создайте отдельные HTML для каждой страницы, свяжите ссылками</li>
+            <li><strong>Формы с отправкой</strong> &mdash; на VibeHosting есть встроенный обработчик форм</li>
+            <li><strong>Интернет-магазин</strong> &mdash; каталог ChatGPT создаст, но для оплаты нужен бекенд</li>
+        </ul>
+
+        <p>Для 90% задач &mdash; портфолио, лендинги, визитки, промо-страницы &mdash; ChatGPT + VibeHosting полностью закрывают потребности.</p>
+
+        <h2>Полный пример: лендинг для кофейни за 20 минут</h2>
+
+        <div class="step">
+            <p><span class="step-number">1</span><strong>Начальный промпт</strong></p>
+            <pre><code>Создай одностраничный сайт для кофейни "Зерно".
+Всё в одном файле index.html.
+
+Стиль: тёплый, уютный. Цвета: #8B4513 (коричневый),
+#F5E6D3 (кремовый фон), #2C1810 (тёмный текст).
+
+Секции:
+1. Hero с названием и слоганом "Каждая чашка — путешествие"
+2. О нас: два столбца — текст и фото
+3. Меню: вкладки "Кофе / Чай / Десерты" с ценами
+4. Галерея: сетка 2x2 с фото интерьера
+5. Контакты: адрес, телефон, форма бронирования
+6. Подвал
+
+Адаптивный дизайн. Плавные анимации.</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">2</span><strong>Корректировки (2-3 промпта)</strong></p>
+            <pre><code>"Сделай вкладки меню плавнее, добавь иконки категориям"
+"Добавь блок отзывов с каруселью"
+"Финальная полировка: hover-эффекты, SEO meta-теги"</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-number">3</span><strong>Публикация</strong></p>
+            <p>Сохраняем, архивируем, загружаем на <a href="https://hostingvibe.ru" target="_blank">hostingvibe.ru</a>. Slug: <code>coffee-zerno</code>. Через 5 секунд сайт на <strong>coffee-zerno.hostingvibe.ru</strong>.</p>
+        </div>
+
+        <h2>Возможности VibeHosting после публикации</h2>
+
+        <ul>
+            <li><strong>QR-код</strong> &mdash; генерируется автоматически. Распечатайте на визитках, меню, стойках.</li>
+            <li><strong>Свой домен</strong> &mdash; на PRO-тарифе (251₽/мес) привяжите домен, например coffee-zerno.ru.</li>
+            <li><strong>Аналитика</strong> &mdash; смотрите посещаемость в панели управления.</li>
+            <li><strong>Формы</strong> &mdash; заявки приходят прямо в личный кабинет.</li>
+            <li><strong>Визуальный редактор</strong> &mdash; правьте текст и стили прямо в браузере, без скачивания файлов.</li>
+            <li><strong>Обновления</strong> &mdash; загрузите новый ZIP &mdash; сайт обновится мгновенно.</li>
+        </ul>
+
+        <h2>Итоги</h2>
+
+        <p>ChatGPT &mdash; это ваш бесплатный веб-разработчик, который работает 24/7. С его помощью можно создать полноценный сайт, даже если вы никогда не писали код.</p>
+
+        <p>Весь процесс:</p>
+        <ol>
+            <li>Пишем промпт в ChatGPT &mdash; получаем код</li>
+            <li>Сохраняем в файл index.html</li>
+            <li>Дорабатываем через серию промптов</li>
+            <li>Архивируем и загружаем на <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></li>
+        </ol>
+
+        <p>Время: 20-60 минут. Стоимость: от 0 рублей (бесплатный ChatGPT + FREE-тариф) до 251₽/мес за PRO с кастомным доменом.</p>
+
+        <div class="cta">
+            <h3 style="margin-bottom: 12px; font-size: 1.4rem;">Сайт готов? Опубликуй за 5 секунд</h3>
+            <p style="margin-bottom: 16px;">Загрузи ZIP &rarr; получи адрес slug.hostingvibe.ru &rarr; делись ссылкой</p>
+            <a href="https://hostingvibe.ru" target="_blank" style="font-size: 1.1em;">Опубликовать на hostingvibe.ru &rarr;</a>
+        </div>
+
+        <div class="author">
+            <div>
+                <p><strong>VibeHosting</strong> &mdash; хостинг для вайбкодеров</p>
+                <p>Загрузил ZIP &rarr; получил сайт. Без настройки серверов, без SSH, без боли.</p>
+            </div>
+        </div>
+    </article>
+</body>
+</html>

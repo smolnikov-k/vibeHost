@@ -1,0 +1,227 @@
+================================================================================
+  VIBЕHOSTING FEATURE AUDIT — QUICK REFERENCE CARD (2026-03-21)
+================================================================================
+
+📋 COMPLETE FEATURE LIST (11 fatures):
+────────────────────────────────────────────────────────────────────────────
+1.  Деплой ZIP/TAR.GZ        ✅ Full     | Auto-build, версионирование
+2.  Визуальный редактор      ✅ Full     | CSS selector patches
+3.  Формы → Telegram         ✅ Full     | Auto-capture, перехват
+4.  QR-коды                   ❌ None     | MISSING: не реализовано
+5.  Кастомные домены         ✅ Full     | DNS + Let's Encrypt
+6.  Яндекс.Метрика           ✅ Full     | Auto-inject счётчик ID
+7.  Пароль-защита            ✅ Full     | HMAC cookies, auth_request
+8.  Тарифы Free/Pro          ✅ Full     | Prodamus billing
+9.  Галерея сайтов           ✅ Full     | Public showcase, likes
+10. Автосборка (npm build)   ✅ Full     | React/Vue/Next/Astro
+11. GitHub Deploy            ✅ Full     | Shallow clone + build
+
+================================================================================
+🔴 CRITICAL ISSUES (Fix Immediately)
+════════════════════════════════════════════════════════════════════════════
+
+1. BUILD SECURITY
+   • File: backend/src/services/deploy.service.ts:64-114
+   • Issue: npm run build без sandbox
+   • Risk: Вредоносный script может читать /sites/*/
+   • Fix: Docker container isolation или systemd-run
+   • Effort: 5 days | Impact: HIGH
+
+2. RATE-LIMITING
+   • Missing on: /api/site-password, /api/forms/:slug, /api/gallery/:slug/like
+   • Risk: Bruteforce, spam, DoS attacks
+   • Fix: Redis-based rate-limit middleware
+   • Effort: 3 days | Impact: HIGH
+
+3. MEMORY LEAKS
+   • Maps: guestLikes, recentViews, recentSubmissions (unbounded)
+   • File: backend/src/routes/gallery.ts:8-34
+   • Risk: Memory bloat on high traffic
+   • Fix: Migrate to Redis
+   • Effort: 3 days | Impact: MEDIUM
+
+════════════════════════════════════════════════════════════════════════════
+🟡 HIGH-PRIORITY ISSUES (Next Sprint)
+════════════════════════════════════════════════════════════════════════════
+
+4. FEATURE GAP: QR-CODE GENERATION
+   • Missing: qrcode package, endpoint, UI
+   • Use case: Share siteURL via QR
+   • Effort: 1 day | Impact: MEDIUM
+
+5. DATABASE INDEXING
+   • Missing on: VisualPatch.selector, FormSubmission.data, PageView.country
+   • File: backend/prisma/schema.prisma
+   • Impact: 10-50x faster queries
+   • Effort: 1 day | Impact: MEDIUM
+
+6. DEPLOYMENT LOGGING
+   • Missing: Process logs for debugging
+   • File: Need new DeploymentLog table
+   • Effort: 2 days | Impact: MEDIUM
+
+7. ANALYTICS PRIVACY
+   • Issue: PageView.ip stored in plaintext
+   • Risk: GDPR violation
+   • Fix: Hash IP or country-only tracking
+   • Effort: 1 day | Impact: MEDIUM
+
+════════════════════════════════════════════════════════════════════════════
+📊 KEY STATISTICS
+════════════════════════════════════════════════════════════════════════════
+
+Code:
+  • Backend routes: 11 files (50+ endpoints)
+  • Services: 10+ specialized services
+  • Database models: 18 (including Deployment, VisualPatch, FormSubmission)
+  • Total lines: ~15,000 (backend + frontend)
+
+Performance:
+  • Deployment statuses: 6 (PENDING, EXTRACTING, BUILDING, LIVE, FAILED, SUPERSEDED)
+  • Rate-limit: 5 req/min on /deploy endpoints (ONLY)
+  • Upload limit: 500MB files
+  • Build timeout: 3 minutes
+  • Form dedup window: 30 seconds
+  • Like dedup window: 7 days (auth) / 1 hour (guest IP)
+
+Security:
+  • Forbidden extensions: 12 (.php, .exe, .sh, .py, .jsp, .asp, .rb, etc.)
+  • JWT expiry: 7 days
+  • Password: bcrypt with 10 salt rounds
+  • CORS: Origin validation (wildcard not allowed)
+  • Symlinks: Removed recursively before deploy
+
+════════════════════════════════════════════════════════════════════════════
+📁 KEY FILES FOR EACH FEATURE
+════════════════════════════════════════════════════════════════════════════
+
+1. Deploy ZIP:
+   backend/src/routes/deploy.ts:35-140 (POST /:id/deploy)
+   backend/src/services/deploy.service.ts (processDeploy function)
+   backend/src/middleware/upload.ts (multer config)
+
+2. Visual Editor:
+   backend/src/routes/edit.ts (CRUD patches, assets, pages)
+   frontend/src/components/editor/VibeEditor.tsx (UI)
+   backend/src/app/api/vibe-editor-bridge.js (iframe messaging)
+   frontend/public/api/vibe-patches.js (runtime injection)
+
+3. Forms → Telegram:
+   backend/src/routes/forms.ts:62-150 (POST /:slug)
+   backend/src/services/telegram.service.ts (bot, sending)
+   frontend/public/api/vibe-forms.js (auto-capture)
+
+4. Domains:
+   backend/src/routes/domains.ts (DNS, SSL verification)
+   backend/src/services/domain-provision.ts (Certbot, Nginx)
+   backend/src/routes/site-gate.ts (auth_request handler)
+
+5. Analytics:
+   backend/src/routes/analytics.ts (POST /track, GET /analytics)
+   backend/src/routes/pixel.ts (GET /vibe-analytics.js)
+   backend/src/services/analytics.service.ts (PageView tracking)
+
+6. Password:
+   backend/src/routes/site-gate.ts:24-80 (HMAC verification)
+   backend/src/routes/projects.ts (/password endpoints)
+
+7. Billing:
+   backend/src/routes/billing.ts (Prodamus webhook, status)
+   backend/src/utils/prodamus-hmac.ts (signature verification)
+
+8. Gallery:
+   backend/src/routes/gallery.ts (public catalog, likes, tags)
+   frontend/src/app/gallery/ (showcase UI)
+
+9. Build:
+   backend/src/services/deploy.service.ts:31-114 (detectBuildProject, runBuild)
+
+10. GitHub:
+    backend/src/routes/deploy.ts:251-319 (POST /:id/deploy-github)
+    backend/src/services/github.service.ts (clone, deploy)
+
+════════════════════════════════════════════════════════════════════════════
+🎯 RECOMMENDED IMPLEMENTATION ORDER (3 weeks)
+════════════════════════════════════════════════════════════════════════════
+
+Week 1:
+  ✓ Build sandboxing (Docker)     — 5 days (BLOCKING)
+  ✓ Rate-limiting framework        — 2 days
+
+Week 2:
+  ✓ Rate-limit endpoints           — 1 day
+  ✓ Redis migration (dedup)        — 2 days
+  ✓ QR code generation             — 1 day
+
+Week 3:
+  ✓ Database indexes               — 1 day
+  ✓ Deployment logging             — 2 days
+  ✓ Testing & docs                 — 2 days
+
+════════════════════════════════════════════════════════════════════════════
+📖 DOCUMENTATION FILES
+════════════════════════════════════════════════════════════════════════════
+
+AUDIT_FEATURES.md (900 lines)
+  → Comprehensive feature-by-feature analysis
+  → Potentials issues & improvements for each
+  → Code references & data models
+
+FEATURE_AUDIT_SUMMARY.md (200 lines)
+  → Executive summary
+  → Critical/important issues table
+  → Timeline & effort estimates
+
+AUDIT_RECOMMENDATIONS.md (400 lines)
+  → Implementation details (code examples)
+  → Docker setup & systemd-run alternatives
+  → Concrete code for Redis, rate-limiting, logging
+
+THIS FILE: QUICK_AUDIT_REFERENCE.txt
+  → Quick lookup reference card
+
+════════════════════════════════════════════════════════════════════════════
+⚠️ KNOWN GAPS & LIMITATIONS
+════════════════════════════════════════════════════════════════════════════
+
+NOT IMPLEMENTED:
+  ❌ QR code generation
+  ❌ Private GitHub repo support
+  ❌ Email notifications (only Telegram)
+  ❌ Webhooks (custom integrations)
+  ❌ API Key authentication
+  ❌ Cron job management (PM2-based)
+  ❌ Monorepo support (build)
+  ❌ SSR support (Next.js with Node)
+
+LIMITED:
+  ⚠️ Yandex.Metrika: Only counter ID injection, no dashboard
+  ⚠️ Forms: No custom field validation
+  ⚠️ Gallery: Basic search (no relevance ranking)
+  ⚠️ Editor: CSS selectors only (no HTML restructuring)
+  ⚠️ Analytics: No real-time updates (polling)
+
+POTENTIAL ISSUES:
+  ⚠️ Build security: No process isolation
+  ⚠️ Rate-limiting: Missing on 3+ endpoints
+  ⚠️ Memory: Unbounded in-memory maps
+  ⚠️ Database: Missing indexes on hot queries
+  ⚠️ GDPR: IP tracking without anonymization
+
+════════════════════════════════════════════════════════════════════════════
+✅ STRENGTHS
+════════════════════════════════════════════════════════════════════════════
+
+✓ Robust deploy pipeline with versioning & rollback
+✓ Automatic script injection (forms, patches, analytics, Metrika)
+✓ Security: symlink removal, forbidden extensions, safe build env
+✓ Integration: Telegram, Let's Encrypt, Yandex, Prodamus
+✓ Simple UX: ZIP upload → auto-build → auto-publish
+✓ Atomic operations with transaction safety
+✓ Custom domain support with auto-SSL
+
+════════════════════════════════════════════════════════════════════════════
+Date: 2026-03-21
+Status: COMPLETE AUDIT
+Next: Implementation sprint planning
+════════════════════════════════════════════════════════════════════════════

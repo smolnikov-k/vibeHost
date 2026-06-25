@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дмитрий Волков — Fullstack-разработчик</title>
+  <meta name="description" content="Fullstack-разработчик: React, Node.js, TypeScript, PostgreSQL, Docker. 7 лет в продакшене.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --green: #10B981;
+      --green-dark: #059669;
+      --dark: #0F172A;
+      --gray: #64748B;
+      --gray-light: #94A3B8;
+      --code-bg: #1E293B;
+      --code-border: #334155;
+      --surface: #F8FAFC;
+      --border: #E2E8F0;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--dark); line-height: 1.7; background: var(--surface); }
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    img { display: block; max-width: 100%; height: auto; }
+
+    /* Header */
+    .header {
+      position: sticky; top: 0; z-index: 100; padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      background: rgba(248,250,252,0.92); backdrop-filter: blur(8px);
+    }
+    .header .container { display: flex; justify-content: space-between; align-items: center; }
+    .header-logo {
+      font-family: 'SF Mono','Fira Code','Consolas',monospace;
+      font-weight: 700; font-size: 15px; color: var(--green); text-decoration: none;
+    }
+    .header-logo::before { content: '> '; color: var(--gray-light); }
+    .header-links { display: flex; gap: 20px; }
+    .header-links a { color: var(--gray); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+    .header-links a:hover { color: var(--green); }
+    .header-status {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--green);
+      font-family: 'SF Mono','Fira Code',monospace;
+    }
+    .header-status::before {
+      content: ''; display: inline-block; width: 7px; height: 7px;
+      border-radius: 50%; background: var(--green); animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* Hero */
+    .hero {
+      position: relative; min-height: 440px;
+      display: flex; align-items: center; overflow: hidden; color: white;
+    }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,23,42,0.93), rgba(30,41,59,0.88)); }
+    .hero-content { position: relative; z-index: 2; padding: 64px 24px; max-width: 860px; margin: 0 auto; width: 100%; }
+    .hero-greeting {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 13px; color: var(--gray-light); margin-bottom: 8px;
+    }
+    .hero-greeting .kw { color: #7DD3FC; }
+    .hero-greeting .fn { color: var(--green); }
+    .hero h1 { font-size: clamp(30px,5vw,46px); font-weight: 800; line-height: 1.15; margin-bottom: 16px; }
+    .hero-sub { color: var(--gray-light); font-size: 17px; max-width: 560px; margin-bottom: 24px; line-height: 1.65; }
+    .hero-stack { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .tech-badge {
+      font-family: 'SF Mono','Fira Code',monospace;
+      background: rgba(30,41,59,0.7); color: var(--gray-light);
+      padding: 5px 12px; border-radius: 6px; font-size: 11px;
+      border: 1px solid var(--code-border);
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-green {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      text-decoration: none; background: var(--green); color: white; transition: all 0.2s;
+    }
+    .btn-green:hover { background: var(--green-dark); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      text-decoration: none; border: 1px solid var(--code-border); color: white;
+      background: rgba(30,41,59,0.5); transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--green); color: var(--green); }
+
+    /* Photos strip */
+    .photos-strip { display: grid; grid-template-columns: 1fr 1fr; }
+    .photos-strip img { width: 100%; height: 220px; object-fit: cover; }
+
+    /* Section */
+    .section { padding: 56px 0; }
+    .section-label {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; color: var(--green);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .section-label::before { content: '// '; color: #475569; }
+    .section h2 { font-size: 26px; font-weight: 800; margin-bottom: 28px; line-height: 1.2; }
+    .divider { border: none; border-top: 1px solid var(--border); }
+
+    /* Projects */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+    .project {
+      background: white; border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px; transition: all 0.2s;
+    }
+    .project:hover { border-color: var(--green); box-shadow: 0 4px 20px rgba(16,185,129,0.08); }
+    .project h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+    .project p { font-size: 14px; color: var(--gray); line-height: 1.65; margin-bottom: 12px; }
+    .project-tech { display: flex; gap: 6px; flex-wrap: wrap; }
+    .project-tech span {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 11px;
+      background: var(--code-bg); color: var(--gray-light);
+      padding: 3px 10px; border-radius: 6px; border: 1px solid var(--code-border);
+    }
+
+    /* Stack */
+    .stack-categories { display: flex; flex-direction: column; gap: 24px; }
+    .stack-cat-label {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 11px; color: var(--gray);
+      text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+    }
+    .stack-cat-label span { color: var(--green); }
+    .stack-items { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-item {
+      background: white; border: 1px solid var(--border); border-radius: 8px;
+      padding: 8px 14px; font-size: 13px; transition: all 0.2s;
+    }
+    .stack-item:hover { border-color: var(--green); color: var(--green); }
+
+    /* Pricing */
+    .pricing-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 0; border-bottom: 1px solid #F1F5F9;
+    }
+    .pricing-row:last-child { border-bottom: none; }
+    .pricing-row h3 { font-size: 15px; font-weight: 600; }
+    .pricing-row p { font-size: 13px; color: var(--gray); }
+    .pricing-price {
+      font-family: 'SF Mono','Fira Code',monospace; font-size: 14px;
+      font-weight: 700; color: var(--green); white-space: nowrap;
+    }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+    .contact-link {
+      background: white; border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px; text-decoration: none; color: var(--dark);
+      display: flex; flex-direction: column; gap: 6px; transition: all 0.2s;
+    }
+    .contact-link:hover { border-color: var(--green); color: var(--green); }
+    .contact-link-label { font-size: 13px; font-weight: 600; }
+    .contact-link-handle { font-size: 12px; color: var(--gray); }
+
+    /* CTA */
+    .cta-section { padding: 56px 0; background: var(--dark); color: white; text-align: center; }
+    .cta-section h2 { font-size: 28px; margin-bottom: 12px; }
+    .cta-section p { color: var(--gray-light); max-width: 480px; margin: 0 auto 24px; }
+
+    /* Footer */
+    .footer { padding: 28px 0; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--gray); }
+    .footer a { color: var(--green); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .header-links, .header-status { display: none; }
+      .photos-strip { grid-template-columns: 1fr; }
+      .photos-strip img { height: 180px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container">
+      <a href="#" class="header-logo">dvolkov.dev</a>
+      <nav class="header-links">
+        <a href="#projects">Проекты</a>
+        <a href="#stack">Стек</a>
+        <a href="#pricing">Цены</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <div class="header-status">open to work</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-bg" src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop" alt="Developer workspace">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-greeting"><span class="kw">const</span> <span class="fn">developer</span> = <span class="kw">new</span> <span class="fn">Fullstack</span>()</div>
+      <h1>Дмитрий Волков</h1>
+      <p class="hero-sub">Fullstack-разработчик с 7-летним опытом в продакшене. Создаю быстрые и надёжные веб-приложения от базы данных до интерфейса.</p>
+      <div class="hero-stack">
+        <span class="tech-badge">React</span><span class="tech-badge">Next.js</span>
+        <span class="tech-badge">TypeScript</span><span class="tech-badge">Node.js</span>
+        <span class="tech-badge">Python</span><span class="tech-badge">PostgreSQL</span>
+        <span class="tech-badge">Docker</span><span class="tech-badge">React Native</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-green">Обсудить проект</a>
+        <a href="#projects" class="btn-outline">Смотреть работы</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photos -->
+  <div class="photos-strip">
+    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop" alt="Code on screen">
+    <img src="https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop" alt="Workspace">
+  </div>
+
+  <!-- Extra photos -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;">
+    <img src="https://images.unsplash.com/photo-1537498425277-c283d32ef9db?w=800&h=600&fit=crop" alt="Multi-monitor setup" style="width:100%;height:220px;object-fit:cover;">
+    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=600&fit=crop" alt="Night coding" style="width:100%;height:220px;object-fit:cover;">
+  </div>
+
+  <div class="container">
+    <!-- Projects -->
+    <section class="section" id="projects">
+      <div class="section-label">projects</div>
+      <h2>Проекты</h2>
+      <div class="projects-grid">
+        <div class="project">
+          <h3>CRM для логистики</h3>
+          <p>Полноценная CRM-система с 50 000+ пользователей и глубокой интеграцией с 1С. Модули: заказы, маршруты, склад, аналитика.</p>
+          <div class="project-tech"><span>React</span><span>Node.js</span><span>PostgreSQL</span><span>Redis</span></div>
+        </div>
+        <div class="project">
+          <h3>Маркетплейс услуг</h3>
+          <p>Платформа с real-time чатом, системой оплаты и панелью аналитики для заказчиков и исполнителей.</p>
+          <div class="project-tech"><span>Next.js</span><span>Python</span><span>WebSocket</span><span>Stripe</span></div>
+        </div>
+        <div class="project">
+          <h3>Мобильное приложение для фитнеса</h3>
+          <p>Трекер тренировок с push-уведомлениями, интеграцией Apple Health и персональными программами.</p>
+          <div class="project-tech"><span>React Native</span><span>Node.js</span><span>MongoDB</span></div>
+        </div>
+        <div class="project">
+          <h3>Telegram-бот для автоматизации</h3>
+          <p>Бот для обработки 10 000+ заявок в день с маршрутизацией, очередями и дашбордом мониторинга.</p>
+          <div class="project-tech"><span>Python</span><span>Redis</span><span>PostgreSQL</span></div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Stack -->
+    <section class="section" id="stack">
+      <div class="section-label">tech_stack</div>
+      <h2>Технологии</h2>
+      <div class="stack-categories">
+        <div>
+          <div class="stack-cat-label"><span>$</span> Frontend</div>
+          <div class="stack-items">
+            <div class="stack-item">React</div><div class="stack-item">Next.js</div>
+            <div class="stack-item">TypeScript</div><div class="stack-item">Tailwind CSS</div>
+          </div>
+        </div>
+        <div>
+          <div class="stack-cat-label"><span>$</span> Backend</div>
+          <div class="stack-items">
+            <div class="stack-item">Node.js</div><div class="stack-item">Python</div>
+            <div class="stack-item">PostgreSQL</div><div class="stack-item">Redis</div>
+          </div>
+        </div>
+        <div>
+          <div class="stack-cat-label"><span>$</span> DevOps & Mobile</div>
+          <div class="stack-items">
+            <div class="stack-item">Docker</div><div class="stack-item">CI/CD</div>
+            <div class="stack-item">Nginx</div><div class="stack-item">Linux</div>
+            <div class="stack-item">React Native</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Pricing -->
+    <section class="section" id="pricing">
+      <div class="section-label">pricing</div>
+      <h2>Стоимость</h2>
+      <div class="pricing-row"><div><h3>Лендинг / сайт-визитка</h3><p>Дизайн, вёрстка, адаптив, хостинг</p></div><div class="pricing-price">от 30 000 &#8381;</div></div>
+      <div class="pricing-row"><div><h3>Веб-приложение (SPA / PWA)</h3><p>Полноценный frontend + backend + деплой</p></div><div class="pricing-price">от 150 000 &#8381;</div></div>
+      <div class="pricing-row"><div><h3>Fullstack MVP</h3><p>Продукт с нуля: архитектура, API, UI, запуск</p></div><div class="pricing-price">от 250 000 &#8381;</div></div>
+      <div class="pricing-row"><div><h3>Поддержка и доработка</h3><p>Текущая разработка, фиксы, новые фичи</p></div><div class="pricing-price">от 3 000 &#8381;/час</div></div>
+      <div class="pricing-row"><div><h3>Консультация</h3><p>Разбор архитектуры, code review, рекомендации</p></div><div class="pricing-price">бесплатно (30 мин)</div></div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="section-label">contact</div>
+      <h2>Контакты</h2>
+      <p style="color:var(--gray);font-size:14px;max-width:480px;margin-bottom:20px;">Открыт к проектам, консультациям и сотрудничеству. Пишите — отвечу в течение суток.</p>
+      <div class="contact-grid">
+        <a href="https://t.me/dvolkov_dev" target="_blank" class="contact-link"><span class="contact-link-label">Telegram</span><span class="contact-link-handle">@dvolkov_dev</span></a>
+        <a href="mailto:hi@dvolkov.dev" class="contact-link"><span class="contact-link-label">Email</span><span class="contact-link-handle">hi@dvolkov.dev</span></a>
+        <a href="https://github.com/dvolkov" target="_blank" class="contact-link"><span class="contact-link-label">GitHub</span><span class="contact-link-handle">@dvolkov</span></a>
+        <a href="https://linkedin.com/in/dvolkov" target="_blank" class="contact-link"><span class="contact-link-label">LinkedIn</span><span class="contact-link-handle">in/dvolkov</span></a>
+      </div>
+    </section>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Есть идея? Давайте обсудим</h2>
+      <p>Первая консультация бесплатно. Разберём задачу, предложу архитектуру и оценку.</p>
+      <a href="#contact" class="btn-green">Написать</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p>dvolkov.dev &copy; 2026 &mdash; Хостинг: <a href="https://hostingvibe.ru" target="_blank">VibeHosting</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

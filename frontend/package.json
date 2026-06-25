@@ -1,0 +1,32 @@
+{
+  "name": "vibe-hosting-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack -p 7002",
+    "build": "next build",
+    "start": "next start -p 7002"
+  },
+  "dependencies": {
+    "animejs": "^4.3.6",
+    "lucide-react": "^0.575.0",
+    "next": "^16.1.6",
+    "next-themes": "^0.4.6",
+    "qr-code-styling": "^1.9.2",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-markdown": "^10.1.0",
+    "recharts": "^3.8.0",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.2.1",
+    "@types/node": "^25.3.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.2.1",
+    "typescript": "5.9.3"
+  }
+}

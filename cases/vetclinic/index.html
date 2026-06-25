@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ВетДом — ветеринарная клиника в Уфе</title>
+<meta name="description" content="ВетДом — современная ветеринарная клиника в Уфе. Работаем 24/7. Опытные врачи, передовое оборудование.">
+<style>
+:root{--bg:#f5fbf7;--fg:#0d2218;--acc:#2ecc71;--acc2:#27ae60;--line:#b8e0cb;--muted:#4a7a5e;--soft:#fff;--mint:#e6f7ee}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Arial,sans-serif}a{text-decoration:none;color:inherit}img{display:block}.w{max-width:1120px;margin:auto;padding:0 20px}section{padding:0 0 62px}
+.head{display:grid;grid-template-columns:auto 1fr auto;align-items:center;padding:20px 0;border-bottom:2px solid var(--line)}.logo{font-size:24px;font-weight:900;color:var(--acc)}.logo span{color:var(--fg)}nav{display:flex;gap:20px;color:var(--muted);font-size:14px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;padding:38px 0 70px;gap:16px}.panel,.card,.contactbox,.review{border:1px solid var(--line);border-radius:20px;background:var(--soft);box-shadow:0 4px 24px rgba(46,204,113,.05)}.panel{padding:36px;min-height:370px;display:flex;flex-direction:column;justify-content:center}.hero h1{font-size:clamp(34px,5.5vw,56px);line-height:.95;margin:0 0 14px}.hero p,.card p,.contactbox p,.review p{color:var(--muted)}
+.btn,.ghost{display:inline-block;padding:13px 22px;border-radius:12px;font-weight:700}.btn{background:linear-gradient(135deg,var(--acc),var(--acc2));color:#fff;box-shadow:0 8px 20px rgba(46,204,113,.22)}.ghost{border:1px solid var(--line);background:var(--soft)}
+.visual{min-height:370px;border:1px solid var(--line);border-radius:20px;overflow:hidden}.visual img{width:100%;height:100%;object-fit:cover;min-height:370px}
+h2{font-size:28px;margin:0 0 18px}
+.badge-urgent{display:inline-block;background:#fee2e2;color:#dc2626;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:8px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat{border:1px solid var(--line);border-radius:16px;background:var(--soft);padding:20px;text-align:center}.stat b{display:block;font-size:28px;color:var(--acc)}.stat p{color:var(--muted);margin:4px 0 0;font-size:14px}
+.photo-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.ps-img{border-radius:14px;overflow:hidden;border:1px solid var(--line)}.ps-img img{width:100%;height:180px;object-fit:cover}
+.price-grid{display:grid;gap:1px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.price-row{background:var(--soft);padding:16px 22px;display:grid;grid-template-columns:1fr auto;align-items:center}.price-row:not(:last-child){border-bottom:1px solid var(--line)}.price-row b{font-size:15px}.price-row span{color:var(--acc2);font-weight:700}
+.why{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:22px}
+.gallery2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.g2-img{border-radius:16px;overflow:hidden;border:1px solid var(--line)}.g2-img img{width:100%;height:260px;object-fit:cover}
+.vets{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.vet-photo{border-radius:14px;overflow:hidden;margin-bottom:12px;border:1px solid var(--line)}.vet-photo img{width:100%;height:180px;object-fit:cover}
+.reviews{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.review .stars{color:#f59e0b;font-size:14px;margin-bottom:10px}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.contactbox{padding:22px}
+.cta{padding:40px;border-radius:22px;background:linear-gradient(135deg,#e6f7ee,var(--mint));border:1px solid var(--line);text-align:center}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:620px;margin:20px auto 0}input,select{width:100%;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--fg);font-size:15px}input::placeholder{color:var(--muted)}
+.foot{padding:18px 0 36px;text-align:center;color:var(--muted);font-size:14px}
+@media(max-width:920px){.hero,.stats,.why,.vets,.reviews,.contact,.gallery2,.photo-strip{grid-template-columns:1fr 1fr}.head{grid-template-columns:1fr auto}nav{display:none}.form-grid{grid-template-columns:1fr}}
+@media(max-width:620px){.hero,.stats,.why,.vets,.reviews,.contact,.gallery2,.photo-strip{grid-template-columns:1fr}.hero h1{font-size:38px}}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="head">
+    <div class="logo">Вет<span>Дом</span></div>
+    <nav><a href="#prices">Услуги</a><a href="#vets">Врачи</a><a href="#reviews">Отзывы</a><a href="#contacts">Контакты</a></nav>
+    <a class="btn" href="#booking">Записать питомца</a>
+  </div>
+
+  <div class="hero">
+    <div class="panel">
+      <div class="badge-urgent">Скорая помощь 24/7</div>
+      <h1>Забота о тех, кто не может сказать «болит»</h1>
+      <p>Современная ветеринарная клиника в Уфе. Работаем 24/7. Опытные врачи, передовое оборудование, искренняя любовь к животным.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px"><a class="btn" href="#booking">Записать питомца</a><a class="ghost" href="#prices">Наши услуги</a></div>
+    </div>
+    <div class="visual"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=600&h=500&fit=crop&q=75" alt="УЗИ собаки в клинике" loading="lazy"></div>
+  </div>
+
+  <section>
+    <div class="stats">
+      <div class="stat"><b>11 лет</b><p>помогаем животным в Уфе</p></div>
+      <div class="stat"><b>5 000+</b><p>пациентов ежегодно</p></div>
+      <div class="stat"><b>4 врача</b><p>с узкими специализациями</p></div>
+      <div class="stat"><b>24/7</b><p>скорая ветпомощь и стационар</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="photo-strip">
+      <div class="ps-img"><img src="https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=300&h=220&fit=crop&q=75" alt="Ветврач с котом" loading="lazy"></div>
+      <div class="ps-img"><img src="https://images.unsplash.com/photo-1583337130417-13104dec14a3?w=300&h=220&fit=crop&q=75" alt="Лапка кота в руках" loading="lazy"></div>
+      <div class="ps-img"><img src="https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=300&h=220&fit=crop&q=75" alt="Врач с маленьким животным" loading="lazy"></div>
+      <div class="ps-img"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=300&h=220&fit=crop&q=75" alt="Диагностика" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="prices">
+    <h2>Услуги и цены</h2>
+    <div class="price-grid">
+      <div class="price-row"><b>Первичный приём терапевта</b><span>800 руб.</span></div>
+      <div class="price-row"><b>Вакцинация (комплексная)</b><span>2 500 руб.</span></div>
+      <div class="price-row"><b>УЗИ брюшной полости</b><span>1 500 руб.</span></div>
+      <div class="price-row"><b>Кастрация кота</b><span>3 000 руб.</span></div>
+      <div class="price-row"><b>Стерилизация кошки</b><span>5 500 руб.</span></div>
+      <div class="price-row"><b>Чистка зубов ультразвуком</b><span>3 500 руб.</span></div>
+      <div class="price-row"><b>Стрижка когтей</b><span>400 руб.</span></div>
+      <div class="price-row"><b>Экстренный вызов (ночь)</b><span>2 000 руб.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Почему ВетДом</h2>
+    <div class="why">
+      <div class="card"><b>Работаем 24/7</b><p>Включая праздники. Экстренная помощь в любое время суток — ваш питомец не останется без помощи.</p></div>
+      <div class="card"><b>Анализы за 30 минут</b><p>Собственная лаборатория. Не нужно ждать сутки — лечение начинается сразу после диагностики.</p></div>
+      <div class="card"><b>Стационар и вызов на дом</b><p>Тяжёлые пациенты под наблюдением. Если питомец не может ехать — врач приедет к вам.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="gallery2">
+      <div class="g2-img"><img src="https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=550&h=350&fit=crop&q=75" alt="Ветврач осматривает кота" loading="lazy"></div>
+      <div class="g2-img"><img src="https://images.unsplash.com/photo-1583337130417-13104dec14a3?w=550&h=350&fit=crop&q=75" alt="Забота о питомце" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section id="vets">
+    <h2>Наши ветеринары</h2>
+    <div class="vets">
+      <div class="card">
+        <div class="vet-photo"><img src="https://images.unsplash.com/photo-1629740067905-bd3f515aa739?w=300&h=220&fit=crop&q=75" alt="Елена Сафина" loading="lazy"></div>
+        <b>Елена Сафина</b><p style="color:var(--muted)">Главный ветврач, хирург. 15 лет стажа. Абдоминальная хирургия.</p>
+      </div>
+      <div class="card">
+        <div class="vet-photo"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=300&h=220&fit=crop&q=75" alt="Руслан Ахметов" loading="lazy"></div>
+        <b>Руслан Ахметов</b><p style="color:var(--muted)">Терапевт-кардиолог. 10 лет стажа. УЗИ-диагностика.</p>
+      </div>
+      <div class="card">
+        <div class="vet-photo"><img src="https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=300&h=220&fit=crop&q=75" alt="Мария Козлова" loading="lazy"></div>
+        <b>Мария Козлова</b><p style="color:var(--muted)">Дерматолог. 7 лет стажа. Аллергология, дерматоскопия.</p>
+      </div>
+      <div class="card">
+        <div class="vet-photo"><img src="https://images.unsplash.com/photo-1583337130417-13104dec14a3?w=300&h=220&fit=crop&q=75" alt="Ильнар Галиев" loading="lazy"></div>
+        <b>Ильнар Галиев</b><p style="color:var(--muted)">Травматолог-ортопед. 8 лет стажа. Остеосинтез.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <h2>Отзывы</h2>
+    <div class="reviews">
+      <div class="review card"><div class="stars">★★★★★</div><b>Анна Б.</b><p>«Кошка попала с кризисом ночью — приняли мгновенно, спасли. Не могу выразить благодарность словами.»</p></div>
+      <div class="review card"><div class="stars">★★★★★</div><b>Тимур Х.</b><p>«Делали операцию собаке. Всё объяснили, подготовили. Врачи настоящие профессионалы.»</p></div>
+      <div class="review card"><div class="stars">★★★★★</div><b>Светлана Г.</b><p>«Хожу сюда с двумя котами уже 4 года. Врачи помнят историю болезней, всегда внимательны и честны.»</p></div>
+    </div>
+  </section>
+
+  <section id="booking">
+    <div class="cta">
+      <h2 style="margin:0 0 8px">Запишите питомца на приём</h2>
+      <p style="color:var(--muted);max-width:520px;margin:0 auto">Оставьте заявку — подтвердим время в течение 15 минут. Для скорой помощи — звоните: 8 (347) 200-20-20.</p>
+      <div class="form-grid">
+        <input type="text" placeholder="Ваше имя">
+        <input type="tel" placeholder="+7 (___) ___-__-__">
+        <select><option>Вид животного</option><option>Собака</option><option>Кошка</option><option>Грызун</option><option>Птица</option><option>Экзотическое</option></select>
+        <select><option>Услуга</option><option>Первичный приём</option><option>Вакцинация</option><option>УЗИ</option><option>Хирургия</option><option>Стрижка когтей</option></select>
+        <a class="btn" href="#" style="grid-column:1/-1;text-align:center">Записать питомца</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts">
+    <h2>Контакты</h2>
+    <div class="contact">
+      <div class="contactbox"><b>Адрес</b><p>Уфа, ул. Революционная, 96</p></div>
+      <div class="contactbox"><b>Часы работы</b><p>Пн–Пт: 09:00–21:00<br>Сб–Вс: 10:00–20:00<br>Скорая: 24/7</p></div>
+      <div class="contactbox"><b>Телефон</b><p>8 (347) 200-20-20<br>Вызов врача на дом</p></div>
+    </div>
+  </section>
+
+  <div class="foot">ВетДом © 2026 — Сделано на <a href="https://hostingvibe.ru" style="color:var(--acc)">VibeHosting</a></div>
+</div>
+</body>
+</html>

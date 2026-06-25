@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Как сделать свой сайт с помощью Cursor | VibeHosting</title>
+    <meta name="description" content="Создаём сайт в AI-редакторе Cursor: установка, промпты, Composer и публикация на VibeHosting.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; color: #1a1a1a; background: #fafafa; }
+        .article { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { font-size: 2.2rem; margin-bottom: 24px; line-height: 1.3; }
+        h2 { font-size: 1.6rem; margin: 40px 0 16px; color: #059669; }
+        h3 { font-size: 1.3rem; margin: 24px 0 12px; }
+        p { margin-bottom: 16px; font-size: 1.05rem; }
+        figure { margin: 24px 0; }
+        figure img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+        figcaption { text-align: center; color: #6b7280; font-size: 0.9rem; margin-top: 8px; }
+        .highlight { background: #ecfdf5; border-left: 4px solid #10b981; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+        .warning { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 16px 20px; border-radius: 0 8px 8px 0; margin: 24px 0; }
+        .cta { background: linear-gradient(135deg, #059669, #10b981); color: white; padding: 28px 32px; border-radius: 16px; text-align: center; margin: 40px 0; }
+        .cta h3 { color: white; margin-bottom: 12px; }
+        .cta a { color: white; font-weight: bold; font-size: 1.1rem; }
+        code { background: #f3f4f6; padding: 2px 8px; border-radius: 4px; font-size: 0.9em; }
+        pre { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; overflow-x: auto; margin: 20px 0; }
+        pre code { background: none; color: inherit; padding: 0; }
+        ol, ul { margin: 16px 0; padding-left: 28px; }
+        li { margin-bottom: 10px; }
+        .step { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin: 20px 0; }
+        .step-num { display: inline-block; background: #10b981; color: white; width: 36px; height: 36px; border-radius: 50%; text-align: center; line-height: 36px; font-weight: bold; margin-right: 12px; }
+        .meta { color: #6b7280; font-size: 0.9rem; margin-bottom: 32px; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .comparison-table th, .comparison-table td { padding: 12px 16px; border: 1px solid #e5e7eb; text-align: left; }
+        .comparison-table th { background: #f9fafb; font-weight: 600; }
+        .comparison-table tr:nth-child(even) { background: #f9fafb; }
+        .prompt-box { background: #1e1e1e; color: #a5f3fc; padding: 16px 20px; border-radius: 12px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 0.95rem; line-height: 1.6; white-space: pre-wrap; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0; }
+        .feature-card { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }
+        .feature-card h4 { color: #059669; margin-bottom: 8px; font-size: 1.1rem; }
+        .feature-card p { font-size: 0.95rem; margin-bottom: 0; }
+        @media (max-width: 640px) { h1 { font-size: 1.6rem; } .article { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <article class="article">
+        <h1>Как сделать свой сайт с помощью Cursor</h1>
+        <div class="meta">Март 2026 &middot; 15 минут чтения &middot; VibeHosting</div>
+
+        <!-- ===== ВВЕДЕНИЕ ===== -->
+        <p>Представьте: вы открываете редактор кода, описываете словами, какой сайт хотите получить, и через пару минут перед вами готовая страница с анимациями, адаптивной вёрсткой и рабочими формами. Звучит как фантастика? Нет &mdash; это Cursor, AI-редактор нового поколения.</p>
+
+        <p>Cursor &mdash; это не просто ещё один плагин для автодополнения. Это полноценный редактор кода на базе Visual Studio Code, в который встроены мощнейшие языковые модели: Claude, GPT-4, собственная модель Composer и другие. Вы пишете промпт &mdash; а Cursor генерирует, редактирует и рефакторит код прямо в проекте, видя весь контекст ваших файлов.</p>
+
+        <p>В этой статье мы пройдём весь путь: от установки Cursor до публикации готового сайта на хостинге. Никакого абстрактного теоретизирования &mdash; только конкретные промпты, реальные приёмы и рабочий результат.</p>
+
+        <figure>
+            <img src="https://images.prismic.io/prismic-main/aR08w2GnmrmGqAZz_Cursor_agent-centric-interface.png?auto=format%2Ccompress&fit=max&w=3840" alt="Интерфейс Cursor с AI-агентом" loading="lazy">
+            <figcaption>Интерфейс Cursor: знакомый VSCode, но с AI-агентом прямо внутри редактора</figcaption>
+        </figure>
+
+        <!-- ===== ЧТО ТАКОЕ CURSOR ===== -->
+        <h2>Что такое Cursor и почему все о нём говорят</h2>
+
+        <p>Cursor &mdash; это форк Visual Studio Code, созданный компанией Anysphere. Внешне он выглядит почти идентично VSCode: те же горячие клавиши, расширения, темы и настройки. Но внутри &mdash; принципиально другой инструмент.</p>
+
+        <p>Главное отличие: AI в Cursor &mdash; это не внешний ассистент, а часть редактора. Он видит все файлы проекта, понимает связи между ними, может одновременно редактировать несколько файлов и даже запускать браузер для проверки результата. Это не ChatGPT в боковой панели &mdash; это AI, встроенный в процесс разработки.</p>
+
+        <h3>Ключевые возможности</h3>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>Tab-автокомплит</h4>
+                <p>AI предсказывает, что вы собираетесь написать, и дописывает целые блоки кода. Нажмите Tab для принятия.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Cmd+K / Ctrl+K</h4>
+                <p>Inline-редактирование: выделите код, опишите изменение словами &mdash; AI перепишет фрагмент.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Chat (Cmd+I)</h4>
+                <p>Боковая панель для диалога с AI. Задавайте вопросы, просите объяснить код или предложить решение.</p>
+            </div>
+            <div class="feature-card">
+                <h4>Agent / Composer</h4>
+                <p>Полноценный AI-агент: создаёт файлы, редактирует несколько файлов сразу, запускает команды в терминале.</p>
+            </div>
+        </div>
+
+        <h3>Тарифы Cursor</h3>
+        <table class="comparison-table">
+            <tr>
+                <th>Параметр</th>
+                <th>Hobby (бесплатно)</th>
+                <th>Pro ($20/мес)</th>
+            </tr>
+            <tr>
+                <td>Запросы к премиум-моделям</td>
+                <td>50 в месяц</td>
+                <td>500 быстрых + безлимит медленных</td>
+            </tr>
+            <tr>
+                <td>Автокомплит</td>
+                <td>2000 подсказок</td>
+                <td>Безлимит</td>
+            </tr>
+            <tr>
+                <td>Модели</td>
+                <td>GPT-4, Claude</td>
+                <td>Все модели + Composer</td>
+            </tr>
+            <tr>
+                <td>Background Agents</td>
+                <td>Нет</td>
+                <td>До 8 параллельных агентов</td>
+            </tr>
+        </table>
+
+        <div class="highlight">
+            <strong>Совет:</strong> Бесплатного плана хватит, чтобы создать и опубликовать несколько лендингов. Для активной работы над проектами стоит перейти на Pro.
+        </div>
+
+        <!-- ===== УСТАНОВКА ===== -->
+        <h2>Установка Cursor: от скачивания до первого промпта</h2>
+
+        <p>Установка Cursor занимает буквально пару минут и не требует никаких технических знаний помимо умения скачивать приложения.</p>
+
+        <div class="step">
+            <p><span class="step-num">1</span><strong>Скачайте Cursor</strong></p>
+            <p>Перейдите на <a href="https://cursor.com" target="_blank" rel="noopener">cursor.com</a> и нажмите кнопку Download. Cursor доступен для macOS, Windows и Linux.</p>
+        </div>
+
+        <figure>
+            <img src="https://static-assets.codecademy.com/how-to-use-cursor-ai/cursor_homepage.png" alt="Главная страница cursor.com" loading="lazy">
+            <figcaption>Главная страница cursor.com &mdash; скачать редактор можно бесплатно</figcaption>
+        </figure>
+
+        <div class="step">
+            <p><span class="step-num">2</span><strong>Установите и запустите</strong></p>
+            <p>На macOS &mdash; перетащите в Applications. На Windows &mdash; запустите установщик. При первом запуске Cursor предложит импортировать настройки из VSCode: расширения, тему, горячие клавиши. Рекомендуем согласиться &mdash; переход будет бесшовным.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">3</span><strong>Войдите в аккаунт</strong></p>
+            <p>Cursor попросит создать аккаунт или войти через GitHub/Google. Это необходимо для доступа к AI-функциям. После входа вы получите бесплатный тариф Hobby.</p>
+        </div>
+
+        <figure>
+            <img src="https://static-assets.codecademy.com/how-to-use-cursor-ai/signin_to_cursor.png" alt="Экран входа в Cursor" loading="lazy">
+            <figcaption>Экран авторизации при первом запуске Cursor</figcaption>
+        </figure>
+
+        <div class="step">
+            <p><span class="step-num">4</span><strong>Создайте папку проекта</strong></p>
+            <p>Откройте терминал (он встроен в Cursor, как и в VSCode) и создайте папку для вашего будущего сайта:</p>
+            <pre><code>mkdir my-website
+cd my-website</code></pre>
+            <p>Или просто откройте пустую папку через File &rarr; Open Folder.</p>
+        </div>
+
+        <div class="highlight">
+            <strong>Переход с VSCode:</strong> если вы уже работаете в Visual Studio Code, Cursor будет ощущаться как дом. Все ваши расширения (Prettier, ESLint, Live Server и др.) работают без изменений. Единственное отличие &mdash; иконка с ромбиком вместо привычного логотипа, да боковая AI-панель.
+        </div>
+
+        <!-- ===== КЛЮЧЕВЫЕ ФИШКИ ===== -->
+        <h2>Ключевые фишки Cursor для создания сайтов</h2>
+
+        <p>Cursor предлагает несколько способов взаимодействия с AI. Каждый подходит для своей задачи. Разберём их по порядку.</p>
+
+        <h3>Tab-автокомплит: AI дописывает код за вас</h3>
+
+        <p>Начните печатать HTML или CSS &mdash; и Cursor предложит продолжение серым текстом. Это не просто шаблонные сниппеты: AI анализирует контекст файла и предлагает осмысленный код. Например, если вы создали header с навигацией и начинаете писать секцию hero &mdash; AI предложит hero-блок, стилистически согласованный с вашим header.</p>
+
+        <p>Для принятия подсказки нажмите <code>Tab</code>. Для отклонения &mdash; просто продолжайте печатать. Автокомплит работает для HTML, CSS, JavaScript и любых других языков.</p>
+
+        <h3>Cmd+K: точечное AI-редактирование</h3>
+
+        <p>Выделите фрагмент кода и нажмите <code>Cmd+K</code> (или <code>Ctrl+K</code> на Windows). Появится строка ввода, где вы можете описать, что хотите изменить:</p>
+
+        <ul>
+            <li>&laquo;Сделай этот блок адаптивным для мобильных&raquo;</li>
+            <li>&laquo;Добавь плавную анимацию появления&raquo;</li>
+            <li>&laquo;Замени цвета на тёмную тему&raquo;</li>
+            <li>&laquo;Перепиши на CSS Grid вместо flexbox&raquo;</li>
+        </ul>
+
+        <p>AI перепишет выделенный фрагмент, показывая diff-превью &mdash; вы увидите, что именно изменилось, прежде чем принять правку.</p>
+
+        <h3>Chat: спросите AI что угодно</h3>
+
+        <p>Нажмите <code>Cmd+I</code> &mdash; откроется боковая панель чата. Здесь можно вести полноценный диалог с AI о вашем проекте. Chat видит все файлы, которые вы открыли, и может ссылаться на конкретные строки кода.</p>
+
+        <figure>
+            <img src="https://images.prismic.io/prismic-main/aR1LuGGnmrmGqAec_context.png?auto=format%2Ccompress&fit=max&w=3840" alt="Chat в Cursor с контекстом проекта" loading="lazy">
+            <figcaption>Chat в Cursor видит контекст проекта и может ссылаться на конкретные файлы</figcaption>
+        </figure>
+
+        <p>Полезные сценарии для Chat при создании сайтов:</p>
+        <ul>
+            <li>Объяснить, как работает чужой CSS-код</li>
+            <li>Предложить варианты дизайна для секции</li>
+            <li>Помочь с адаптивностью под разные экраны</li>
+            <li>Подсказать, как добавить анимацию или интерактивность</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Подсказка:</strong> используйте символ <code>@</code> в чате, чтобы указать на конкретный файл или папку. Например, <code>@index.html</code> &mdash; и AI будет работать именно с этим файлом.
+        </div>
+
+        <h3>Agent (Composer): создание целых проектов через промпт</h3>
+
+        <p>Это самая мощная функция Cursor. Agent (ранее назывался Composer) &mdash; полноценный AI-агент, который может:</p>
+
+        <ul>
+            <li>Создавать новые файлы с нуля</li>
+            <li>Редактировать несколько файлов одновременно</li>
+            <li>Выполнять команды в терминале</li>
+            <li>Открывать браузер и проверять результат</li>
+            <li>Итеративно улучшать код на основе ваших комментариев</li>
+        </ul>
+
+        <figure>
+            <img src="https://images.prismic.io/prismic-main/aR1MEmGnmrmGqAek_edits.png?auto=format%2Ccompress&fit=max&w=3840" alt="Agent в Cursor редактирует код" loading="lazy">
+            <figcaption>Agent в Cursor может редактировать несколько файлов сразу, показывая все изменения</figcaption>
+        </figure>
+
+        <p>Agent &mdash; это то, что делает Cursor по-настоящему революционным инструментом для создания сайтов. Вы описываете желаемый результат, а он реализует его, учитывая структуру всего проекта.</p>
+
+        <!-- ===== СОЗДАЁМ САЙТ ===== -->
+        <h2>Создаём сайт в Cursor: пошаговое руководство</h2>
+
+        <p>Хватит теории &mdash; давайте создадим реальный сайт. Мы сделаем лендинг для кофейни: hero-секция, меню, раздел &laquo;О нас&raquo; и контактная форма. Всё в одном HTML-файле.</p>
+
+        <h3>Шаг 1: Откройте Agent и напишите промпт</h3>
+
+        <p>Создайте пустую папку, откройте её в Cursor. Нажмите <code>Cmd+I</code> и переключитесь в режим Agent (вверху панели). Введите промпт:</p>
+
+        <div class="prompt-box">Create a responsive landing page for a coffee shop with hero section, menu, about, and contact form. Single HTML file with embedded CSS and JS. Modern design with warm colors, smooth scroll, and subtle animations. The hero should have a full-width background image from unsplash. Menu section with 6 coffee drinks with prices. Contact form with name, email, and message fields.</div>
+
+        <p>Нажмите Enter и наблюдайте: Agent создаст файл <code>index.html</code> с полной разметкой, стилями и скриптами. Обычно на это уходит 20-40 секунд.</p>
+
+        <h3>Шаг 2: Посмотрите результат</h3>
+
+        <p>Откройте файл в браузере. Если у вас установлено расширение Live Server &mdash; нажмите &laquo;Go Live&raquo; внизу редактора. Если нет &mdash; просто откройте HTML-файл двойным кликом из проводника.</p>
+
+        <p>С вероятностью 90% вы увидите вполне приличный лендинг. Но скорее всего захотите что-то поправить. И вот тут начинается магия итеративной работы.</p>
+
+        <h3>Шаг 3: Итеративная доработка через чат</h3>
+
+        <p>Не закрывая Agent, продолжайте диалог. Каждое следующее сообщение &mdash; это уточнение:</p>
+
+        <div class="prompt-box">Сделай hero-секцию выше &mdash; на весь экран (100vh). Добавь overlay на фоновую картинку, чтобы текст лучше читался. Кнопка CTA должна быть крупнее и с hover-эффектом.</div>
+
+        <p>Agent внесёт изменения прямо в существующий файл, покажет diff и дождётся вашего подтверждения.</p>
+
+        <div class="prompt-box">В секции меню добавь иконки к каждому напитку (используй эмодзи). Цены должны быть выровнены по правому краю. Добавь кнопку &laquo;Заказать&raquo; под каждым напитком.</div>
+
+        <p>И ещё:</p>
+
+        <div class="prompt-box">Контактная форма: сделай валидацию email на JS. При отправке показывай сообщение &laquo;Спасибо, мы свяжемся с вами!&raquo; вместо перезагрузки страницы. Добавь анимацию появления этого сообщения.</div>
+
+        <div class="highlight">
+            <strong>Итеративность &mdash; ключ к успеху.</strong> Не пытайтесь описать идеальный сайт в одном промпте. Начните с базовой структуры, посмотрите результат, и дорабатывайте шаг за шагом. Так работают даже профессиональные разработчики.
+        </div>
+
+        <h3>Шаг 4: Добавление анимаций и интерактивности</h3>
+
+        <p>Когда базовая структура готова, попросите Agent добавить &laquo;вишенки на торте&raquo;:</p>
+
+        <div class="prompt-box">Add smooth scroll-based animations: sections should fade in and slide up when scrolling into view. Use Intersection Observer API, no external libraries. Also add a sticky header that changes background on scroll.</div>
+
+        <p>Cursor сгенерирует JavaScript с Intersection Observer, добавит CSS-переходы и встроит sticky-header. Всё в рамках одного файла, без зависимостей.</p>
+
+        <figure>
+            <img src="https://static-assets.codecademy.com/how-to-use-cursor-ai/practical_application_of_cursor.png" alt="Cursor генерирует код для сайта" loading="lazy">
+            <figcaption>Cursor объясняет и генерирует код &mdash; вы видите результат в реальном времени</figcaption>
+        </figure>
+
+        <!-- ===== ПРОМПТ-ИНЖЕНЕРИЯ ===== -->
+        <h2>Промпт-инженерия: как формулировать запросы для лучших результатов</h2>
+
+        <p>Качество сайта напрямую зависит от качества ваших промптов. Вот проверенные принципы, которые работают в Cursor.</p>
+
+        <h3>Будьте конкретны в деталях дизайна</h3>
+
+        <p><strong>Плохо:</strong> &laquo;Сделай красивый сайт&raquo;</p>
+        <p><strong>Хорошо:</strong></p>
+        <div class="prompt-box">Создай лендинг в минималистичном стиле. Цвета: фон #fafafa, акцент #059669, текст #1a1a1a. Шрифт Inter для заголовков, системный sans-serif для текста. Отступы между секциями 80px. Максимальная ширина контента 1200px.</div>
+
+        <h3>Описывайте структуру секции</h3>
+
+        <p><strong>Плохо:</strong> &laquo;Добавь раздел с ценами&raquo;</p>
+        <p><strong>Хорошо:</strong></p>
+        <div class="prompt-box">Создай секцию pricing с тремя карточками тарифов в ряд. Каждая карточка: название тарифа, цена в месяц, список из 5 фичей с галочками, кнопка CTA. Средний тариф визуально выделен (увеличен, с акцентным цветом). На мобильных карточки в один столбец.</div>
+
+        <h3>Указывайте технические требования</h3>
+
+        <div class="prompt-box">Single HTML file, no external dependencies. CSS embedded in style tag. JavaScript embedded in script tag at the end of body. Mobile-first responsive design. Semantic HTML5 tags. WCAG AA accessible.</div>
+
+        <h3>Используйте примеры и референсы</h3>
+
+        <div class="prompt-box">Hero section в стиле stripe.com: крупный заголовок слева, интерактивная иллюстрация справа. Градиентный фон от тёмно-синего к фиолетовому. Плавающие геометрические элементы на фоне с CSS-анимацией.</div>
+
+        <div class="warning">
+            <strong>Важно:</strong> промпты на английском обычно дают лучший результат, потому что модели обучены преимущественно на англоязычном коде. Но описание контента (тексты, названия) можно давать на русском &mdash; Cursor поймёт.
+        </div>
+
+        <h3>Таблица полезных промптов для типичных задач</h3>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Задача</th>
+                <th>Промпт</th>
+            </tr>
+            <tr>
+                <td>Адаптивная навигация</td>
+                <td><code>Add responsive navbar with hamburger menu on mobile, smooth toggle animation</code></td>
+            </tr>
+            <tr>
+                <td>Галерея изображений</td>
+                <td><code>Create image gallery with lightbox, grid layout, lazy loading</code></td>
+            </tr>
+            <tr>
+                <td>Анимация при скролле</td>
+                <td><code>Add scroll animations using Intersection Observer, fade-in and slide-up effects</code></td>
+            </tr>
+            <tr>
+                <td>Тёмная тема</td>
+                <td><code>Add dark mode toggle with CSS custom properties, save preference to localStorage</code></td>
+            </tr>
+            <tr>
+                <td>Форма обратной связи</td>
+                <td><code>Contact form with client-side validation, success message animation, no page reload</code></td>
+            </tr>
+        </table>
+
+        <!-- ===== ПУБЛИКАЦИЯ ===== -->
+        <h2>Публикация сайта на VibeHosting</h2>
+
+        <p>Сайт готов &mdash; пора показать его миру. Самый быстрый способ &mdash; залить его на VibeHosting. Весь процесс занимает меньше минуты.</p>
+
+        <div class="step">
+            <p><span class="step-num">1</span><strong>Упакуйте сайт в ZIP</strong></p>
+            <p>Выделите все файлы проекта (index.html и всё остальное) и создайте ZIP-архив. На macOS: выделите файлы &rarr; правый клик &rarr; &laquo;Сжать&raquo;. На Windows: выделите &rarr; правый клик &rarr; &laquo;Отправить в сжатую папку&raquo;.</p>
+            <p>Или из терминала прямо в Cursor:</p>
+            <pre><code>zip -r my-website.zip .</code></pre>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">2</span><strong>Загрузите на VibeHosting</strong></p>
+            <p>Перейдите на <a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru</a>, зарегистрируйтесь (или войдите) и нажмите &laquo;Загрузить сайт&raquo;. Перетащите ZIP-файл в зону загрузки.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">3</span><strong>Выберите адрес</strong></p>
+            <p>Укажите slug &mdash; короткое имя для вашего сайта. Например, <code>my-coffee</code>. Сайт будет доступен по адресу <strong>my-coffee.hostingvibe.ru</strong>.</p>
+        </div>
+
+        <div class="step">
+            <p><span class="step-num">4</span><strong>Готово!</strong></p>
+            <p>Через несколько секунд ваш сайт будет доступен по ссылке. Поделитесь ей в соцсетях, отправьте клиенту или сохраните QR-код.</p>
+        </div>
+
+        <div class="cta">
+            <h3>Опубликуйте свой сайт бесплатно</h3>
+            <p>Бесплатный тариф: 1 сайт, до 50 МБ, HTTPS, свой адрес на hostingvibe.ru</p>
+            <p style="margin-top: 12px;"><a href="https://hostingvibe.ru" target="_blank" rel="noopener">hostingvibe.ru &rarr;</a></p>
+        </div>
+
+        <h3>Тарифы VibeHosting</h3>
+        <table class="comparison-table">
+            <tr>
+                <th>Параметр</th>
+                <th>FREE</th>
+                <th>PRO (386 &#8381;/мес)</th>
+            </tr>
+            <tr>
+                <td>Количество сайтов</td>
+                <td>1</td>
+                <td>3</td>
+            </tr>
+            <tr>
+                <td>Размер файлов</td>
+                <td>50 МБ</td>
+                <td>500 МБ</td>
+            </tr>
+            <tr>
+                <td>Срок хранения</td>
+                <td>30 дней</td>
+                <td>Бессрочно</td>
+            </tr>
+            <tr>
+                <td>Кастомный домен</td>
+                <td>Нет</td>
+                <td>Да</td>
+            </tr>
+            <tr>
+                <td>Визуальный редактор</td>
+                <td>Базовый</td>
+                <td>Полный</td>
+            </tr>
+            <tr>
+                <td>Защита паролем</td>
+                <td>Нет</td>
+                <td>Да</td>
+            </tr>
+        </table>
+
+        <!-- ===== CURSOR VS CHATGPT ===== -->
+        <h2>Cursor vs ChatGPT для создания сайтов</h2>
+
+        <p>Многие создают сайты через ChatGPT, копируя сгенерированный код в текстовый редактор. Это работает, но Cursor предлагает принципиально другой опыт. Сравним подходы.</p>
+
+        <figure>
+            <img src="https://images.prismic.io/prismic-main/aR1Fv2GnmrmGqAby_cursor_planmode.png?auto=format%2Ccompress&fit=max&w=3840" alt="Cursor Plan Mode" loading="lazy">
+            <figcaption>Plan Mode в Cursor: AI планирует изменения перед их внесением</figcaption>
+        </figure>
+
+        <table class="comparison-table">
+            <tr>
+                <th>Критерий</th>
+                <th>ChatGPT</th>
+                <th>Cursor</th>
+            </tr>
+            <tr>
+                <td>Контекст проекта</td>
+                <td>Не видит файлы, работает с тем, что вы вставите в чат</td>
+                <td>Видит все файлы проекта, понимает связи между ними</td>
+            </tr>
+            <tr>
+                <td>Редактирование</td>
+                <td>Генерирует весь файл целиком &mdash; нужно копировать</td>
+                <td>Вносит точечные изменения прямо в файл, показывает diff</td>
+            </tr>
+            <tr>
+                <td>Несколько файлов</td>
+                <td>Один файл за раз, нет связи между файлами</td>
+                <td>Редактирует HTML, CSS и JS одновременно, синхронно</td>
+            </tr>
+            <tr>
+                <td>Превью</td>
+                <td>Нет &mdash; нужно копировать код и открывать в браузере</td>
+                <td>Live preview в встроенном браузере (в Cursor 2.0+)</td>
+            </tr>
+            <tr>
+                <td>Итерации</td>
+                <td>Каждая правка &mdash; новая копипаста всего файла</td>
+                <td>Цепочка правок в одном диалоге, каждая поверх предыдущей</td>
+            </tr>
+            <tr>
+                <td>Git-интеграция</td>
+                <td>Нет</td>
+                <td>Полная: коммиты, ветки, diff прямо в редакторе</td>
+            </tr>
+        </table>
+
+        <div class="highlight">
+            <strong>Вердикт:</strong> ChatGPT &mdash; отличный инструмент для быстрых экспериментов и обучения. Но если вы хотите создать реальный сайт с итеративной доработкой, Cursor экономит огромное количество времени на копипасте и переключении между вкладками.
+        </div>
+
+        <h3>Когда ChatGPT всё-таки лучше</h3>
+        <ul>
+            <li><strong>Обучение:</strong> если вы только начинаете учиться HTML/CSS, чат-формат удобнее для пошагового объяснения</li>
+            <li><strong>Быстрый прототип:</strong> нужен одноразовый сниппет &mdash; проще спросить в ChatGPT, чем открывать редактор</li>
+            <li><strong>Без установки:</strong> ChatGPT работает в браузере, ничего устанавливать не нужно</li>
+        </ul>
+
+        <h3>Когда Cursor незаменим</h3>
+        <ul>
+            <li><strong>Многостраничные сайты:</strong> AI видит все файлы и поддерживает согласованность</li>
+            <li><strong>Итеративная доработка:</strong> правите одну секцию &mdash; не нужно перегенерировать весь файл</li>
+            <li><strong>Реальная разработка:</strong> npm, Git, терминал, расширения &mdash; всё в одном месте</li>
+            <li><strong>Командная работа:</strong> code review, git history, merge &mdash; профессиональный workflow</li>
+        </ul>
+
+        <!-- ===== СОВЕТЫ И ТРЮКИ ===== -->
+        <h2>Советы и трюки для продвинутых</h2>
+
+        <h3>Используйте .cursorrules</h3>
+        <p>Создайте файл <code>.cursorrules</code> в корне проекта с общими инструкциями для AI. Например:</p>
+        <pre><code>Ты создаёшь сайт на русском языке.
+Стиль: минимализм, чистые линии.
+Цвета: фон #fafafa, акцент #059669.
+Всегда используй семантический HTML5.
+Всегда делай адаптивную вёрстку (mobile-first).
+Не используй внешние библиотеки без прямой просьбы.</code></pre>
+        <p>Теперь каждый промпт будет автоматически учитывать эти правила &mdash; вам не нужно повторять их каждый раз.</p>
+
+        <h3>Подключайте документацию через @docs</h3>
+        <p>В чате Cursor введите <code>@docs</code> и укажите URL документации (например, Tailwind CSS, React или любого фреймворка). AI будет использовать эту документацию при генерации кода.</p>
+
+        <h3>Используйте скриншоты</h3>
+        <p>Cursor поддерживает загрузку изображений в чат. Сделайте скриншот дизайна из Figma или просто красивого сайта и перетащите в чат с промптом: &laquo;Воспроизведи этот дизайн в HTML/CSS&raquo;. AI проанализирует изображение и создаст близкую к оригиналу вёрстку.</p>
+
+        <h3>Background Agents для сложных задач</h3>
+        <p>В Cursor Pro можно запустить до 8 фоновых агентов параллельно. Каждый работает в своей git-ветке и не мешает другим. Полезно, когда нужно одновременно реализовать несколько независимых задач.</p>
+
+        <figure>
+            <img src="https://images.prismic.io/prismic-main/aR1IcWGnmrmGqAdU_BackgroundAgents.png?auto=format%2Ccompress&fit=max&w=3840" alt="Background Agents в Cursor" loading="lazy">
+            <figcaption>Background Agents: несколько AI-агентов работают параллельно над разными задачами</figcaption>
+        </figure>
+
+        <!-- ===== ИТОГИ ===== -->
+        <h2>Итоги</h2>
+
+        <p>Cursor кардинально меняет процесс создания сайтов. Вместо того чтобы писать каждую строку кода вручную или копировать ответы ChatGPT, вы работаете в профессиональном редакторе, где AI &mdash; это не внешний помощник, а часть инструмента.</p>
+
+        <p>Что мы узнали:</p>
+        <ol>
+            <li><strong>Cursor</strong> &mdash; это форк VSCode со встроенными AI-моделями (Claude, GPT-4, Composer).</li>
+            <li><strong>Установка</strong> занимает 2 минуты, а переход с VSCode &mdash; бесшовный.</li>
+            <li><strong>Четыре режима работы</strong>: Tab-автокомплит, Cmd+K, Chat и Agent &mdash; для задач разного масштаба.</li>
+            <li><strong>Итеративный подход</strong> &mdash; ключ к качественному результату: начните с базы и дорабатывайте.</li>
+            <li><strong>Промпт-инженерия</strong> &mdash; чем точнее описание, тем лучше результат.</li>
+            <li><strong>Публикация</strong> на VibeHosting &mdash; ZIP-файл, один клик, и сайт в сети.</li>
+        </ol>
+
+        <p>Попробуйте сами: установите Cursor, создайте лендинг за 10 минут и опубликуйте его на VibeHosting. Вы удивитесь, насколько это просто.</p>
+
+        <div class="cta">
+            <h3>Готовы создать свой сайт?</h3>
+            <p>Cursor + VibeHosting = от идеи до публикации за 15 минут</p>
+            <p style="margin-top: 12px;">
+                <a href="https://cursor.com" target="_blank" rel="noopener">Скачать Cursor</a> &nbsp;|&nbsp;
+                <a href="https://hostingvibe.ru" target="_blank" rel="noopener">Опубликовать на VibeHosting</a>
+            </p>
+        </div>
+
+    </article>
+</body>
+</html>

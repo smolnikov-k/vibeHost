@@ -1,0 +1,455 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String   @map("password_hash")
+  displayName  String?  @map("display_name")
+  phone        String?
+  plan         Plan     @default(FREE)
+  isAdmin      Boolean  @default(false) @map("is_admin")
+  storageUsed  BigInt   @default(0) @map("storage_used")
+  storageLimit BigInt   @default(52428800) @map("storage_limit") // 50 MB
+  aiCredits    Int      @default(10) @map("ai_credits")
+  lastActiveAt DateTime? @map("last_active_at")
+  tokenVersion Int      @default(0) @map("token_version")
+  emailOptOut  Boolean  @default(false) @map("email_opt_out")
+  emailVerified     Boolean   @default(false) @map("email_verified")
+  emailVerifyCode   String?   @map("email_verify_code")
+  emailVerifyExpires DateTime? @map("email_verify_expires")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  projects       Project[]
+  domains        Domain[]
+  subscription   Subscription?
+  passwordResets PasswordReset[]
+  projectLikes   ProjectLike[]
+  isBanned     Boolean  @default(false) @map("is_banned")
+  telegramLink   TelegramLink?
+  emailEvents    EmailEvent[]
+  articles       Article[]
+  adminLogs      AdminAuditLog[] @relation("adminLogs")
+
+  @@index([email])
+  @@index([plan])
+  @@index([createdAt])
+  @@index([lastActiveAt])
+  @@index([emailOptOut, createdAt])
+  @@map("users")
+}
+
+enum Plan {
+  FREE
+  PRO
+}
+
+model Project {
+  id             String        @id @default(cuid())
+  userId         String        @map("user_id")
+  user           User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  slug           String        @unique
+  title          String
+  description    String?
+  sizeBytes      BigInt        @default(0) @map("size_bytes")
+  fileCount      Int           @default(0) @map("file_count")
+  status         ProjectStatus @default(UPLOADING)
+  isPublic       Boolean       @default(false) @map("is_public")
+  tags           String[]      @default([])
+  likes          Int           @default(0)
+  views          Int           @default(0)
+  currentVersion    Int           @default(0) @map("current_version")
+  passwordHash      String?       @map("password_hash")
+  passwordEnabled   Boolean       @default(false) @map("password_enabled")
+  metrikaId         String?       @map("metrika_id")
+  expiresAt         DateTime?     @map("expires_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+  publishedAt    DateTime?     @map("published_at")
+
+  deployments     Deployment[]
+  domains         Domain[]
+  projectLikes    ProjectLike[]
+  pageViews       PageView[]
+  reports         Report[]
+  formSubmissions FormSubmission[]
+  editorPages     EditorPage[]
+  visualPatches   VisualPatch[]
+  qrCodes         QrCode[]
+
+  @@index([userId])
+  @@index([slug])
+  @@index([status])
+  @@index([isPublic, likes])
+  @@index([isPublic, createdAt])
+  @@index([isPublic, publishedAt])
+  @@index([expiresAt])
+  @@map("projects")
+}
+
+enum ProjectStatus {
+  UPLOADING
+  PROCESSING
+  LIVE
+  ERROR
+  SUSPENDED
+}
+
+model Deployment {
+  id           String       @id @default(cuid())
+  projectId    String       @map("project_id")
+  project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  version      Int
+  sizeBytes    BigInt       @default(0) @map("size_bytes")
+  fileCount    Int          @default(0) @map("file_count")
+  status       DeployStatus @default(PENDING)
+  errorMessage String?      @map("error_message")
+  buildLog     String?      @map("build_log")
+  zipHash      String?      @map("zip_hash")
+  previewSlug  String?      @unique @map("preview_slug")
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@index([projectId, version])
+  @@index([projectId, status])
+  @@index([status])
+  @@index([createdAt])
+  @@map("deployments")
+}
+
+enum DeployStatus {
+  PENDING
+  EXTRACTING
+  BUILDING
+  PREVIEW
+  LIVE
+  FAILED
+  SUPERSEDED
+}
+
+model Domain {
+  id          String    @id @default(cuid())
+  projectId   String    @map("project_id")
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  hostname    String    @unique
+  verified    Boolean   @default(false)
+  verifyToken String?   @map("verify_token")
+  verifiedAt  DateTime? @map("verified_at")
+  sslStatus   SslStatus @default(PENDING) @map("ssl_status")
+  sslExpiresAt DateTime? @map("ssl_expires_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@index([hostname])
+  @@index([projectId])
+  @@index([userId])
+  @@index([verified, sslStatus])
+  @@map("domains")
+}
+
+enum SslStatus {
+  PENDING
+  PROVISIONING
+  ACTIVE
+  FAILED
+  EXPIRED
+}
+
+model Subscription {
+  id                  String    @id @default(cuid())
+  userId              String    @unique @map("user_id")
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prodamusOrderId        String?   @map("prodamus_order_id")
+  prodamusSubscriptionId String?   @map("prodamus_subscription_id")
+  status                 SubStatus @default(INACTIVE)
+  priceRub            Int       @default(386) @map("price_rub")
+  billingPeriod       Int       @default(1) @map("billing_period")
+  currentPeriodStart  DateTime? @map("current_period_start")
+  currentPeriodEnd    DateTime? @map("current_period_end")
+  cancelledAt         DateTime? @map("cancelled_at")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@index([userId])
+  @@index([status])
+  @@index([currentPeriodEnd])
+  @@index([status, currentPeriodEnd])
+  @@index([prodamusSubscriptionId])
+  @@map("subscriptions")
+}
+
+enum SubStatus {
+  INACTIVE
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+}
+
+model ProjectLike {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([projectId, userId])
+  @@index([projectId])
+  @@index([userId])
+  @@map("project_likes")
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  path      String   @default("/")
+  ip        String
+  userAgent String?  @map("user_agent")
+  referrer  String?
+  country   String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, createdAt])
+  @@index([projectId, path])
+  @@index([createdAt])
+  @@map("page_views")
+}
+
+model Report {
+  id        String       @id @default(cuid())
+  projectId String       @map("project_id")
+  project   Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  reason    ReportReason
+  message   String?
+  reporterIp String      @map("reporter_ip")
+  status    ReportStatus @default(PENDING)
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  @@index([projectId])
+  @@index([status])
+  @@index([reporterIp, createdAt])
+  @@map("reports")
+}
+
+enum ReportReason {
+  SPAM
+  MALWARE
+  PHISHING
+  ILLEGAL
+  COPYRIGHT
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  RESOLVED
+  DISMISSED
+}
+
+model TelegramLink {
+  id        String   @id @default(cuid())
+  userId    String   @unique @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatId    String   @unique @map("chat_id")
+  username  String?
+  linkCode  String   @unique @map("link_code")
+  linkedAt  DateTime @default(now()) @map("linked_at")
+
+  @@map("telegram_links")
+}
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  formName  String?  @map("form_name")
+  data      Json
+  ip        String?
+  sentToTg  Boolean  @default(false) @map("sent_to_tg")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([projectId, createdAt])
+  @@map("form_submissions")
+}
+
+model EditorPage {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  path      String   // "index.html", "about.html"
+  gjsData   Json?    @map("gjs_data")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([projectId, path])
+  @@index([projectId])
+  @@map("editor_pages")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime @map("expires_at")
+  usedAt    DateTime? @map("used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_resets")
+}
+
+
+
+enum EmailEventStatus {
+  PENDING
+  SENT
+  SKIPPED
+  FAILED
+}
+
+model EmailEvent {
+  id             String           @id @default(cuid())
+  dedupeKey      String           @unique @map("dedupe_key")
+  eventType      String           @map("event_type")
+  recipientEmail String           @map("recipient_email")
+  category       String           @default("transactional")
+  userId         String?          @map("user_id")
+  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status         EmailEventStatus @default(PENDING)
+  attempts       Int              @default(0)
+  payloadHash    String?          @map("payload_hash")
+  lastError      String?          @map("last_error")
+  sentAt         DateTime?        @map("sent_at")
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+
+  @@index([userId, createdAt])
+  @@index([eventType, createdAt])
+  @@index([status, createdAt])
+  @@map("email_events")
+}
+
+enum PaymentEventStatus {
+  PROCESSING
+  PROCESSED
+  FAILED
+}
+
+model PaymentEvent {
+  id              String             @id @default(cuid())
+  provider        String             @default("prodamus")
+  providerEventId String             @map("provider_event_id")
+  orderId         String?            @map("order_id")
+  status          PaymentEventStatus @default(PROCESSING)
+  lastError       String?            @map("last_error")
+  processedAt     DateTime?          @map("processed_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  @@unique([provider, providerEventId])
+  @@index([status, createdAt])
+  @@map("payment_events")
+}
+
+model VisualPatch {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  selector  String
+  xpath     String?
+  type      String   // "text" | "image" | "hide"
+  content   String?
+  enabled   Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([projectId])
+  @@index([projectId, enabled])
+  @@map("visual_patches")
+}
+
+model QrCode {
+  id        String   @id @default(cuid())
+  projectId String   @map("project_id")
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String   @default("QR-код")
+
+  // UTM
+  utmSource   String? @map("utm_source")
+  utmMedium   String? @map("utm_medium")
+  utmCampaign String? @map("utm_campaign")
+  utmContent  String? @map("utm_content")
+  utmTerm     String? @map("utm_term")
+
+  // Style
+  fgColor           String @default("#000000") @map("fg_color")
+  bgColor           String @default("#ffffff") @map("bg_color")
+  dotStyle          String @default("square") @map("dot_style")
+  cornerSquareStyle String @default("square") @map("corner_square_style")
+  cornerDotStyle    String @default("square") @map("corner_dot_style")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([projectId])
+  @@map("qr_codes")
+}
+
+model Article {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  title       String
+  excerpt     String?
+  content     String
+  coverImage  String?       @map("cover_image")
+  authorId    String        @map("author_id")
+  author      User          @relation(fields: [authorId], references: [id])
+  status      ArticleStatus @default(DRAFT)
+  publishedAt DateTime?     @map("published_at")
+  viewCount   Int           @default(0) @map("view_count")
+  readTime    Int           @default(1) @map("read_time")
+  metaTitle   String?       @map("meta_title")
+  metaDesc    String?       @map("meta_description")
+  ogImage     String?       @map("og_image")
+  tags        String[]      @default([])
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@index([status, publishedAt])
+  @@index([authorId])
+  @@map("articles")
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model AdminAuditLog {
+  id         String   @id @default(cuid())
+  adminId    String   @map("admin_id")
+  admin      User     @relation("adminLogs", fields: [adminId], references: [id])
+  action     String
+  targetType String   @map("target_type")
+  targetId   String?  @map("target_id")
+  details    Json?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([adminId])
+  @@index([createdAt])
+  @@map("admin_audit_logs")
+}
